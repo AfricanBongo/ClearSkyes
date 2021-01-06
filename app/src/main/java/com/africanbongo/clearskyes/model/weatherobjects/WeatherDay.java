@@ -1,5 +1,7 @@
 package com.africanbongo.clearskyes.model.weatherobjects;
 
+import static com.africanbongo.clearskyes.model.MiscMethods.getUVLevel;
+
 /**
 Contains generalized information about the weather on a certain day
  **/
@@ -10,12 +12,13 @@ public class WeatherDay {
     private final WeatherCondition conditions;
     private final WeatherMisc miscellaneous;
 
-    private final float maxWindKPH;
-    private final float maxWindMPH;
+    private final double maxWindKPH;
+    private final double maxWindMPH;
+    private final String uvLevel;
 
     public WeatherDay(WeatherTemp maxTemp, WeatherTemp minTemp, WeatherTemp avgTemp,
                       WeatherCondition conditions, WeatherMisc miscellaneous,
-                      float maxWindKPH, float maxWindMPH) {
+                      double maxWindKPH, double maxWindMPH, int uvIndex) {
 
         this.maxTemp = maxTemp;
         this.minTemp = minTemp;
@@ -24,6 +27,7 @@ public class WeatherDay {
         this.miscellaneous = miscellaneous;
         this.maxWindKPH = maxWindKPH;
         this.maxWindMPH = maxWindMPH;
+        this.uvLevel = getUVLevel(uvIndex);
     }
 
     public WeatherTemp getMaxTemp() {
@@ -46,11 +50,15 @@ public class WeatherDay {
         return miscellaneous;
     }
 
-    public float getMaxWindKPH() {
+    public double getMaxWindKPH() {
         return maxWindKPH;
     }
 
-    public float getMaxWindMPH() {
+    public double getMaxWindMPH() {
         return maxWindMPH;
+    }
+
+    public String getUvLevel() {
+        return uvLevel;
     }
 }

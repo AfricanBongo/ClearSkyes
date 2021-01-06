@@ -14,10 +14,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.africanbongo.clearskyes.R;
+import com.africanbongo.clearskyes.model.WeatherTime;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
-/*
+/**
 Custom view shown on current today page at the bottom of the screen
 Contains the animated sunset, sunrise, moon set, and moonrise icons
 As well as text views to show the times of theses properties
@@ -98,39 +100,19 @@ public class CurrentWeatherViewDown extends GridLayout {
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void setMoonRise(@NonNull LocalDateTime time) {
-        int hour = time.getHour();
-        int minute = time.getMinute();
-
-        String text = hour + ":" + minute;
-        moonRise.setText(text);
+    public void setMoonRise(@NonNull String time) {
+        moonRise.setText(time);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void setMoonSet(@NonNull LocalDateTime time) {
-        int hour = time.getHour();
-        int minute = time.getMinute();
-
-        String text = hour + ":" + minute;
-        moonSet.setText(text);
+    public void setMoonSet(@NonNull String time) {
+        moonSet.setText(time);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void setSunSet(@NonNull LocalDateTime time) {
-        int hour = time.getHour();
-        int minute = time.getMinute();
-
-        String text = hour + ":" + minute;
-        sunSet.setText(text);
+    public void setSunSet(@NonNull String time) {
+        sunSet.setText(time);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void setSunRise(@NonNull LocalDateTime time) {
-        int hour = time.getHour();
-        int minute = time.getMinute();
-
-        String text = hour + ":" + minute;
-        sunRise.setText(text);
+    public void setSunRise(@NonNull String time) {
+        sunRise.setText(time);
     }
 }

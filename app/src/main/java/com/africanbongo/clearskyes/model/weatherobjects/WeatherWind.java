@@ -4,21 +4,21 @@ package com.africanbongo.clearskyes.model.weatherobjects;
 Contains wind properties of the weather
  */
 public class WeatherWind {
-    private final float windSpeedMPH;
-    private final float windSpeedKPH;
+    private final double windSpeedMPH;
+    private final double windSpeedKPH;
     private final String windDirection;
 
-    public WeatherWind(float windSpeedMPH, float windSpeedKPH, String windDirection) {
+    public WeatherWind(double windSpeedMPH, double windSpeedKPH, String windDirection) {
         this.windSpeedMPH = windSpeedMPH;
         this.windSpeedKPH = windSpeedKPH;
         this.windDirection = windDirection;
     }
 
-    public float getWindSpeedMPH() {
+    public double getWindSpeedMPH() {
         return windSpeedMPH;
     }
 
-    public float getWindSpeedKPH() {
+    public double getWindSpeedKPH() {
         return windSpeedKPH;
     }
 

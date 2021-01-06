@@ -4,19 +4,19 @@ package com.africanbongo.clearskyes.model.weatherobjects;
 Base class for holding temperatures celsius and fahrenheit
  */
 public class WeatherTemp {
-    private final float tempC;
-    private final float tempF;
+    private final double tempC;
+    private final double tempF;
 
-    public WeatherTemp(float tempC, float tempF) {
+    public WeatherTemp(double tempC, double tempF) {
         this.tempC = tempC;
         this.tempF = tempF;
     }
 
-    public float getTempC() {
+    public double getTempC() {
         return tempC;
     }
 
-    public float getTempF() {
+    public double getTempF() {
         return tempF;
     }
 }

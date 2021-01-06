@@ -7,7 +7,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
-
 /**
  {@link RequestQueue} for making requests for JSON to WeatherApi
  */
@@ -15,6 +14,13 @@ public class WeatherRequestQueue {
     private static WeatherRequestQueue weatherRequestQueue;
     private RequestQueue requestQueue;
     private Context context;
+
+    // Used for making API requests
+    public static final String API_KEY = "*****************";
+    public static final String GET_CURRENT_WEATHER_START =  "http://api.weatherapi.com/v1/forecast.json?key=" +
+            API_KEY +"&q=Harare&days=1";
+
+
 
     private WeatherRequestQueue(Context context) {
         this.context = context;
@@ -38,7 +44,6 @@ public class WeatherRequestQueue {
         if (weatherRequestQueue == null) {
             weatherRequestQueue = new WeatherRequestQueue(context);
         }
-
         return weatherRequestQueue;
     }
 

@@ -7,39 +7,13 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 
 import com.africanbongo.clearskyes.R;
+import com.africanbongo.clearskyes.model.WeatherAVDS;
 import com.bumptech.glide.Glide;
 
 /**
 Base class for holding base conditions and loading the weather icon into a ImageView
  */
 public class WeatherCondition {
-
-    // TODO Wire up AVDs and write enum to hold avd ids
-    enum AVD {
-        PARTLY_CLOUDY(1000, R.drawable.avd_cloudy_day, R.drawable.avd_cloudy_night);
-
-        private final int avdID;
-        private final int dayResourceId;
-        private final int nightResourceId;
-
-        AVD(int avdID, int dayResourceId, int nightResourceId) {
-            this.avdID = avdID;
-            this.dayResourceId = dayResourceId;
-            this.nightResourceId = nightResourceId;
-        }
-
-        public int getAvdID() {
-            return avdID;
-        }
-
-        public int getDayResourceId() {
-            return dayResourceId;
-        }
-
-        public int getNightResourceId() {
-            return nightResourceId;
-        }
-    }
 
     private final String conditionText;
     private final String conditionIcon;
@@ -63,15 +37,15 @@ public class WeatherCondition {
     public void loadConditionImage(ImageView view) {
 
         // Load AnimatedVectorDrawable from resources, if it exists
-        for (AVD avd : AVD.values()) {
-            if (conditionCode == avd.avdID) {
+        for (WeatherAVDS avd : WeatherAVDS.values()) {
+            if (conditionCode == avd.getAvdID()) {
                 int drawableId;
 
                 // Retrieve drawable id in respect to time of weather report, i.e night or day
                 if (day) {
-                    drawableId = avd.dayResourceId;
+                    drawableId = avd.getDayResourceId();
                 } else {
-                    drawableId = avd.nightResourceId;
+                    drawableId = avd.getNightResourceId();
                 }
 
                 // Load up the AVD
