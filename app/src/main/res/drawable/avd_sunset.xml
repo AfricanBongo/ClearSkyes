@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:drawable="@drawable/ic_sunmotion">
+
+    <target
+        android:name="sun">
+        <aapt:attr name="android:animation">
+            <objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+                android:propertyName="translateY"
+                android:valueFrom="-500"
+                android:valueTo="35"
+                android:valueType="floatType"
+                android:duration="@integer/medium_animator_duration"
+                android:interpolator="@android:anim/accelerate_interpolator"
+                android:repeatMode="restart"
+                android:repeatCount="infinite" />
+        </aapt:attr>
+    </target>
+</animated-vector>

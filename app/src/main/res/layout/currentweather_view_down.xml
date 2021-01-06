@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/white_curved_background"
+    android:orientation="horizontal"
+    android:paddingTop="@dimen/small_gap"
+    android:paddingBottom="@dimen/small_gap"
+    android:paddingLeft="@dimen/large_gap"
+    android:columnCount="@integer/now_grid_column_count"
+    android:rowCount="@integer/now_grid_row_count"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <LinearLayout
+        android:layout_columnWeight="2"
+        android:layout_column="0"
+        android:layout_row="0"
+        android:layout_marginBottom="@dimen/small_gap"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/now_sun_rise_image"
+            android:layout_width="@dimen/weather_anim_icon"
+            android:layout_height="@dimen/weather_anim_icon"
+            android:layout_marginBottom="@dimen/smaller_gap"
+            android:layout_marginEnd="@dimen/large_gap"
+            app:srcCompat="@drawable/avd_sunrise" />
+
+        <TextView
+            android:id="@+id/now_sun_rise"
+            style="@style/GreyText.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="0556" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_columnWeight="1"
+        android:layout_column="1"
+        android:layout_row="0"
+        android:layout_marginBottom="@dimen/small_gap"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/now_sun_set_image"
+            android:layout_width="@dimen/weather_anim_icon"
+            android:layout_height="@dimen/weather_anim_icon"
+            android:layout_marginBottom="@dimen/smaller_gap"
+            android:layout_marginEnd="@dimen/large_gap"
+            app:srcCompat="@drawable/avd_sunset" />
+
+        <TextView
+            android:id="@+id/now_sun_set"
+            style="@style/GreyText.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="1845" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_columnWeight="2"
+        android:layout_column="0"
+        android:layout_row="1"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="@dimen/small_gap"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/now_moon_rise_image"
+            android:layout_width="@dimen/weather_anim_icon"
+            android:layout_height="@dimen/weather_anim_icon"
+            android:layout_marginBottom="@dimen/smaller_gap"
+            android:layout_marginEnd="@dimen/large_gap"
+            app:srcCompat="@drawable/avd_moonrise" />
+
+        <TextView
+            android:id="@+id/now_moon_rise"
+            style="@style/GreyText.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="1825" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_columnWeight="1"
+        android:layout_column="1"
+        android:layout_row="1"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/small_gap"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/now_moon_set_image"
+            android:layout_width="@dimen/weather_anim_icon"
+            android:layout_height="@dimen/weather_anim_icon"
+            android:layout_marginEnd="@dimen/large_gap"
+            android:layout_marginBottom="@dimen/smaller_gap"
+            app:srcCompat="@drawable/avd_moonset" />
+
+        <TextView
+            android:id="@+id/now_moon_set"
+            style="@style/GreyText.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="0632" />
+    </LinearLayout>
+</GridLayout>

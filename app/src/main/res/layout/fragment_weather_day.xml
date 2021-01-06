@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/purple_light"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".controller.fragments.WeatherDayFragment">
+
+    <TextView
+        android:id="@+id/day_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/yellow_accent"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        android:padding="@dimen/small_gap" />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/day_textview">
+        <TextView
+            android:id="@+id/sample"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/filler_text"
+            android:textColor="@color/white"
+            android:padding="@dimen/small_gap"
+            />
+    </ScrollView>
+
+</RelativeLayout>

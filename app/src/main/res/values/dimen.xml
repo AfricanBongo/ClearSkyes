@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    Fill remaining space of constraint layout axis-->
+    <dimen name="fill_constraint">0dp</dimen>
+
+    <!--    Uniform sizes or gaps between views-->
+    <dimen name="large_gap">20dp</dimen>
+    <dimen name="medium_gap">12.5dp</dimen>
+    <dimen name="small_gap">7.5dp</dimen>
+    <dimen name="smaller_gap">5dp</dimen>
+    <dimen name="smallest_gap">3dp</dimen>
+
+    <!--    Uniform font sizes-->
+    <dimen name="large_font_size">72sp</dimen>
+    <dimen name="medium_font_size">22sp</dimen>
+    <dimen name="small_font_size">15sp</dimen>
+
+    <!--    Common points on a vector asset-->
+    <dimen name="common_zero_point">0dp</dimen>
+
+    <!--    Other, i.e. self-explainable -->
+    <dimen name="currentweather_view_height">150dp</dimen>
+    <dimen name="weather_icon">128dp</dimen>
+    <dimen name="border_radius">5dp</dimen>
+    <dimen name="weather_small_icon">34dp</dimen>
+    <dimen name="weather_anim_icon">32dp</dimen>
+</resources>

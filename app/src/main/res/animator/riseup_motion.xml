@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:propertyName="translateY"
+    android:valueFrom="@integer/moonmotion_endpoint_y"
+    android:valueTo="0"
+    android:valueType="floatType"
+    android:repeatMode="restart"
+    android:repeatCount="infinite"
+    android:duration="@integer/medium_animator_duration"
+    android:interpolator="@android:interpolator/accelerate_decelerate" />

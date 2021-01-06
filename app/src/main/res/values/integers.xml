@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--    Animation duration-->
+    <integer name="medium_animator_duration">2500</integer>
+    <integer name="half_medium_animator_duration">1250</integer>
+    <integer name="moonmotion_endpoint_y">496</integer>
+    <integer name="now_grid_column_count">2</integer>
+    <integer name="now_grid_row_count">2</integer>
+</resources>

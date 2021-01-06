@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CurrentWeatherViewUp">
+        <attr name="current_temp" format="integer"/>
+        <attr name="feels_like_temp" format="integer"/>
+        <attr name="condition_text" format="string"/>
+        <attr name="uv_index" format="integer"/>
+        <attr name="chance_of_rain" format="integer"/>
+    </declare-styleable>
+</resources>
