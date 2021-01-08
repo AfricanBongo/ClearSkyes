@@ -1,5 +1,7 @@
 package com.africanbongo.clearskyes.model.weatherobjects;
 
+import android.graphics.drawable.AnimatedVectorDrawable;
+import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -48,6 +50,13 @@ public class WeatherCondition {
 
                 // Load up the AVD
                 view.setImageResource(drawableId);
+
+                // Start animation if the drawable is a AnimatedVectorDrawable object
+                Drawable drawable = view.getDrawable();
+
+                if (drawable instanceof AnimatedVectorDrawable) {
+                    ((AnimatedVectorDrawable) drawable).start();
+                }
 
                 return;
             }
