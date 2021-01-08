@@ -5,17 +5,21 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.Date;
 
 /**
  * Class that holds all methods and formats to derive Date and Time strings
  */
 public class WeatherTime {
     // Formats for date and time
-    private static final String TIME_FORMAT = "hh:mm";
+    private static final String TIME_FORMAT = "HH:mm";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final String LONG_DATE_FORMAT = " dd MMMM yyyy";
     private static final String DATE_TIME_FORMAT = DATE_FORMAT + " " + TIME_FORMAT;
@@ -56,9 +60,9 @@ public class WeatherTime {
 
         if (now.isEqual(date)) {
             return "Today";
-        } else if (now.compareTo(date) == -1) {
+        } else if (now.compareTo(date) == -1 && date.getYear() == now.getYear()) {
             return "Tomorrow";
-        } else if (now.compareTo(date) == 1) {
+        } else if (now.compareTo(date) == 1 && date.getYear() == now.getYear()) {
             return "Yesterday";
         } else {
             return titleString(date.getDayOfWeek().toString());
@@ -85,7 +89,7 @@ public class WeatherTime {
         dateTime.append(getRelativeDay(newDateTime.toLocalDate()));
 
         // Hour of day
-        dateTime.append(",");
+        dateTime.append(", ");
         dateTime.append(newDateTime
                 .toLocalTime()
                 .format(DateTimeFormatter.ofPattern(TIME_FORMAT)));
@@ -102,7 +106,7 @@ public class WeatherTime {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static String getHourPeriod(String dateTimeString) {
         // Get hour and minutes as first element of parsed array
-        String currentHourAndMin = getRelativeDayAndProperTime(dateTimeString).split(", ")[0];
+        String currentHourAndMin = getRelativeDayAndProperTime(dateTimeString).split(", ")[1];
 
         LocalTime currentTime = LocalTime.parse(currentHourAndMin);
 
@@ -122,5 +126,27 @@ public class WeatherTime {
     public static String titleString(String string) {
         return string.substring(0, 1).toUpperCase()
                 .concat(string.substring(1).toLowerCase());
+    }
+
+    /**
+     * Derives the 24 hour notation String from a normal AM/PM String, i.e. "12.15 AM"
+     * @param timeString AM/PM String
+     * @return A 24 hour notation String {@link String}
+     */
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static String get24HourNotation(String timeString) {
+
+        try {
+            Date time = new SimpleDateFormat("hh:mm a").parse(timeString);
+            return new SimpleDateFormat(TIME_FORMAT)
+                    .format(time);
+        } catch (DateTimeParseException | ParseException e) {
+            return timeString;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public static int getCurrentHourAsIndex() {
+        return LocalTime.now().getHour();
     }
 }

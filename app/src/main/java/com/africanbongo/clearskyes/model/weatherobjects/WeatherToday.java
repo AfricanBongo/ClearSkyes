@@ -1,9 +1,6 @@
 package com.africanbongo.clearskyes.model.weatherobjects;
 
-import android.os.Build;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
 import static com.africanbongo.clearskyes.model.MiscMethods.getUVLevel;
 import static com.africanbongo.clearskyes.model.WeatherTime.getRelativeDayAndProperTime;
@@ -15,16 +12,18 @@ public class WeatherToday {
 
     // The weather at the current moment
     private final WeatherObject nowWeather;
+    private final AstroElement astronomy;
     private final String uvLevel;
+
     // Data structure to hold the WeatherHour Objects
-    private WeatherHour[] hours = new WeatherHour[23];
+    private final WeatherHour[] hours = new WeatherHour[24];
 
     String lastUpdatedTime;
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public WeatherToday(String lastUpdatedTime, WeatherObject nowWeather, int uvLevel) {
+    public WeatherToday(String lastUpdatedTime, WeatherObject nowWeather, AstroElement astronomy, double uvLevel) {
         this.lastUpdatedTime = getRelativeDayAndProperTime(lastUpdatedTime);
         this.nowWeather = nowWeather;
+        this.astronomy = astronomy;
         this.uvLevel = getUVLevel(uvLevel);
     }
 
@@ -43,5 +42,17 @@ public class WeatherToday {
      */
     public void addHour(int index, @NonNull WeatherHour hour) {
         hours[index] = hour;
+    }
+
+    public WeatherHour getHour(int index) {
+        return hours[index];
+    }
+
+    public WeatherObject getNowWeather() {
+        return nowWeather;
+    }
+
+    public AstroElement getAstronomy() {
+        return astronomy;
     }
 }

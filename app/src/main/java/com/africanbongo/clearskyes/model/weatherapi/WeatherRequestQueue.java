@@ -12,12 +12,12 @@ import com.android.volley.toolbox.Volley;
  */
 public class WeatherRequestQueue {
     private static WeatherRequestQueue weatherRequestQueue;
-    private RequestQueue requestQueue;
-    private Context context;
+    private final RequestQueue requestQueue;
+    private final Context context;
 
     // Used for making API requests
-    public static final String API_KEY = "*****************";
-    public static final String GET_CURRENT_WEATHER_START =  "http://api.weatherapi.com/v1/forecast.json?key=" +
+    public static final String API_KEY = "1092f3e10c9a4146890112852202212";
+    public static final String GET_CURRENT_WEATHER_START =  "https://api.weatherapi.com/v1/forecast.json?key=" +
             API_KEY +"&q=Harare&days=1";
 
 

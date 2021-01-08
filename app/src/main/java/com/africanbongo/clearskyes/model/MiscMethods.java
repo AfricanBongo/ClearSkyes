@@ -11,7 +11,7 @@ public class MiscMethods {
      * @param upper upper bound
      * @return True, if integer is enclosed within the range
      */
-    public static boolean isBetween(int x, int lower, int upper) {
+    public static boolean isBetween(double x, int lower, int upper) {
         return lower <= x && x <= upper;
     }
 
@@ -21,7 +21,7 @@ public class MiscMethods {
      * @param uvIndex integer UV index
      * @return {@link String} equivalent of UV index, eg. "Moderate" for integer range from 3 to 5
      */
-    public static String getUVLevel(int uvIndex) {
+    public static String getUVLevel(double uvIndex) {
         if (isBetween(uvIndex, 0, 2)) return "Low";
         else if (isBetween(uvIndex, 3, 5)) return "Moderate";
         else if (isBetween(uvIndex, 6, 7)) return "High";

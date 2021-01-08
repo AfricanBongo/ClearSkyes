@@ -1,7 +1,5 @@
 package com.africanbongo.clearskyes.model.weatherobjects;
 
-import android.graphics.drawable.AnimatedVectorDrawable;
-import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -25,7 +23,7 @@ public class WeatherCondition {
 
     public WeatherCondition(@NonNull String conditionText, @NonNull String conditionIcon, int conditionCode, boolean day) {
         this.conditionText = conditionText;
-        this.conditionIcon = conditionIcon;
+        this.conditionIcon = "http:" + conditionIcon;
         this.conditionCode = conditionCode;
         this.day = day;
     }

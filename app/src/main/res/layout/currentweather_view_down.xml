@@ -35,7 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="0556" />
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -61,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="1845" />
+             />
     </LinearLayout>
 
     <LinearLayout
@@ -87,7 +87,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="1825" />
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -112,6 +112,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="0632" />
+             />
     </LinearLayout>
 </GridLayout>

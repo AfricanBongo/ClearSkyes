@@ -1,5 +1,7 @@
 package com.africanbongo.clearskyes.model.weatherobjects;
 
+import static com.africanbongo.clearskyes.model.WeatherTime.getHourPeriod;
+
 /**
 Weather properties specifically for the hour
  */
@@ -16,7 +18,7 @@ public class WeatherHour extends WeatherObject {
                 weatherObject.getConditions(), weatherObject.getMiscellaneous(),
                 weatherObject.getWind());
 
-        this.time = time;
+        this.time = getHourPeriod(time);
         this.chanceOfSnow = chanceOfSnow;
         this.chanceOfRain = chanceOfRain;
     }

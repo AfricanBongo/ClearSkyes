@@ -18,7 +18,7 @@ public class WeatherDay {
 
     public WeatherDay(WeatherTemp maxTemp, WeatherTemp minTemp, WeatherTemp avgTemp,
                       WeatherCondition conditions, WeatherMisc miscellaneous,
-                      double maxWindKPH, double maxWindMPH, int uvIndex) {
+                      double maxWindKPH, double maxWindMPH, double uvIndex) {
 
         this.maxTemp = maxTemp;
         this.minTemp = minTemp;

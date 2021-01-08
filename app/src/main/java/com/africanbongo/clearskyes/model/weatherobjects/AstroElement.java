@@ -1,5 +1,11 @@
 package com.africanbongo.clearskyes.model.weatherobjects;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
+import static com.africanbongo.clearskyes.model.WeatherTime.get24HourNotation;
+
 /**
 Contains astronomy properties
  */
@@ -10,11 +16,12 @@ public class AstroElement {
     private final String moonSet;
     private final String moonPhase;
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     public AstroElement(String sunRise, String sunSet, String moonRise, String moonSet, String moonPhase) {
-        this.sunRise = sunRise;
-        this.sunSet = sunSet;
-        this.moonRise = moonRise;
-        this.moonSet = moonSet;
+        this.sunRise = get24HourNotation(sunRise);
+        this.sunSet = get24HourNotation(sunSet);
+        this.moonRise = get24HourNotation(moonRise);
+        this.moonSet = get24HourNotation(moonSet);
         this.moonPhase = moonPhase;
     }
 

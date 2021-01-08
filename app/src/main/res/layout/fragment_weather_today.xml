@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/purple_curved_background"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".controller.fragments.WeatherTodayFragment">
 
     <LinearLayout
@@ -18,13 +17,10 @@
             android:layout_marginStart="@dimen/smaller_gap"
             android:layout_marginTop="@dimen/medium_gap"
             android:layout_marginEnd="@dimen/smaller_gap"
-            android:elevation="@dimen/medium_gap"
-            app:condition_text="Cloudy with rain"
-            app:current_temp="25"
-            app:feels_like_temp="26"
-            app:uv_index="5" />
+            android:elevation="@dimen/medium_gap" />
 
         <com.africanbongo.clearskyes.controller.customviews.CurrentWeatherViewDown
+            android:id="@+id/now_weatherview_down"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/large_gap"

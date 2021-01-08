@@ -8,9 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.africanbongo.clearskyes.controller.fragments.WeatherDayFragment;
-
-import java.time.LocalDateTime;
+import com.africanbongo.clearskyes.controller.fragments.WeatherTodayFragment;
 
 public class WeatherDayStateAdapter extends FragmentStateAdapter {
 
@@ -22,9 +20,7 @@ public class WeatherDayStateAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        LocalDateTime now = LocalDateTime.now();
-        // TODO Write to select fragment
-        return new WeatherDayFragment(position);
+        return new WeatherTodayFragment();
     }
 
     @Override
