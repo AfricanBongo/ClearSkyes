@@ -2,12 +2,23 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:aapt="http://schemas.android.com/aapt">
     <aapt:attr name="android:drawable">
-        <vector
-            android:name="vector"
-            android:width="512dp"
-            android:height="512dp"
+        <vector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt"
             android:viewportWidth="512"
-            android:viewportHeight="512">
+            android:viewportHeight="512"
+            android:width="512dp"
+            android:height="512dp">
+
+            <group android:name="hail">
+                <path
+                    android:pathData="M341.686352 512c-21.092176 0 -38.252968 -17.580853 -38.252968 -39.189322s17.160791 -39.189322 38.252968 -39.189322s38.252968 17.580853 38.252968 39.189322s-17.160791 39.189322 -38.252968 39.189322z"
+                    android:fillColor="#cdcdcd" />
+                <path
+                    android:pathData="M96.86736 512c-21.092176 0 -38.252968 -17.580853 -38.252968 -39.189322s17.160791 -39.189322 38.252968 -39.189322s38.252968 17.580853 38.252968 39.189322s-17.160791 39.189322 -38.252968 39.189322z"
+                    android:fillColor="#cdcdcd" />
+                <path
+                    android:pathData="M219.276856 512c-21.092176 0 -38.252968 -17.580853 -38.252968 -39.189322s17.160791 -39.189322 38.252968 -39.189322s38.252968 17.580853 38.252968 39.189322s-17.160791 39.189322 -38.252968 39.189322z"
+                    android:fillColor="#cdcdcd" />
+            </group>
             <group
                 android:scaleX="0.593813"
                 android:scaleY="0.588635"
@@ -76,44 +87,21 @@
                         android:fillColor="#FFC178" />
                 </group>
             </group>
-            <group android:name="group">
-                <path
-                    android:name="path_5"
-                    android:pathData="M 340 390 L 90 390 C 40.374 390 0 349.626 0 300 C 0 255.244 32.833 218.015 75.681 211.138 C 82.665 140.426 142.482 85 215 85 C 287.518 85 347.335 140.426 354.319 211.138 C 397.167 218.015 430 255.244 430 300 C 430 349.626 389.626 390 340 390 Z"
-                    android:fillColor="#e2dff4"
-                    android:strokeWidth="1"/>
-            </group>
-            <group android:name="group_1">
-                <path
-                    android:name="path_8"
-                    android:pathData="M 230 512 L 80 512 C 46.916 512 20 485.084 20 452 C 20 423.74 39.641 399.98 65.987 393.652 C 72.455 350.333 109.908 317 155 317 C 200.092 317 237.545 350.333 244.013 393.652 C 270.359 399.98 290 423.74 290 452 C 290 485.084 263.084 512 230 512 Z"
-                    android:fillColor="#bebcdd"
-                    android:strokeWidth="1"/>
-            </group>
+
+            <path
+                android:pathData="M348.826906 384.459023l-255.019784 0c-50.622447 0 -91.807122 -42.192792 -91.807122 -94.054374c0 -46.772195 33.492258 -85.678309 77.200609 -92.865108c7.124233 -73.897476 68.142306 -131.82034 142.116405 -131.82034s134.992172 57.922863 142.116405 131.82034c43.708351 7.186799 77.200609 46.092913 77.200609 92.865108c0 51.861582 -41.184675 94.054374 -91.807122 94.054374z"
+                android:fillColor="#E2DFF4" />
         </vector>
     </aapt:attr>
-    <target android:name="group">
+    <target android:name="hail">
         <aapt:attr name="android:animation">
             <objectAnimator
-                android:propertyName="translateX"
+                android:propertyName="translateY"
                 android:duration="2500"
-                android:valueFrom="0"
-                android:valueTo="50"
+                android:valueFrom="-120"
+                android:valueTo="100"
                 android:valueType="floatType"
-                android:repeatMode="reverse"
-                android:repeatCount="infinite"
-                android:interpolator="@android:interpolator/fast_out_slow_in"/>
-        </aapt:attr>
-    </target>
-    <target android:name="group_1">
-        <aapt:attr name="android:animation">
-            <objectAnimator
-                android:propertyName="translateX"
-                android:duration="1750"
-                android:valueFrom="0"
-                android:valueTo="50"
-                android:valueType="floatType"
-                android:repeatMode="reverse"
+                android:repeatMode="restart"
                 android:repeatCount="infinite"
                 android:interpolator="@android:interpolator/fast_out_slow_in"/>
         </aapt:attr>

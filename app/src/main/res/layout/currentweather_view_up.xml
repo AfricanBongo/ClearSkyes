@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/white_curved_background"
@@ -9,9 +8,7 @@
 
     <TextView
         android:id="@+id/now_text"
-        style="@style/PurpleText.Medium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/CustomTextView.MediumPurpleText"
         android:text="@string/weather_now"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,14 +37,14 @@
 
     <TextView
         android:id="@+id/feels_like_temp"
-        style="@style/PurpleSmallTextView"
+        style="@style/CustomTextView.SmallWhiteText.PurpleBackground"
         android:layout_marginTop="@dimen/medium_gap"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/now_text" />
 
     <TextView
         android:id="@+id/now_condition_text"
-        style="@style/PurpleSmallTextView"
+        style="@style/CustomTextView.SmallWhiteText.PurpleBackground"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/medium_gap"

@@ -10,5 +10,7 @@
     <color name="purple_dark">#453d81</color>
     <color name="purple_light">#5e54ac</color>
     <color name="yellow_accent">#EEED09</color>
+    <color name="yellow_light">#FFF68E</color>
+    <color name="yellow_dark">#FFC178</color>
     <color name="grey_like">#6C6777</color>
 </resources>

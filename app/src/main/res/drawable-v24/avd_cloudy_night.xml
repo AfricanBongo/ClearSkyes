@@ -8,16 +8,11 @@
             android:height="512dp"
             android:viewportWidth="512"
             android:viewportHeight="512">
-            <group android:name="group_1">
+            <group android:name="moon">
                 <path
                     android:name="path"
                     android:pathData="M 298.653 274.347 C 276.019 251.713 262 220.463 262 186 C 262 117.075 318.075 61 387 61 C 395.538 61 404.117 61.881 412.497 63.62 C 419.323 65.035 424.276 70.97 424.445 77.943 C 424.615 84.915 419.957 91.083 413.206 92.829 C 388.944 99.105 372 120.97 372 146 C 371.999 160.691 377.72 174.503 388.108 184.891 C 398.497 195.28 412.309 201 427 201 C 452.03 201 473.895 184.055 480.171 159.794 C 481.917 153.043 488.086 148.386 495.057 148.555 C 502.027 148.724 507.963 153.676 509.379 160.503 C 511.118 168.883 512 177.462 511.999 186 C 511.999 254.925 455.924 311 386.999 311 C 352.537 311 321.287 296.981 298.653 274.347 Z"
                     android:fillColor="#fff68e"
-                    android:strokeWidth="1"/>
-                <path
-                    android:name="path_1"
-                    android:pathData="M 512 186 C 512 177.462 511.119 168.883 509.38 160.503 C 507.964 153.675 502.028 148.723 495.058 148.555 C 488.087 148.386 481.918 153.043 480.172 159.794 C 473.894 184.055 452.03 201 427 201 C 412.309 201 398.498 195.28 388.109 184.891 L 298.653 274.347 C 321.287 296.981 352.537 311 387 311 C 455.925 311 512 254.925 512 186 Z"
-                    android:fillColor="#ffc178"
                     android:strokeWidth="1"/>
             </group>
             <group android:name="group">
@@ -25,6 +20,13 @@
                     android:name="path_2"
                     android:pathData="M 340 451 L 90 451 C 40.374 451 0 410.626 0 361 C 0 316.244 32.833 279.015 75.681 272.138 C 82.665 201.426 142.482 146 215 146 C 287.518 146 347.335 201.426 354.319 272.138 C 397.167 279.015 430 316.244 430 361 C 430 410.626 389.626 451 340 451 Z"
                     android:fillColor="#e2dff4"
+                    android:strokeWidth="1"/>
+            </group>
+            <group android:name="small_cloud">
+                <path
+                    android:name="path_8"
+                    android:pathData="M 230 512 L 80 512 C 46.916 512 20 485.084 20 452 C 20 423.74 39.641 399.98 65.987 393.652 C 72.455 350.333 109.908 317 155 317 C 200.092 317 237.545 350.333 244.013 393.652 C 270.359 399.98 290 423.74 290 452 C 290 485.084 263.084 512 230 512 Z"
+                    android:fillColor="#bebcdd"
                     android:strokeWidth="1"/>
             </group>
         </vector>
@@ -42,17 +44,20 @@
                 android:interpolator="@android:interpolator/fast_out_slow_in"/>
         </aapt:attr>
     </target>
-    <target android:name="group_1">
+    <target android:name="small_cloud">
         <aapt:attr name="android:animation">
             <objectAnimator
-                android:propertyName="rotation"
-                android:duration="2500"
+                android:propertyName="translateX"
+                android:duration="1750"
                 android:valueFrom="0"
-                android:valueTo="10"
+                android:valueTo="50"
                 android:valueType="floatType"
                 android:repeatMode="reverse"
                 android:repeatCount="infinite"
                 android:interpolator="@android:interpolator/fast_out_slow_in"/>
         </aapt:attr>
     </target>
+    <target
+        android:animation="@animator/moon_motion"
+        android:name="moon" />
 </animated-vector>

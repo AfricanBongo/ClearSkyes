@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+    <aapt:attr name="android:drawable">
+        <vector
+            android:name="vector"
+            android:width="512dp"
+            android:height="512dp"
+            android:viewportWidth="512"
+            android:viewportHeight="512">
+            <group android:name="moon">
+                <path
+                    android:name="path_3"
+                    android:pathData="M 298.653 213.347 C 276.019 190.713 262 159.463 262 125 C 262 56.075 318.075 0 387 0 C 395.538 0 404.117 0.881 412.497 2.62 C 419.323 4.035 424.276 9.97 424.445 16.943 C 424.615 23.915 419.957 30.083 413.206 31.829 C 388.944 38.105 372 59.97 372 85 C 371.999 99.691 377.72 113.503 388.108 123.891 C 398.496 134.279 412.309 140 427 140 C 452.03 140 473.895 123.055 480.171 98.794 C 481.917 92.043 488.086 87.386 495.057 87.555 C 502.027 87.723 507.963 92.676 509.379 99.503 C 511.118 107.883 512 116.462 511.999 125 C 511.999 193.925 455.924 250 386.999 250 C 352.537 250 321.287 235.981 298.653 213.347 Z"
+                    android:fillColor="#fff68e"
+                    android:strokeWidth="1"/>
+            </group>
+            <group android:name="cloud">
+                <path
+                    android:name="path_5"
+                    android:pathData="M 340 451 L 90 451 C 40.374 451 0 410.626 0 361 C 0 316.244 32.833 279.015 75.681 272.138 C 82.665 201.426 142.482 146 215 146 C 287.518 146 347.335 201.426 354.319 272.138 C 397.167 279.015 430 316.244 430 361 C 430 410.626 389.626 451 340 451 Z"
+                    android:fillColor="#e2dff4"
+                    android:strokeWidth="1"/>
+            </group>
+        </vector>
+    </aapt:attr>
+    <target android:name="cloud">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:propertyName="translateX"
+                android:duration="2500"
+                android:valueFrom="0"
+                android:valueTo="75"
+                android:valueType="floatType"
+                android:repeatMode="reverse"
+                android:repeatCount="infinite"
+                android:interpolator="@android:interpolator/fast_out_slow_in"/>
+        </aapt:attr>
+    </target>
+    <target
+        android:animation="@animator/moon_motion"
+        android:name="moon"/>
+</animated-vector>

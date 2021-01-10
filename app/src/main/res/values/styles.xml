@@ -6,6 +6,9 @@
     <style name="PurpleText" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/purple_dark</item>
     </style>
+    <style name="PurpleText.Small">
+        <item name="android:textSize">@dimen/small_font_size</item>
+    </style>
     <style name="PurpleText.Medium">
         <item name="android:textSize">@dimen/medium_font_size</item>
     </style>
@@ -21,12 +24,29 @@
     <style name="WhiteText.Small">
         <item name="android:textSize">@dimen/small_font_size</item>
     </style>
-    <style name="PurpleSmallTextView" parent="Widget.AppCompat.TextView">
-        <item name="android:background">@drawable/purple_curved_background</item>
+
+    <!-- CustomTextView style-->
+    <style name="CustomTextView" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:padding">@dimen/smallest_gap</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/small_font_size</item>
+    </style>
+    <style name="CustomTextView.SmallWhiteText">
+        <item name="android:textAppearance">@style/WhiteText.Small</item>
+    </style>
+    <style name="CustomTextView.SmallGreyText">
+        <item name="android:textAppearance">@style/GreyText.Small</item>
+    </style>
+    <style name="CustomTextView.SmallPurpleText">
+        <item name="android:textAppearance">@style/PurpleText.Small</item>
+
+    </style>
+    <style name="CustomTextView.MediumPurpleText">
+        <item name="android:textAppearance">@style/PurpleText.Medium</item>
+    </style>
+
+
+    <style name="CustomTextView.SmallWhiteText.PurpleBackground">
+        <item name="android:background">@drawable/purple_curved_background</item>
     </style>
 </resources>

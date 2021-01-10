@@ -76,45 +76,49 @@
                         android:fillColor="#FFC178" />
                 </group>
             </group>
-            <group android:name="group">
-                <path
-                    android:name="path_5"
-                    android:pathData="M 340 390 L 90 390 C 40.374 390 0 349.626 0 300 C 0 255.244 32.833 218.015 75.681 211.138 C 82.665 140.426 142.482 85 215 85 C 287.518 85 347.335 140.426 354.319 211.138 C 397.167 218.015 430 255.244 430 300 C 430 349.626 389.626 390 340 390 Z"
-                    android:fillColor="#e2dff4"
-                    android:strokeWidth="1"/>
+            <group
+                android:name="group_1"
+                android:pivotX="256"
+                android:pivotY="350"
+                android:scaleX="0.75"
+                android:scaleY="0.75">
+                <group android:name="flake1">
+                    <path
+                        android:name="path"
+                        android:pathData="M 443.631 429.5 C 439.489 422.326 430.315 419.868 423.141 424.01 L 411 431.019 L 411 417 C 411 408.716 404.284 402 396 402 C 387.716 402 381 408.716 381 417 L 381 431.019 L 368.859 424.009 C 361.685 419.867 352.511 422.325 348.369 429.499 C 344.227 436.673 346.685 445.847 353.859 449.989 L 366 457 L 353.859 464.01 C 346.685 468.152 344.227 477.326 348.369 484.5 C 352.511 491.674 361.685 494.132 368.859 489.99 L 381 482.98 L 381 497 C 381 505.284 387.716 512 396 512 C 404.284 512 411 505.284 411 497 L 411 482.981 L 423.141 489.991 C 430.315 494.133 439.489 491.675 443.631 484.501 C 447.773 477.327 445.315 468.153 438.141 464.011 L 426 457 L 438.141 449.99 C 445.315 445.848 447.773 436.674 443.631 429.5 Z"
+                        android:fillColor="#faebd7"/>
+                </group>
+                <group android:name="flake2">
+                    <path
+                        android:name="path_1"
+                        android:pathData="M 283.141 424.01 L 271 431.019 L 271 417 C 271 408.716 264.284 402 256 402 C 247.716 402 241 408.716 241 417 L 241 431.019 L 228.859 424.009 C 221.685 419.867 212.511 422.325 208.369 429.499 C 204.227 436.673 206.685 445.847 213.859 449.989 L 226 457 L 213.859 464.01 C 206.685 468.152 204.227 477.326 208.369 484.5 C 212.511 491.674 221.685 494.132 228.859 489.99 L 241 482.98 L 241 497 C 241 505.284 247.716 512 256 512 C 264.284 512 271 505.284 271 497 L 271 482.981 L 283.141 489.991 C 290.315 494.133 299.489 491.675 303.631 484.501 C 307.773 477.327 305.315 468.153 298.141 464.011 L 286 457 L 298.141 449.99 C 305.315 445.848 307.773 436.674 303.631 429.5 C 299.489 422.326 290.315 419.868 283.141 424.01 Z"
+                        android:fillColor="#faebd7"/>
+                </group>
+                <group android:name="flake3">
+                    <path
+                        android:name="path_2"
+                        android:pathData="M 143.141 424.01 L 131 431.019 L 131 417 C 131 408.716 124.284 402 116 402 C 107.716 402 101 408.716 101 417 L 101 431.019 L 88.859 424.009 C 81.685 419.867 72.511 422.325 68.369 429.499 C 64.227 436.673 66.685 445.847 73.859 449.989 L 86 457 L 73.859 464.01 C 66.685 468.152 64.227 477.326 68.369 484.5 C 72.511 491.674 81.685 494.132 88.859 489.99 L 101 482.98 L 101 497 C 101 505.284 107.716 512 116 512 C 124.284 512 131 505.284 131 497 L 131 482.981 L 143.141 489.991 C 150.315 494.133 159.489 491.675 163.631 484.501 C 167.773 477.327 165.315 468.153 158.141 464.011 L 146 457 L 158.141 449.99 C 165.315 445.848 167.773 436.674 163.631 429.5 C 159.489 422.326 150.315 419.868 143.141 424.01 Z"
+                        android:fillColor="#faebd7"/>
+                </group>
             </group>
-            <group android:name="group_1">
+            <group
+                android:name="group"
+                android:translateX="40">
                 <path
-                    android:name="path_8"
-                    android:pathData="M 230 512 L 80 512 C 46.916 512 20 485.084 20 452 C 20 423.74 39.641 399.98 65.987 393.652 C 72.455 350.333 109.908 317 155 317 C 200.092 317 237.545 350.333 244.013 393.652 C 270.359 399.98 290 423.74 290 452 C 290 485.084 263.084 512 230 512 Z"
-                    android:fillColor="#bebcdd"
-                    android:strokeWidth="1"/>
+                    android:name="path_3"
+                    android:pathData="M 340 390 L 90 390 C 40.374 390 0 349.626 0 300 C 0 255.244 32.833 218.015 75.681 211.138 C 82.665 140.426 142.482 85 215 85 C 287.518 85 347.335 140.426 354.319 211.138 C 397.167 218.015 430 255.244 430 300 C 430 349.626 389.626 390 340 390 Z"
+                    android:fillColor="#e2dff4"/>
             </group>
         </vector>
     </aapt:attr>
-    <target android:name="group">
-        <aapt:attr name="android:animation">
-            <objectAnimator
-                android:propertyName="translateX"
-                android:duration="2500"
-                android:valueFrom="0"
-                android:valueTo="50"
-                android:valueType="floatType"
-                android:repeatMode="reverse"
-                android:repeatCount="infinite"
-                android:interpolator="@android:interpolator/fast_out_slow_in"/>
-        </aapt:attr>
-    </target>
     <target android:name="group_1">
         <aapt:attr name="android:animation">
             <objectAnimator
-                android:propertyName="translateX"
-                android:duration="1750"
-                android:valueFrom="0"
-                android:valueTo="50"
+                android:propertyName="translateY"
+                android:duration="2500"
+                android:valueFrom="-50"
+                android:valueTo="120"
                 android:valueType="floatType"
-                android:repeatMode="reverse"
-                android:repeatCount="infinite"
                 android:interpolator="@android:interpolator/fast_out_slow_in"/>
         </aapt:attr>
     </target>

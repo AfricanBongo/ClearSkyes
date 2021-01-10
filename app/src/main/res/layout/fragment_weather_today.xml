@@ -19,6 +19,12 @@
             android:layout_marginEnd="@dimen/smaller_gap"
             android:elevation="@dimen/medium_gap" />
 
+        <FrameLayout
+            android:id="@+id/now_weather_hours"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/large_gap"
+            android:layout_marginEnd="@dimen/large_gap"/>
         <com.africanbongo.clearskyes.controller.customviews.CurrentWeatherViewDown
             android:id="@+id/now_weatherview_down"
             android:layout_width="match_parent"

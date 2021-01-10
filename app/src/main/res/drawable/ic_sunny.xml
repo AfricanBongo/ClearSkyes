@@ -11,8 +11,8 @@
         android:fillColor="#fff68e"/>
     <group
         android:name="rays"
-        android:pivotX="50%"
-        android:pivotY="50%">
+        android:pivotX="256"
+        android:pivotY="256">
         <path
             android:name="path"
             android:pathData="M 76 271 L 15 271 C 6.716 271 0 264.284 0 256 C 0 247.716 6.716 241 15 241 L 76 241 C 84.284 241 91 247.716 91 256 C 91 264.284 84.284 271 76 271 Z"

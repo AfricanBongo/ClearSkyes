@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+    <aapt:attr name="android:drawable">
+        <vector xmlns:android="http://schemas.android.com/apk/res/android" xmlns:aapt="http://schemas.android.com/aapt"
+            android:viewportWidth="512"
+            android:viewportHeight="512"
+            android:width="512dp"
+            android:height="512dp">
+
+            <group android:name="hail">
+                <path
+                    android:pathData="M341.686352 512c-21.092176 0 -38.252968 -17.580853 -38.252968 -39.189322s17.160791 -39.189322 38.252968 -39.189322s38.252968 17.580853 38.252968 39.189322s-17.160791 39.189322 -38.252968 39.189322z"
+                    android:fillColor="#cdcdcd" />
+                <path
+                    android:pathData="M96.86736 512c-21.092176 0 -38.252968 -17.580853 -38.252968 -39.189322s17.160791 -39.189322 38.252968 -39.189322s38.252968 17.580853 38.252968 39.189322s-17.160791 39.189322 -38.252968 39.189322z"
+                    android:fillColor="#cdcdcd" />
+                <path
+                    android:pathData="M219.276856 512c-21.092176 0 -38.252968 -17.580853 -38.252968 -39.189322s17.160791 -39.189322 38.252968 -39.189322s38.252968 17.580853 38.252968 39.189322s-17.160791 39.189322 -38.252968 39.189322z"
+                    android:fillColor="#cdcdcd" />
+            </group>
+            <group android:name="moon">
+                <path
+                    android:name="path_3"
+                    android:pathData="M 298.653 213.347 C 276.019 190.713 262 159.463 262 125 C 262 56.075 318.075 0 387 0 C 395.538 0 404.117 0.881 412.497 2.62 C 419.323 4.035 424.276 9.97 424.445 16.943 C 424.615 23.915 419.957 30.083 413.206 31.829 C 388.944 38.105 372 59.97 372 85 C 371.999 99.691 377.72 113.503 388.108 123.891 C 398.496 134.279 412.309 140 427 140 C 452.03 140 473.895 123.055 480.171 98.794 C 481.917 92.043 488.086 87.386 495.057 87.555 C 502.027 87.723 507.963 92.676 509.379 99.503 C 511.118 107.883 512 116.462 511.999 125 C 511.999 193.925 455.924 250 386.999 250 C 352.537 250 321.287 235.981 298.653 213.347 Z"
+                    android:fillColor="#fff68e"
+                    android:strokeWidth="1"/>
+            </group>
+
+            <path
+                android:pathData="M348.826906 384.459023l-255.019784 0c-50.622447 0 -91.807122 -42.192792 -91.807122 -94.054374c0 -46.772195 33.492258 -85.678309 77.200609 -92.865108c7.124233 -73.897476 68.142306 -131.82034 142.116405 -131.82034s134.992172 57.922863 142.116405 131.82034c43.708351 7.186799 77.200609 46.092913 77.200609 92.865108c0 51.861582 -41.184675 94.054374 -91.807122 94.054374z"
+                android:fillColor="#E2DFF4" />
+        </vector>
+    </aapt:attr>
+    <target android:name="hail">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:propertyName="translateY"
+                android:duration="2500"
+                android:valueFrom="-120"
+                android:valueTo="100"
+                android:valueType="floatType"
+                android:repeatMode="restart"
+                android:repeatCount="infinite"
+                android:interpolator="@android:interpolator/fast_out_slow_in"/>
+        </aapt:attr>
+    </target>
+    <target
+        android:animation="@animator/moon_motion"
+        android:name="moon" />
+</animated-vector>
