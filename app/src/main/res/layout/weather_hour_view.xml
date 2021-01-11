@@ -2,43 +2,77 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginStart="@dimen/medium_gap"
+    android:layout_marginEnd="@dimen/medium_gap"
+    android:layout_marginTop="@dimen/smaller_gap"
+    android:layout_marginBottom="@dimen/smaller_gap"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <TextView
+        android:id="@+id/hour_time"
         style="@style/CustomTextView.SmallPurpleText"
-        android:layout_marginStart="@dimen/small_gap"
-        android:layout_marginBottom="@dimen/medium_gap"
-        android:textStyle="bold"
-        android:text="01:00 - 02:00"/>
-    <LinearLayout
-        android:layout_marginStart="@dimen/small_gap"
+        android:layout_marginBottom="@dimen/small_gap"
+        android:textStyle="bold" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/weather_hour_image"
-            android:layout_width="@dimen/weather_medium_icon"
-            android:layout_height="@dimen/weather_medium_icon"
-            android:layout_marginEnd="@dimen/small_gap"
-            android:src="@drawable/avd_cloudy_day"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/medium_medium_font_size"
-            android:layout_gravity="center_vertical"
-            android:text="24*"
-            android:textColor="@color/black"/>
-
+        android:layout_height="wrap_content">
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="end">
+            android:orientation="horizontal">
 
+            <ImageView
+                android:id="@+id/hour_weather_image"
+                android:layout_width="@dimen/weather_medium_icon"
+                android:layout_height="@dimen/weather_medium_icon"
+                android:layout_marginEnd="@dimen/small_gap" />
+
+            <TextView
+                android:id="@+id/hour_temp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/medium_medium_font_size"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/black"/>
         </LinearLayout>
 
-<!--        TODO Write Up views of feelslikeTemp, description too and precip-->
-    </LinearLayout>
+        <LinearLayout
+            android:layout_marginEnd="@dimen/small_gap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentEnd="true">
+            <TextView
+                android:id="@+id/hour_condition"
+                style="@style/CustomTextView.SmallGreyText" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/smaller_gap"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/hour_chance_of_rain_image"
+                    android:layout_width="@dimen/weather_small_icon"
+                    android:layout_height="@dimen/weather_small_icon"
+                    android:layout_marginEnd="@dimen/smaller_gap"
+
+                    android:contentDescription="@string/rain_content_description"
+                    app:srcCompat="@drawable/ic_waterdrops" />
+
+                <TextView
+                    android:id="@+id/hour_chance_of_rain"
+                    style="@style/GreyText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="@dimen/smaller_gap" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
 
 </LinearLayout>

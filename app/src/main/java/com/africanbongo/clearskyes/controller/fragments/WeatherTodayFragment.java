@@ -227,6 +227,11 @@ public class WeatherTodayFragment extends Fragment {
             viewDown.setMoonSet(astroElement.getMoonSet());
             viewDown.setSunRise(astroElement.getSunRise());
             viewDown.setSunSet(astroElement.getSunSet());
+
+            // Load the weather hours fragment
+            getChildFragmentManager().beginTransaction()
+                    .replace(R.id.now_weather_hours, new WeatherHoursFragment(today.getWeatherHours()))
+                    .commit();
         }
     }
 }

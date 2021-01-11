@@ -48,6 +48,8 @@ public class WeatherToday {
         return hours[index];
     }
 
+    public final WeatherHour[] getWeatherHours() {return hours;}
+
     public WeatherObject getNowWeather() {
         return nowWeather;
     }

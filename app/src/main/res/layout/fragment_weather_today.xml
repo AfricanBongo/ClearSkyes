@@ -6,7 +6,7 @@
     android:background="@drawable/purple_curved_background"
     tools:context=".controller.fragments.WeatherTodayFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -15,24 +15,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/smaller_gap"
-            android:layout_marginTop="@dimen/medium_gap"
             android:layout_marginEnd="@dimen/smaller_gap"
+            android:layout_marginTop="@dimen/small_gap"
             android:elevation="@dimen/medium_gap" />
 
         <FrameLayout
             android:id="@+id/now_weather_hours"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/large_gap"
-            android:layout_marginEnd="@dimen/large_gap"/>
+            android:layout_marginStart="@dimen/medium_gap"
+            android:layout_marginEnd="@dimen/medium_gap"
+            android:layout_marginBottom="@dimen/small_gap"
+            android:layout_marginTop="@dimen/small_gap"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_above="@id/now_weatherview_down"
+            android:layout_below="@id/now_weatherview_up"/>
+
         <com.africanbongo.clearskyes.controller.customviews.CurrentWeatherViewDown
             android:id="@+id/now_weatherview_down"
+            android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/large_gap"
             android:layout_marginStart="@dimen/smaller_gap"
             android:layout_marginEnd="@dimen/smaller_gap"
             android:layout_marginBottom="@dimen/smaller_gap" />
-    </LinearLayout>
+    </RelativeLayout>
 
 </FrameLayout>

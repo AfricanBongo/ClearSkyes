@@ -5,50 +5,27 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.africanbongo.clearskyes.R;
+import com.africanbongo.clearskyes.model.weatherobjects.WeatherHour;
 
 
 /**
- * A fragment representing a list of Items.
+ * A fragment representing a list of
+ * {@link com.africanbongo.clearskyes.controller.fragments.WeatherHoursRecyclerViewAdapter.WeatherHourViewHolder} objects.
  */
-//TODO Write up this class
 public class WeatherHoursFragment extends Fragment {
 
-    // TODO: Customize parameter argument names
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    // TODO: Customize parameters
-    private int mColumnCount = 1;
+    private final WeatherHour[] hours;
 
-    /**
-     * Mandatory empty constructor for the fragment manager to instantiate the
-     * fragment (e.g. upon screen orientation changes).
-     */
-    public WeatherHoursFragment() {
-    }
-
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
-    public static WeatherHoursFragment newInstance(int columnCount) {
-        WeatherHoursFragment fragment = new WeatherHoursFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
-        }
+    public WeatherHoursFragment(WeatherHour[] hours) {
+        this.hours = hours;
     }
 
     @Override
@@ -57,14 +34,20 @@ public class WeatherHoursFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_weather_hours_list, container, false);
 
         // Set the adapter
-        if (view instanceof RecyclerView) {
+        if (view instanceof FrameLayout) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
+            RecyclerView recyclerView = view.findViewById(R.id.now_weather_hours_list);
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+            recyclerView.setAdapter(new WeatherHoursRecyclerViewAdapter(hours));
+
+            // Set the divider of the recycler view
+            DividerItemDecoration divider =
+                    new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
+
+            divider.setDrawable(getResources().getDrawable(R.drawable.recycler_view_divider, null));
+
+            recyclerView.addItemDecoration(divider);
         }
         return view;
     }
