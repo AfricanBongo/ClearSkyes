@@ -1,18 +1,22 @@
 package com.africanbongo.clearskyes.controller.fragments;
 
 import android.content.Context;
+import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import com.africanbongo.clearskyes.R;
+import com.africanbongo.clearskyes.controller.activities.MainActivity;
 import com.africanbongo.clearskyes.controller.customviews.CurrentWeatherViewDown;
 import com.africanbongo.clearskyes.controller.customviews.CurrentWeatherViewUp;
 import com.africanbongo.clearskyes.model.weatherapi.WeatherRequestQueue;
@@ -42,13 +46,18 @@ public class WeatherTodayFragment extends Fragment {
     private WeatherToday today = null;
     private CurrentWeatherViewUp viewUp;
     private CurrentWeatherViewDown viewDown;
+    private final MainActivity activity;
+
+    public WeatherTodayFragment(MainActivity activity) {
+        this.activity = activity;
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
 
-        requestData(context);
+        requestData(context, activity);
     }
 
     @Override
@@ -63,8 +72,10 @@ public class WeatherTodayFragment extends Fragment {
         return view;
     }
 
+
+    // Main Activity is used to display error page in the event of a failure
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void requestData(Context context) {
+    public void requestData(Context context, MainActivity activity) {
 
         // Parse WeatherApi JSONObjects
         Response.Listener<JSONObject> currentListener = (JSONObject response) -> {
@@ -194,13 +205,45 @@ public class WeatherTodayFragment extends Fragment {
             }
         };
 
+        // Display error page if an error is encountered
+        Response.ErrorListener errorListener = error -> {
+
+            View view = activity.showError();
+
+            if (view != null) {
+                // Get the error message views
+                ImageView errorMessageImage = view.findViewById(R.id.error_message_image);
+                TextView errorMessage = view.findViewById(R.id.error_message);
+
+                String errorMessageText = null;
+                int drawableToDisplay = 0;
+
+                // If an error to the weather api
+                if (error.networkResponse.statusCode == WeatherRequestQueue.API_ERROR_CODE) {
+                    errorMessageText = WeatherRequestQueue.API_ERROR_MESSAGE;
+                    drawableToDisplay = R.drawable.avd_error_warning;
+
+                    // Or if there is no internet connection
+                } else if (WeatherRequestQueue.getWeatherRequestQueue(context).isNetworkAvailable()){
+                    errorMessageText = WeatherRequestQueue.NO_CONNECTION_MESSAGE;
+                    drawableToDisplay = R.drawable.avd_no_connection;
+                }
+
+                errorMessage.setText(errorMessageText);
+
+                // Start the AVD animation
+                errorMessageImage.setImageResource(drawableToDisplay);
+                AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) errorMessageImage.getDrawable();
+                drawable.start();
+            }
+
+        };
+
         // Create JSONObjectRequest
         JsonObjectRequest requestTodayWeather =
                 new JsonObjectRequest(Request.Method.GET,
                         WeatherRequestQueue.GET_CURRENT_WEATHER_START, null, currentListener,
-                        WeatherRequestQueue
-                                .getWeatherRequestQueue(getContext())
-                .createGenericErrorListener("WeatherTodayFragment"));
+                        errorListener);
 
         // Add to request queue
         WeatherRequestQueue

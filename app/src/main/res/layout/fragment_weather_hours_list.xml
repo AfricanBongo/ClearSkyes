@@ -11,5 +11,6 @@
         android:scrollIndicators="bottom"
         app:layoutManager="LinearLayoutManager"
         android:background="@color/white"
+        tools:listitem="@layout/weather_hour_view"
         tools:context=".controller.fragments.WeatherHoursFragment" />
 </FrameLayout>

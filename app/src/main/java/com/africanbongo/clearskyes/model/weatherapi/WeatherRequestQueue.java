@@ -1,6 +1,8 @@
 package com.africanbongo.clearskyes.model.weatherapi;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -14,6 +16,11 @@ public class WeatherRequestQueue {
     private static WeatherRequestQueue weatherRequestQueue;
     private final RequestQueue requestQueue;
     private final Context context;
+
+    // Used for error pages
+    public static final int API_ERROR_CODE = 403;
+    public static final String API_ERROR_MESSAGE = "API Key Error!";
+    public static final String NO_CONNECTION_MESSAGE = "No internet connection";
 
     // Used for making API requests
     public static final String API_KEY = "1092f3e10c9a4146890112852202212";
@@ -64,5 +71,16 @@ public class WeatherRequestQueue {
      */
     public Response.ErrorListener createGenericErrorListener(String tag, String errorMessage) {
         return error -> Log.e(tag, errorMessage);
+    }
+
+    /**
+     * Check if the host device has an internet connection
+     * @return True, if an internet connection exists
+     */
+    public boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }

@@ -9,9 +9,7 @@
             android:viewportWidth="512"
             android:viewportHeight="512">
             <group
-                android:name="first_rain"
-                android:translateX="50"
-                android:translateY="-150">
+                android:name="first_rain">
                 <path
                     android:name="path_3"
                     android:pathData="M 284.312 510.876 C 276.647 507.734 272.979 498.974 276.121 491.309 L 289.393 458.923 C 292.534 451.258 301.295 447.59 308.961 450.732 C 316.626 453.873 320.294 462.634 317.152 470.299 L 303.88 502.685 C 300.738 510.35 291.977 514.017 284.312 510.876 Z"
@@ -151,7 +149,7 @@
                 <objectAnimator
                     android:propertyName="translateY"
                     android:duration="1000"
-                    android:valueFrom="0"
+                    android:valueFrom="-50"
                     android:valueTo="300"
                     android:valueType="floatType"
                     android:startOffset="250"

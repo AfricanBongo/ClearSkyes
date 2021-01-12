@@ -106,16 +106,7 @@ public class WeatherTime {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static String getHourPeriod(String dateTimeString) {
         // Get hour and minutes as first element of parsed array
-        String currentHourAndMin = getRelativeDayAndProperTime(dateTimeString).split(", ")[1];
-
-        LocalTime currentTime = LocalTime.parse(currentHourAndMin);
-
-        // The time of the next hour
-        String nextHourTime = currentTime
-                .plusHours(1)
-                .format(DateTimeFormatter.ofPattern(TIME_FORMAT));
-
-        return currentHourAndMin + " - " + nextHourTime;
+        return getRelativeDayAndProperTime(dateTimeString).split(", ")[1];
     }
 
     /**

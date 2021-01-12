@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.model.weatherobjects.WeatherHour;
 
+import java.time.LocalTime;
+
 
 /**
  * A fragment representing a list of
@@ -48,6 +50,9 @@ public class WeatherHoursFragment extends Fragment {
             divider.setDrawable(getResources().getDrawable(R.drawable.recycler_view_divider, null));
 
             recyclerView.addItemDecoration(divider);
+
+            // Show the current hour on the recyclerView
+            recyclerView.scrollToPosition(LocalTime.now().getHour());
         }
         return view;
     }

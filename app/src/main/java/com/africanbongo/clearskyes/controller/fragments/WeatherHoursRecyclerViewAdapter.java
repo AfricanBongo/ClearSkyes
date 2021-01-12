@@ -4,7 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,7 +41,6 @@ public class WeatherHoursRecyclerViewAdapter extends RecyclerView.Adapter<Weathe
                 .loadConditionImage(holder.hourWeatherImage);
 
         // Load other info
-        holder.hourCondition.setText(hour.getConditions().getConditionText());
         holder.hourTime.setText(hour.getTime());
 
         String chanceOfRain = hour.getChanceOfRain() + "%";
@@ -58,10 +57,9 @@ public class WeatherHoursRecyclerViewAdapter extends RecyclerView.Adapter<Weathe
 
     public class WeatherHourViewHolder extends RecyclerView.ViewHolder {
 
-        private final LinearLayout container;
+        private final RelativeLayout container;
 
         private final TextView hourTemp;
-        private final TextView hourCondition;
         private final TextView hourChanceOfRain;
         private final TextView hourTime;
 
@@ -72,9 +70,8 @@ public class WeatherHoursRecyclerViewAdapter extends RecyclerView.Adapter<Weathe
         public WeatherHourViewHolder(View view) {
             super(view);
 
-            container = (LinearLayout) view;
+            container = (RelativeLayout) view;
             hourTemp = container.findViewById(R.id.hour_temp);
-            hourCondition = container.findViewById(R.id.hour_condition);
             hourChanceOfRain = container.findViewById(R.id.hour_chance_of_rain);
             hourWeatherImage = container.findViewById(R.id.hour_weather_image);
             hourTime = container.findViewById(R.id.hour_time);

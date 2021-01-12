@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/error_message_image"
+        android:layout_width="@dimen/weather_icon"
+        android:layout_height="@dimen/weather_icon"
+        android:layout_marginBottom="@dimen/small_gap"
+        android:layout_centerInParent="true"/>
+    <TextView
+        android:id="@+id/error_message"
+       style="@style/CustomTextView.SmallWhiteText.PurpleBackground"
+        android:layout_below="@id/error_message_image"
+        android:layout_centerHorizontal="true"/>
+</RelativeLayout>
