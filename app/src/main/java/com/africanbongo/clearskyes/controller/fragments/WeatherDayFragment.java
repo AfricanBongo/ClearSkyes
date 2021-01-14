@@ -1,13 +1,11 @@
 package com.africanbongo.clearskyes.controller.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,11 +29,9 @@ import com.africanbongo.clearskyes.model.weatherobjects.WeatherMisc;
 import com.africanbongo.clearskyes.model.weatherobjects.WeatherObject;
 import com.africanbongo.clearskyes.model.weatherobjects.WeatherTemp;
 import com.africanbongo.clearskyes.model.weatherobjects.WeatherWind;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;

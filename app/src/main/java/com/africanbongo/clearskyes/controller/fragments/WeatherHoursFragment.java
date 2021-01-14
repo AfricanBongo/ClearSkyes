@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -47,7 +48,8 @@ public class WeatherHoursFragment extends Fragment {
             DividerItemDecoration divider =
                     new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
 
-            divider.setDrawable(getResources().getDrawable(R.drawable.recycler_view_divider, null));
+            divider.setDrawable(ResourcesCompat
+                    .getDrawable(getResources(), R.drawable.recycler_view_divider, null));
 
             recyclerView.addItemDecoration(divider);
 

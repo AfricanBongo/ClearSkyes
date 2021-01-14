@@ -21,14 +21,12 @@ Credit to: https://stackoverflow.com/questions/39961044/custom-view-with-two-tex
  */
 public class CurrentWeatherViewUp extends ConstraintLayout {
 
-    private ConstraintLayout constraintLayout;
-
     private TextView nowTemp;
     private TextView feelsLikeTemp;
     private TextView uvIndex;
     private TextView conditionText;
     private TextView chanceOfRain;
-    private Context context;
+    private final Context context;
 
     // Where the current weather icon is to be contained
     private ImageView iconImageView;
@@ -59,10 +57,9 @@ public class CurrentWeatherViewUp extends ConstraintLayout {
 
     private void init(AttributeSet attrs) {
         // Inflate the xml and attach to this class
-        constraintLayout =
-                (ConstraintLayout) LayoutInflater
-                        .from(context)
-                        .inflate(R.layout.currentweather_view_up, this, true);
+        ConstraintLayout constraintLayout = (ConstraintLayout) LayoutInflater
+                .from(context)
+                .inflate(R.layout.currentweather_view_up, this, true);
 
         // Get the views within the view group
         nowTemp = constraintLayout.findViewById(R.id.now_temp);
@@ -91,11 +88,13 @@ public class CurrentWeatherViewUp extends ConstraintLayout {
     }
 
     public void setNowTemp(int temperature) {
-        nowTemp.setText(temperature + "°");
+        String temp = temperature + "°";
+        nowTemp.setText(temp);
     }
 
     public void setFeelsLikeTemp(int temperature) {
-        feelsLikeTemp.setText("Feels like " + temperature + "°");
+        String temp = "Feels like " + temperature + "°";
+        feelsLikeTemp.setText(temp);
     }
 
     public void setUvIndex(String UVIndex) {
@@ -107,7 +106,8 @@ public class CurrentWeatherViewUp extends ConstraintLayout {
     }
 
     public void setChanceOfRain(int rainPercentageChance) {
-        chanceOfRain.setText(rainPercentageChance + "%");
+        String rain = rainPercentageChance + "%";
+        chanceOfRain.setText(rain);
     }
 
     public ImageView getIconImageView() {

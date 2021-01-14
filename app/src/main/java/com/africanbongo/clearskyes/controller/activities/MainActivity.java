@@ -10,12 +10,10 @@ import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.controller.adapters.WeatherDayStateAdapter;
 import com.africanbongo.clearskyes.controller.animations.SwitchFadeAnimation;
 import com.africanbongo.clearskyes.controller.animations.ZoomOutPageTransformer;
-import com.africanbongo.clearskyes.model.weatherapi.WeatherRequestQueue;
 import com.google.android.material.appbar.MaterialToolbar;
 
 public class MainActivity extends AppCompatActivity {
 
-    private MaterialToolbar mainToolbar;
     private ViewPager2 mainViewPager;
     private View errorPage;
 
@@ -24,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mainToolbar = findViewById(R.id.main_toolbar);
+        MaterialToolbar mainToolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(mainToolbar);
 
         mainViewPager = findViewById(R.id.main_viewpager);

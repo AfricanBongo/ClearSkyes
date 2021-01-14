@@ -17,7 +17,6 @@ import com.africanbongo.clearskyes.R;
  */
 public class DayWeatherViewUp extends ConstraintLayout {
 
-    private ConstraintLayout layout;
     private TextView dayAvgTempView;
     private TextView dayMaxMinTemp;
     private TextView dayConditionText;
@@ -46,8 +45,7 @@ public class DayWeatherViewUp extends ConstraintLayout {
     }
 
     public void init() {
-        layout =
-                (ConstraintLayout) LayoutInflater
+        ConstraintLayout layout = (ConstraintLayout) LayoutInflater
                 .from(getContext())
                 .inflate(R.layout.dayweather_view_up, this, true);
 
@@ -59,11 +57,13 @@ public class DayWeatherViewUp extends ConstraintLayout {
     }
 
     public void setAvgTemp(double temp) {
-        dayAvgTempView.setText(temp + "°");
+        String temperature = temp + "°";
+        dayAvgTempView.setText(temperature);
     }
 
     public void setMaxAndMinTemp(double maxTemp, double minTemp) {
-        dayMaxMinTemp.setText(maxTemp + "°" + " / " + minTemp + "°");
+        String temps = maxTemp + "°" + " / " + minTemp + "°";
+        dayMaxMinTemp.setText(temps);
     }
 
     public void setConditionText(String conditionString) {
