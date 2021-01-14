@@ -17,15 +17,14 @@ public class WeatherRequestQueue {
     private final RequestQueue requestQueue;
     private final Context context;
 
-    // Used for error pages
-    public static final int API_ERROR_CODE = 403;
-    public static final String API_ERROR_MESSAGE = "API Key Error!";
-    public static final String NO_CONNECTION_MESSAGE = "No internet connection";
+
 
     // Used for making API requests
-    public static final String API_KEY = "1092f3e10c9a4146890112852202212";
-    public static final String GET_CURRENT_WEATHER_START =  "https://api.weatherapi.com/v1/forecast.json?key=" +
+    private static final String API_KEY = "1092f3e10c9a4146890112852202212";
+    public static final String GET_CURRENT_WEATHER_START = "https://api.weatherapi.com/v1/forecast.json?key=" +
             API_KEY +"&q=Harare&days=1";
+    public static final String GET_DAY_WEATHER_START = "https://api.weatherapi.com/v1/forecast.json?key=" +
+            API_KEY + "&q=Harare&dt=";
 
 
 
@@ -44,11 +43,11 @@ public class WeatherRequestQueue {
 
     /**
      * Get WeatherRequestQueue object to access mundane RequestQueue methods
-     * @param context
+     * @param context Always use application context
      * @return {@link WeatherRequestQueue}
      */
     public static WeatherRequestQueue getWeatherRequestQueue(Context context) {
-        if (weatherRequestQueue == null) {
+        if (weatherRequestQueue == null || context == null) {
             weatherRequestQueue = new WeatherRequestQueue(context);
         }
         return weatherRequestQueue;
@@ -67,7 +66,7 @@ public class WeatherRequestQueue {
      *
      * @param tag Preferably class name where the error should be tagged to
      * @param errorMessage {@link String} to display as error message in the log
-     * @return
+     * @return {@link com.android.volley.Response.ErrorListener} used for API requests
      */
     public Response.ErrorListener createGenericErrorListener(String tag, String errorMessage) {
         return error -> Log.e(tag, errorMessage);

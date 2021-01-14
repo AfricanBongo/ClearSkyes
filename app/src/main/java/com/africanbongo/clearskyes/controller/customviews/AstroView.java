@@ -11,20 +11,15 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 import com.africanbongo.clearskyes.R;
-import com.africanbongo.clearskyes.model.WeatherTime;
-
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 /**
 Custom view shown on current today page at the bottom of the screen
 Contains the animated sunset, sunrise, moon set, and moonrise icons
 As well as text views to show the times of theses properties
  */
-public class CurrentWeatherViewDown extends GridLayout {
+public class AstroView extends GridLayout {
 
     private GridLayout layout;
     private ImageView moonRiseImage;
@@ -38,25 +33,25 @@ public class CurrentWeatherViewDown extends GridLayout {
 
     private Context context;
 
-    public CurrentWeatherViewDown(Context context) {
+    public AstroView(Context context) {
         super(context);
         this.context = context;
         init(null);
     }
 
-    public CurrentWeatherViewDown(Context context, @Nullable AttributeSet attrs) {
+    public AstroView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         init(attrs);
     }
 
-    public CurrentWeatherViewDown(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public AstroView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
         init(attrs);
     }
 
-    public CurrentWeatherViewDown(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    public AstroView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         this.context = context;
         init(attrs);
@@ -67,7 +62,7 @@ public class CurrentWeatherViewDown extends GridLayout {
         layout =
                 (GridLayout) LayoutInflater
                         .from(context)
-                        .inflate(R.layout.currentweather_view_down, this, true);
+                        .inflate(R.layout.astro_view, this, true);
 
         // Get the views within the view group
         moonRiseImage = layout.findViewById(R.id.now_moon_rise_image);

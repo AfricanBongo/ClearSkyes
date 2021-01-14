@@ -8,7 +8,7 @@ import com.africanbongo.clearskyes.R;
 public enum WeatherAVDS {
 
     CLEAR(1000, R.drawable.avd_sunny, R.drawable.avd_moon),
-    PARTLY_CLOUDY(1003, R.drawable.avd_cloudy_day, R.drawable.avd_cloudy_night),
+    PARTLY_CLOUDY(1003, R.drawable.avd_partly_cloudy_day, R.drawable.avd_partly_cloudy_night),
     CLOUDY(1006, R.drawable.avd_cloudy_day, R.drawable.avd_cloudy_night),
     OVERCAST(1009, R.drawable.ic_overcast, R.drawable.ic_overcast),
     MIST(1030, R.drawable.avd_mist_fog_night, R.drawable.avd_mist_fog_day),

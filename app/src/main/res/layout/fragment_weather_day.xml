@@ -6,26 +6,41 @@
     android:layout_height="match_parent"
     tools:context=".controller.fragments.WeatherDayFragment">
 
-    <TextView
-        android:id="@+id/day_textview"
+    <com.africanbongo.clearskyes.controller.customviews.CustomDateView
+        android:id="@+id/day_date_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/yellow_accent"
-        android:textAppearance="@android:style/TextAppearance.Material.Large"
-        android:padding="@dimen/small_gap" />
+        android:layout_alignParentTop="true" />
 
-    <ScrollView
-        android:layout_width="wrap_content"
+    <com.africanbongo.clearskyes.controller.customviews.DayWeatherViewUp
+        android:id="@+id/day_weatherview_up"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/day_textview">
-        <TextView
-            android:id="@+id/sample"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/filler_text"
-            android:textColor="@color/white"
-            android:padding="@dimen/small_gap"
-            />
-    </ScrollView>
+        android:layout_marginStart="@dimen/smaller_gap"
+        android:layout_marginEnd="@dimen/smaller_gap"
+        android:layout_marginTop="@dimen/small_gap"
+        android:layout_below="@id/day_date_view"
+        android:elevation="@dimen/large_gap" />
 
+    <FrameLayout
+        android:id="@+id/day_weather_hours"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/medium_gap"
+        android:layout_marginEnd="@dimen/medium_gap"
+        android:elevation="-25dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_above="@id/day_astro_view"
+        android:layout_below="@id/day_weatherview_up"/>
+
+    <com.africanbongo.clearskyes.controller.customviews.AstroView
+        android:id="@+id/day_astro_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/smaller_gap"
+        android:layout_marginEnd="@dimen/smaller_gap"
+        android:layout_marginBottom="@dimen/smaller_gap"
+        android:elevation="@dimen/large_gap" />
 </RelativeLayout>

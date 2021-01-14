@@ -6,55 +6,58 @@
     android:background="@drawable/white_purple_trim_background"
     android:padding="@dimen/small_gap">
     <TextView
-        android:id="@+id/now_text"
+        android:id="@+id/day_text"
         style="@style/CustomTextView.MediumPurpleText"
-        android:text="@string/weather_now"
+        android:text="@string/summary"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/weather_now_image"
+        android:id="@+id/weather_day_image"
         android:layout_width="83dp"
         android:layout_height="85dp"
         android:layout_marginTop="@dimen/medium_gap"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/now_text"
-        app:layout_constraintTop_toBottomOf="@+id/now_text"
+        app:layout_constraintStart_toStartOf="@+id/day_text"
+        app:layout_constraintTop_toBottomOf="@+id/day_text"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
-        android:id="@+id/now_temp"
+        android:id="@+id/day_avg_temp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textSize="@dimen/large_font_size"
-        app:layout_constraintBottom_toBottomOf="@+id/weather_now_image"
-        app:layout_constraintStart_toEndOf="@+id/weather_now_image"
-        app:layout_constraintTop_toTopOf="@+id/weather_now_image" />
+        android:tooltipText="@string/avg_temp"
+        app:layout_constraintBottom_toBottomOf="@+id/weather_day_image"
+        app:layout_constraintStart_toEndOf="@+id/weather_day_image"
+        app:layout_constraintTop_toTopOf="@+id/weather_day_image" />
 
     <TextView
-        android:id="@+id/feels_like_temp"
+        android:id="@+id/day_max_min_temp"
         style="@style/CustomTextView.SmallWhiteText.PurpleBackground"
         android:layout_marginTop="@dimen/medium_gap"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/now_text" />
+        android:tooltipText="@string/max_min_temp"
+        app:layout_constraintTop_toBottomOf="@+id/day_text" />
 
     <TextView
-        android:id="@+id/now_condition_text"
+        android:id="@+id/day_condition_text"
         style="@style/CustomTextView.SmallWhiteText.PurpleBackground"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/medium_gap"
         android:layout_marginTop="@dimen/smallest_gap"
         android:maxLines="3"
+        android:tooltipText="@string/condition"
         app:layout_constrainedHeight="true"
         app:layout_constrainedWidth="true"
-        app:layout_constraintEnd_toEndOf="@+id/feels_like_temp"
+        app:layout_constraintEnd_toEndOf="@+id/day_max_min_temp"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/now_temp"
-        app:layout_constraintTop_toBottomOf="@+id/feels_like_temp" />
+        app:layout_constraintStart_toEndOf="@+id/day_avg_temp"
+        app:layout_constraintTop_toBottomOf="@+id/day_max_min_temp" />
 
     <LinearLayout
         android:id="@+id/day_linearLayout"
@@ -64,7 +67,7 @@
         android:background="@drawable/purple_curved_background"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/now_condition_text">
+        app:layout_constraintTop_toBottomOf="@id/day_condition_text">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -74,36 +77,22 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/now_uv_index_image"
+                android:id="@+id/day_uv_index_image"
                 android:layout_width="@dimen/weather_small_icon"
                 android:layout_height="@dimen/weather_small_icon"
                 android:layout_margin="@dimen/smaller_gap"
                 android:contentDescription="@string/uv_content_description"
+                android:tooltipText="@string/uvLevel"
                 app:srcCompat="@drawable/ic_uv_index" />
 
             <TextView
-                android:id="@+id/now_uv_index"
+                android:id="@+id/day_uv_index"
                 style="@style/GreyText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/smaller_gap" />
 
-            <ImageView
-                android:id="@+id/chance_of_rain_image"
-                android:layout_width="@dimen/weather_small_icon"
-                android:layout_height="@dimen/weather_small_icon"
-                android:layout_margin="@dimen/smaller_gap"
-                android:contentDescription="@string/rain_content_description"
-                app:srcCompat="@drawable/ic_waterdrops" />
-
-            <TextView
-                android:id="@+id/chance_of_rain"
-                style="@style/GreyText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginEnd="@dimen/smaller_gap" />
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

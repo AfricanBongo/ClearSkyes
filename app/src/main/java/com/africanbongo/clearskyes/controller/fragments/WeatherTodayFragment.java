@@ -1,24 +1,26 @@
 package com.africanbongo.clearskyes.controller.fragments;
 
 import android.content.Context;
-import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.controller.activities.MainActivity;
-import com.africanbongo.clearskyes.controller.customviews.CurrentWeatherViewDown;
+import com.africanbongo.clearskyes.controller.customviews.AstroView;
 import com.africanbongo.clearskyes.controller.customviews.CurrentWeatherViewUp;
+import com.africanbongo.clearskyes.controller.customviews.CustomDateView;
+import com.africanbongo.clearskyes.model.weatherapi.ErrorPageListener;
 import com.africanbongo.clearskyes.model.weatherapi.WeatherRequestQueue;
 import com.africanbongo.clearskyes.model.weatherobjects.AstroElement;
 import com.africanbongo.clearskyes.model.weatherobjects.WeatherCondition;
@@ -36,28 +38,42 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.time.LocalDate;
+
 import static com.africanbongo.clearskyes.model.WeatherTime.getCurrentHourAsIndex;
+import static com.africanbongo.clearskyes.model.WeatherTime.getRelativeDay;
 
 /*
 Fragment containing today's weather
  */
 public class WeatherTodayFragment extends Fragment {
 
-    private WeatherToday today = null;
-    private CurrentWeatherViewUp viewUp;
-    private CurrentWeatherViewDown viewDown;
-    private final MainActivity activity;
+    private static ErrorPageListener errorPageListener;
 
-    public WeatherTodayFragment(MainActivity activity) {
-        this.activity = activity;
+    private WeatherToday today = null;
+
+    private CustomDateView dateView;
+    private CurrentWeatherViewUp viewUp;
+    private AstroView astroView;
+
+    private String todayDate;
+
+
+    public WeatherTodayFragment() {
+        todayDate = getRelativeDay(LocalDate.now());
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
+    public static WeatherTodayFragment newInstance(MainActivity activity) {
+        errorPageListener = new ErrorPageListener(activity);
+        WeatherTodayFragment fragment = new WeatherTodayFragment();
+        return fragment;
+    }
 
-        requestData(context, activity);
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        requestData();
     }
 
     @Override
@@ -66,8 +82,9 @@ public class WeatherTodayFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_weather_today, container, false);
 
+        dateView = view.findViewById(R.id.today_date_view);
         viewUp = view.findViewById(R.id.now_weatherview_up);
-        viewDown = view.findViewById(R.id.now_weatherview_down);
+        astroView = view.findViewById(R.id.now_weatherview_down);
 
         return view;
     }
@@ -75,7 +92,7 @@ public class WeatherTodayFragment extends Fragment {
 
     // Main Activity is used to display error page in the event of a failure
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void requestData(Context context, MainActivity activity) {
+    public void requestData() {
 
         // Parse WeatherApi JSONObjects
         Response.Listener<JSONObject> currentListener = (JSONObject response) -> {
@@ -177,7 +194,7 @@ public class WeatherTodayFragment extends Fragment {
                     WeatherMisc hmisc = new WeatherMisc(hpressure_mb, hprecip_mm, hhumidity);
 
                     // WeatherCondition object
-                    JSONObject hconditions = currentWeatherJSON.getJSONObject("condition");
+                    JSONObject hconditions = hourWeatherJSON.getJSONObject("condition");
                     String hconditionText = hconditions.getString("text");
                     String hconditionIcon = hconditions.getString("icon");
                     int hconditionCode = hconditions.getInt("code");
@@ -206,44 +223,13 @@ public class WeatherTodayFragment extends Fragment {
         };
 
         // Display error page if an error is encountered
-        Response.ErrorListener errorListener = error -> {
 
-            View view = activity.showError();
-
-            if (view != null) {
-                // Get the error message views
-                ImageView errorMessageImage = view.findViewById(R.id.error_message_image);
-                TextView errorMessage = view.findViewById(R.id.error_message);
-
-                String errorMessageText = null;
-                int drawableToDisplay = 0;
-
-                // If an error to the weather api
-                if (error.networkResponse.statusCode == WeatherRequestQueue.API_ERROR_CODE) {
-                    errorMessageText = WeatherRequestQueue.API_ERROR_MESSAGE;
-                    drawableToDisplay = R.drawable.avd_error_warning;
-
-                    // Or if there is no internet connection
-                } else if (WeatherRequestQueue.getWeatherRequestQueue(context).isNetworkAvailable()){
-                    errorMessageText = WeatherRequestQueue.NO_CONNECTION_MESSAGE;
-                    drawableToDisplay = R.drawable.avd_no_connection;
-                }
-
-                errorMessage.setText(errorMessageText);
-
-                // Start the AVD animation
-                errorMessageImage.setImageResource(drawableToDisplay);
-                AnimatedVectorDrawable drawable = (AnimatedVectorDrawable) errorMessageImage.getDrawable();
-                drawable.start();
-            }
-
-        };
 
         // Create JSONObjectRequest
         JsonObjectRequest requestTodayWeather =
                 new JsonObjectRequest(Request.Method.GET,
                         WeatherRequestQueue.GET_CURRENT_WEATHER_START, null, currentListener,
-                        errorListener);
+                        errorPageListener);
 
         // Add to request queue
         WeatherRequestQueue
@@ -254,27 +240,38 @@ public class WeatherTodayFragment extends Fragment {
 
     // Load the data into the views
     public void loadData() {
-        if (today != null && viewUp != null && viewDown != null) {
+        if (today != null && viewUp != null && astroView != null) {
+
+            // Load the weather hours fragment
+            new Handler().post(() ->
+                    getChildFragmentManager().beginTransaction()
+                            .replace(R.id.now_weather_hours, new WeatherHoursFragment(today.getWeatherHours()))
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                            .commit());
+
+            dateView.setDate(todayDate);
+
             viewUp.setUvIndex(today.getUvLevel());
             viewUp.setFeelsLikeTemp((int) today.getNowWeather().getFeelsLikeTemp().getTempC());
             viewUp.setNowTemp((int) today.getNowWeather().getActualTemp().getTempC());
-            viewUp.setConditionText(today.getNowWeather().getConditions().getConditionText());
+
+            String conditionText = today.getNowWeather().getConditions().getConditionText();
+
+            viewUp.setConditionText(conditionText);
             viewUp.setChanceOfRain(today.getHour(getCurrentHourAsIndex()).getChanceOfRain());
 
             // Load weather icon
             today.getNowWeather().getConditions().loadConditionImage(viewUp.getIconImageView());
+            viewUp.getIconImageView().setContentDescription(conditionText);
 
+
+            // Load astronomy elements
             AstroElement astroElement = today.getAstronomy();
 
-            viewDown.setMoonRise(astroElement.getMoonRise());
-            viewDown.setMoonSet(astroElement.getMoonSet());
-            viewDown.setSunRise(astroElement.getSunRise());
-            viewDown.setSunSet(astroElement.getSunSet());
-
-            // Load the weather hours fragment
-            getChildFragmentManager().beginTransaction()
-                    .replace(R.id.now_weather_hours, new WeatherHoursFragment(today.getWeatherHours()))
-                    .commit();
+            astroView.setMoonRise(astroElement.getMoonRise());
+            astroView.setMoonSet(astroElement.getMoonSet());
+            astroView.setSunRise(astroElement.getSunRise());
+            astroView.setSunSet(astroElement.getSunSet());
         }
     }
 }

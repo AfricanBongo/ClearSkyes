@@ -11,6 +11,8 @@ public class WeatherHour extends WeatherObject {
     private final int chanceOfSnow;
     private final int chanceOfRain;
 
+    public static int HOURS_IN_A_DAY = 24;
+
     public WeatherHour(WeatherObject weatherObject, String time,
                        int chanceOfSnow, int chanceOfRain) {
 

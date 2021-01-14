@@ -25,7 +25,7 @@ public class WeatherCondition {
 
     public WeatherCondition(@NonNull String conditionText, @NonNull String conditionIcon, int conditionCode, boolean day) {
         this.conditionText = conditionText;
-        this.conditionIcon = "http:" + conditionIcon;
+        this.conditionIcon = "https:" + conditionIcon;
         this.conditionCode = conditionCode;
         this.day = day;
     }
@@ -58,6 +58,8 @@ public class WeatherCondition {
                     ((AnimatedVectorDrawable) drawable).start();
                 }
 
+                view.setTooltipText(conditionText);
+
                 return;
             }
         }
@@ -74,17 +76,5 @@ public class WeatherCondition {
 
     public String getConditionText() {
         return conditionText;
-    }
-
-    public String getConditionIcon() {
-        return conditionIcon;
-    }
-
-    public int getConditionCode() {
-        return conditionCode;
-    }
-
-    public boolean isDay() {
-        return day;
     }
 }

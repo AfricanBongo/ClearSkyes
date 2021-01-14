@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="YellowText" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/yellow_accent</item>
+        <item name="android:textColor">@color/yellow_light</item>
+    </style>
+    <style name="YellowText.Small">
+        <item name="android:textSize">@dimen/small_font_size</item>
+    </style>
+    <style name="YellowText.Medium">
+        <item name="android:textSize">@dimen/medium_font_size</item>
+    </style>
+    <style name="YellowText.MediumMedium">
+        <item name="android:textSize">@dimen/medium_medium_font_size</item>
     </style>
     <style name="PurpleText" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/purple_dark</item>

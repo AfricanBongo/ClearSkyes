@@ -16,7 +16,7 @@ public class WeatherToday {
     private final String uvLevel;
 
     // Data structure to hold the WeatherHour Objects
-    private final WeatherHour[] hours = new WeatherHour[24];
+    private final WeatherHour[] hours = new WeatherHour[WeatherHour.HOURS_IN_A_DAY];
 
     String lastUpdatedTime;
 

@@ -22,6 +22,7 @@ Credit to: https://stackoverflow.com/questions/39961044/custom-view-with-two-tex
 public class CurrentWeatherViewUp extends ConstraintLayout {
 
     private ConstraintLayout constraintLayout;
+
     private TextView nowTemp;
     private TextView feelsLikeTemp;
     private TextView uvIndex;
@@ -56,7 +57,7 @@ public class CurrentWeatherViewUp extends ConstraintLayout {
         init(attrs);
     }
 
-    public void init(AttributeSet attrs) {
+    private void init(AttributeSet attrs) {
         // Inflate the xml and attach to this class
         constraintLayout =
                 (ConstraintLayout) LayoutInflater

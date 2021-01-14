@@ -19,10 +19,10 @@ import java.util.Date;
  */
 public class WeatherTime {
     // Formats for date and time
-    private static final String TIME_FORMAT = "HH:mm";
-    private static final String DATE_FORMAT = "yyyy-MM-dd";
-    private static final String LONG_DATE_FORMAT = " dd MMMM yyyy";
-    private static final String DATE_TIME_FORMAT = DATE_FORMAT + " " + TIME_FORMAT;
+    public static final String TIME_FORMAT = "HH:mm";
+    public static final String DATE_FORMAT = "yyyy-MM-dd";
+    public static final String LONG_DATE_FORMAT = " dd MMMM yyyy";
+    public static final String DATE_TIME_FORMAT = DATE_FORMAT + " " + TIME_FORMAT;
 
     /**
      * Derives the date from a String

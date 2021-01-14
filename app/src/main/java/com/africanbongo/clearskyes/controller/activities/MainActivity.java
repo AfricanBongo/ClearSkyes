@@ -8,7 +8,9 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.controller.adapters.WeatherDayStateAdapter;
+import com.africanbongo.clearskyes.controller.animations.SwitchFadeAnimation;
 import com.africanbongo.clearskyes.controller.animations.ZoomOutPageTransformer;
+import com.africanbongo.clearskyes.model.weatherapi.WeatherRequestQueue;
 import com.google.android.material.appbar.MaterialToolbar;
 
 public class MainActivity extends AppCompatActivity {
@@ -38,12 +40,34 @@ public class MainActivity extends AppCompatActivity {
      */
     public View showError() {
         if (mainViewPager != null || !this.isDestroyed()) {
-            mainViewPager.setVisibility(View.GONE);
-
-            errorPage.setVisibility(View.VISIBLE);
+            // Switch the view pager with the error page
+            SwitchFadeAnimation animation = new SwitchFadeAnimation();
+            animation.switchViews(mainViewPager, errorPage, SwitchFadeAnimation.NORMAL_DURATION);
 
             return errorPage;
         }
         return null;
+    }
+
+    /**
+     * Reload the view pager contents and hide error page
+     */
+    public void reloadViewPager() {
+        if (mainViewPager != null || !this.isDestroyed()) {
+            // Refresh the view pager
+            mainViewPager.setAdapter(new WeatherDayStateAdapter(this));
+
+            // Only switch the views if there's an internet connection
+            // Otherwise the recurrence of the showError() method animation will overlap this one
+            SwitchFadeAnimation animation = new SwitchFadeAnimation();
+            animation.switchViews(errorPage, mainViewPager, SwitchFadeAnimation.NORMAL_DURATION);
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mainViewPager.getAdapter() != null) {
+            mainViewPager.setCurrentItem(0);
+        }
     }
 }

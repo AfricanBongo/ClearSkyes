@@ -8,7 +8,7 @@ Contains {@link WeatherDay}, {@link AstroElement} and all {@link WeatherHour} ob
 public class CollectionWeatherDay {
     private final WeatherDay day;
     private final AstroElement astronomy;
-    private WeatherHour[] hours = new WeatherHour[23];
+    private WeatherHour[] hours = new WeatherHour[WeatherHour.HOURS_IN_A_DAY];
 
     public CollectionWeatherDay(WeatherDay day, AstroElement astronomy) {
         this.day = day;
@@ -34,5 +34,9 @@ public class CollectionWeatherDay {
     @NonNull
     public WeatherHour getWeatherHour(int index) {
         return hours[index];
+    }
+
+    public WeatherHour[] getHours() {
+        return hours;
     }
 }
