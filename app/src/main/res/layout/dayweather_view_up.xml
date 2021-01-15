@@ -31,6 +31,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:textSize="@dimen/large_font_size"
         android:tooltipText="@string/avg_temp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/weather_day_image"
         app:layout_constraintStart_toEndOf="@+id/weather_day_image"
         app:layout_constraintTop_toTopOf="@+id/weather_day_image" />

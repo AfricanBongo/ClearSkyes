@@ -27,7 +27,6 @@ public class WeatherRequestQueue {
             API_KEY + "&q=Harare&dt=";
 
 
-
     private WeatherRequestQueue(Context context) {
         this.context = context;
         requestQueue = Volley.newRequestQueue(context);

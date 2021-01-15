@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.africanbongo.clearskyes.R;
+import com.africanbongo.clearskyes.controller.adapters.WeatherHoursRecyclerViewAdapter;
 import com.africanbongo.clearskyes.model.weatherobjects.WeatherHour;
 
 import java.time.LocalTime;
@@ -21,7 +22,7 @@ import java.time.LocalTime;
 
 /**
  * A fragment representing a list of
- * {@link com.africanbongo.clearskyes.controller.fragments.WeatherHoursRecyclerViewAdapter.WeatherHourViewHolder} objects.
+ * {@link WeatherHoursRecyclerViewAdapter.WeatherHourViewHolder} objects.
  */
 public class WeatherHoursFragment extends Fragment {
 

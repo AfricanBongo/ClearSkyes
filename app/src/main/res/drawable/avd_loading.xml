@@ -1,0 +1,37 @@
+<animated-vector
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+    <aapt:attr name="android:drawable">
+        <vector
+            android:name="vector"
+            android:width="460dp"
+            android:height="460dp"
+            android:viewportWidth="460"
+            android:viewportHeight="460">
+            <group
+                android:name="group"
+                android:pivotX="230.4"
+                android:pivotY="230.4"
+                android:scaleX="0.8"
+                android:scaleY="0.8">
+                <path
+                    android:name="path"
+                    android:pathData="M 231.298 17.068 C 173.552 16.912 118.02 39.277 76.501 79.411 L 76.501 17.067 C 76.501 7.641 68.86 0 59.434 0 C 50.008 0 42.368 7.641 42.368 17.067 L 42.368 119.467 C 42.366 126.816 47.069 133.341 54.042 135.663 L 156.442 169.796 C 165.396 172.775 175.07 167.93 178.048 158.976 C 181.027 150.022 176.182 140.348 167.228 137.37 L 91.623 112.214 C 161.464 36.159 279.737 31.121 355.792 100.962 C 431.847 170.803 436.885 289.076 367.044 365.131 C 297.203 441.186 178.93 446.224 102.875 376.383 C 56.247 333.565 34.453 270.06 44.963 207.633 C 46.616 198.353 40.434 189.491 31.155 187.837 C 21.876 186.183 13.013 192.366 11.359 201.645 C 11.341 201.746 11.324 201.848 11.308 201.949 C 9.265 214.171 8.237 226.541 8.236 238.932 C 8.375 361.408 107.626 460.659 230.101 460.8 C 352.634 461.131 452.235 362.066 452.566 239.533 C 452.896 117 353.832 17.399 231.298 17.068 Z"
+                    android:fillColor="@color/purple_dark"/>
+            </group>
+        </vector>
+    </aapt:attr>
+    <target android:name="group">
+        <aapt:attr name="android:animation">
+            <objectAnimator
+                android:propertyName="rotation"
+                android:duration="5000"
+                android:valueFrom="0"
+                android:valueTo="-359"
+                android:valueType="floatType"
+                android:repeatMode="restart"
+                android:repeatCount="infinite"
+                android:interpolator="@android:interpolator/fast_out_slow_in"/>
+        </aapt:attr>
+    </target>
+</animated-vector>

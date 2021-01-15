@@ -7,6 +7,7 @@
     tools:context=".controller.fragments.WeatherTodayFragment">
 
     <RelativeLayout
+        android:id="@+id/today_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/small_gap"
@@ -51,4 +52,9 @@
             android:elevation="@dimen/large_gap" />
     </RelativeLayout>
 
+    <include
+        android:id="@+id/loading_anim"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        layout="@layout/loading_layout" />
 </FrameLayout>

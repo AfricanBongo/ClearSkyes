@@ -35,7 +35,7 @@ public class ErrorPageListener implements Response.ErrorListener {
         View view = activity.showError();
         Context context = activity.getApplicationContext();
 
-        if (view != null) {
+        if (view != null && error != null) {
             // Get the error message views
             ImageView errorMessageImage = view.findViewById(R.id.error_message_image);
             TextView errorMessage = view.findViewById(R.id.error_message);

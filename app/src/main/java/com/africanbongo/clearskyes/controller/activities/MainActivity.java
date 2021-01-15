@@ -1,8 +1,11 @@
 package com.africanbongo.clearskyes.controller.activities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -14,6 +17,7 @@ import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.controller.adapters.WeatherDayStateAdapter;
 import com.africanbongo.clearskyes.controller.animations.SwitchFadeAnimation;
 import com.africanbongo.clearskyes.controller.animations.ZoomOutPageTransformer;
+import com.bumptech.glide.Glide;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.navigation.NavigationView;
 
@@ -46,11 +50,30 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // Set up view pager
         mainViewPager = findViewById(R.id.main_viewpager);
         errorPage = findViewById(R.id.warning_layout);
 
         mainViewPager.setAdapter(new WeatherDayStateAdapter(this));
         mainViewPager.setPageTransformer(new ZoomOutPageTransformer());
+
+        // Load up credit image to WeatherAPI
+        ImageView creditImage =
+                navigationView
+                        .findViewById(R.id.poweredby_view)
+                        .findViewById(R.id.credit_image);
+
+        Glide
+                .with(this)
+                .load(R.drawable.weatherapi_logo)
+                .into(creditImage);
+
+        // Open site upon clicking image
+        creditImage.setOnClickListener(e -> {
+            String websiteURL = "https://www.weatherapi.com";
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(websiteURL));
+            startActivity(intent);
+        });
     }
 
     /**
@@ -87,7 +110,7 @@ public class MainActivity extends AppCompatActivity
     public void onBackPressed() {
         if (mainViewPager.getAdapter() != null) {
             if (mainViewPager.getCurrentItem() != 0) {
-                mainViewPager.setCurrentItem(0);
+                mainViewPager.setCurrentItem(mainViewPager.getCurrentItem() - 1);
                 return;
             }
         }

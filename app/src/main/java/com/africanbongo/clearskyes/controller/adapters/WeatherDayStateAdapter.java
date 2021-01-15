@@ -38,6 +38,6 @@ public class WeatherDayStateAdapter extends FragmentStateAdapter {
     @Override
     public int getItemCount() {
         // The days in a week
-        return 7;
+        return 8;
     }
 }

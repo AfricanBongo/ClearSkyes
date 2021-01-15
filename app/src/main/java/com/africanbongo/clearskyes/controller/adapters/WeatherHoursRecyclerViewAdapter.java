@@ -1,4 +1,4 @@
-package com.africanbongo.clearskyes.controller.fragments;
+package com.africanbongo.clearskyes.controller.adapters;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +34,7 @@ public class WeatherHoursRecyclerViewAdapter extends RecyclerView.Adapter<Weathe
     @Override
     public void onBindViewHolder(final WeatherHourViewHolder holder, int position) {
         WeatherHour hour = weatherHours[position];
+
 
         // Load image first
         hour
