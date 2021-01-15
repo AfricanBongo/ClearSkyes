@@ -70,13 +70,6 @@ public class WeatherTodayFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        requestData();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -86,6 +79,7 @@ public class WeatherTodayFragment extends Fragment {
         viewUp = view.findViewById(R.id.now_weatherview_up);
         astroView = view.findViewById(R.id.now_weatherview_down);
 
+        requestData();
         return view;
     }
 
@@ -242,36 +236,41 @@ public class WeatherTodayFragment extends Fragment {
     public void loadData() {
         if (today != null && viewUp != null && astroView != null) {
 
+            dateView.setDate(todayDate);
+
             // Load the weather hours fragment
-            new Handler().post(() ->
+            getActivity().runOnUiThread(() ->
                     getChildFragmentManager().beginTransaction()
-                            .replace(R.id.now_weather_hours, new WeatherHoursFragment(today.getWeatherHours()))
+                            .replace(R.id.now_weather_hours, WeatherHoursFragment.newInstance(today.getWeatherHours()))
                             .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                             .commit());
 
-            dateView.setDate(todayDate);
+            getActivity().runOnUiThread(() -> {
+                viewUp.setUvIndex(today.getUvLevel());
+                viewUp.setFeelsLikeTemp((int) today.getNowWeather().getFeelsLikeTemp().getTempC());
+                viewUp.setNowTemp((int) today.getNowWeather().getActualTemp().getTempC());
 
-            viewUp.setUvIndex(today.getUvLevel());
-            viewUp.setFeelsLikeTemp((int) today.getNowWeather().getFeelsLikeTemp().getTempC());
-            viewUp.setNowTemp((int) today.getNowWeather().getActualTemp().getTempC());
+                String conditionText = today.getNowWeather().getConditions().getConditionText();
 
-            String conditionText = today.getNowWeather().getConditions().getConditionText();
+                viewUp.setConditionText(conditionText);
+                viewUp.setChanceOfRain(today.getHour(getCurrentHourAsIndex()).getChanceOfRain());
 
-            viewUp.setConditionText(conditionText);
-            viewUp.setChanceOfRain(today.getHour(getCurrentHourAsIndex()).getChanceOfRain());
-
-            // Load weather icon
-            today.getNowWeather().getConditions().loadConditionImage(viewUp.getIconImageView());
-            viewUp.getIconImageView().setContentDescription(conditionText);
+                // Load weather icon
+                today.getNowWeather().getConditions().loadConditionImage(viewUp.getIconImageView());
+                viewUp.getIconImageView().setContentDescription(conditionText);
+            });
 
 
-            // Load astronomy elements
-            AstroElement astroElement = today.getAstronomy();
+            getActivity().runOnUiThread(() -> {
+                // Load astronomy elements
+                AstroElement astroElement = today.getAstronomy();
 
-            astroView.setMoonRise(astroElement.getMoonRise());
-            astroView.setMoonSet(astroElement.getMoonSet());
-            astroView.setSunRise(astroElement.getSunRise());
-            astroView.setSunSet(astroElement.getSunSet());
+                astroView.setMoonRise(astroElement.getMoonRise());
+                astroView.setMoonSet(astroElement.getMoonSet());
+                astroView.setSunRise(astroElement.getSunRise());
+                astroView.setSunSet(astroElement.getSunSet());
+            });
+
         }
     }
 }

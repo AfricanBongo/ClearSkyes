@@ -25,12 +25,19 @@ import java.time.LocalTime;
  */
 public class WeatherHoursFragment extends Fragment {
 
-    private final WeatherHour[] hours;
+    private static WeatherHour[] hours;
 
-    public WeatherHoursFragment(WeatherHour[] hours) {
-        this.hours = hours;
+    public WeatherHoursFragment() {
+
     }
 
+    public static WeatherHoursFragment newInstance(WeatherHour[] weatherHours) {
+        hours = weatherHours;
+        Bundle args = new Bundle();
+        WeatherHoursFragment fragment = new WeatherHoursFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

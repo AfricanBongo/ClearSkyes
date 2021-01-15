@@ -1,9 +1,13 @@
 package com.africanbongo.clearskyes.controller.activities;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.africanbongo.clearskyes.R;
@@ -11,8 +15,10 @@ import com.africanbongo.clearskyes.controller.adapters.WeatherDayStateAdapter;
 import com.africanbongo.clearskyes.controller.animations.SwitchFadeAnimation;
 import com.africanbongo.clearskyes.controller.animations.ZoomOutPageTransformer;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private ViewPager2 mainViewPager;
     private View errorPage;
@@ -24,6 +30,21 @@ public class MainActivity extends AppCompatActivity {
 
         MaterialToolbar mainToolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(mainToolbar);
+
+        // Set up navigation drawer
+        DrawerLayout drawerLayout = findViewById(R.id.drawer);
+        ActionBarDrawerToggle toggle =
+                new ActionBarDrawerToggle(
+                        this, drawerLayout, mainToolbar,
+                        R.string.open_drawer, R.string.close_drawer
+                );
+
+
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         mainViewPager = findViewById(R.id.main_viewpager);
         errorPage = findViewById(R.id.warning_layout);
@@ -65,7 +86,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (mainViewPager.getAdapter() != null) {
-            mainViewPager.setCurrentItem(0);
+            if (mainViewPager.getCurrentItem() != 0) {
+                mainViewPager.setCurrentItem(0);
+                return;
+            }
         }
+
+        super.onBackPressed();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return false;
     }
 }

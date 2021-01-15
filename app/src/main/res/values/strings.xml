@@ -11,4 +11,12 @@
     <string name="uv_content_description">Ultraviolet index</string>
     <string name="rain_content_description">Chance of rain</string>
     <string name="reload">Reload</string>
+
+    <!-- Navigation drawer-->
+    <string name="nav_support">Support</string>
+    <string name="nav_locations">Locations</string>
+    <string name="nav_feedback">Feedback</string>
+    <string name="powered">Powered by:</string>
+    <string name="open_drawer">Open drawer</string>
+    <string name="close_drawer">Close drawer</string>
 </resources>

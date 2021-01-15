@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="@string/nav_locations">
+        <menu>
+        </menu>
+    </item>
+    <item android:title="@string/nav_support">
+        <menu>
+            <item android:id="@+id/nav_feedback"
+                android:icon="@drawable/ic_baseline_email_24"
+                android:title="@string/nav_feedback" />
+        </menu>
+    </item>
+</menu>

@@ -1,5 +1,6 @@
 package com.africanbongo.clearskyes.controller.fragments;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -71,13 +72,14 @@ public class WeatherDayFragment extends Fragment {
     }
 
     @Override
-    public void onSaveInstanceState(@NonNull Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_weather_day, container, false);
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        viewUp = view.findViewById(R.id.day_weatherview_up);
+        dateView = view.findViewById(R.id.day_date_view);
+        astroView = view.findViewById(R.id.day_astro_view);
 
         if (getArguments() != null) {
             this.daysOffset = getArguments().getInt("daysOffset");
@@ -91,17 +93,6 @@ public class WeatherDayFragment extends Fragment {
 
             requestData(dateTimeFormatter.format(localDate));
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_weather_day, container, false);
-
-        viewUp = view.findViewById(R.id.day_weatherview_up);
-        dateView = view.findViewById(R.id.day_date_view);
-        astroView = view.findViewById(R.id.day_astro_view);
 
         return view;
     }
@@ -251,40 +242,44 @@ public class WeatherDayFragment extends Fragment {
     public void loadData() {
         if (collectionWeatherDay != null && viewUp != null && astroView != null) {
 
-            // Load the weather hours fragment
-            new Handler().post(() ->
-                    getChildFragmentManager().beginTransaction()
-                            .replace(R.id.day_weather_hours, new WeatherHoursFragment(collectionWeatherDay.getHours()))
-                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                            .commit());
-
             // Populate the dateView first
             dateView.setDate(day);
 
-            // Populate viewUp
-            WeatherDay day = collectionWeatherDay.getDay();
+            // Load the weather hours fragment
+            getActivity().runOnUiThread(() ->
+                    getChildFragmentManager().beginTransaction()
+                            .replace(R.id.day_weather_hours, WeatherHoursFragment.newInstance(collectionWeatherDay.getHours()))
+                            .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                            .commit());
 
-            String conditionText = day.getConditions().getConditionText();
 
-            viewUp.setAvgTemp(day.getAvgTemp().getTempC());
-            viewUp.setDayUVIndex(day.getUvLevel());
-            viewUp.setMaxAndMinTemp(day.getMaxTemp().getTempC(),
-                    day.getMinTemp().getTempC());
-            viewUp.setConditionText(conditionText);
+            getActivity().runOnUiThread(() -> {
+                // Populate viewUp
+                WeatherDay day = collectionWeatherDay.getDay();
 
-            day.getConditions().loadConditionImage(viewUp.getDayWeatherIcon());
-            viewUp.getDayWeatherIcon().setContentDescription(conditionText);
+                String conditionText = day.getConditions().getConditionText();
 
-            // Load astronomy elements
-            AstroElement astroElement = collectionWeatherDay.getAstronomy();
+                viewUp.setAvgTemp(day.getAvgTemp().getTempC());
+                viewUp.setDayUVIndex(day.getUvLevel());
+                viewUp.setMaxAndMinTemp(day.getMaxTemp().getTempC(),
+                        day.getMinTemp().getTempC());
+                viewUp.setConditionText(conditionText);
 
-            astroView.setMoonRise(astroElement.getMoonRise());
-            astroView.setMoonSet(astroElement.getMoonSet());
-            astroView.setSunRise(astroElement.getSunRise());
-            astroView.setSunSet(astroElement.getSunSet());
+                day.getConditions().loadConditionImage(viewUp.getDayWeatherIcon());
+                viewUp.getDayWeatherIcon().setContentDescription(conditionText);
+            });
+
+
+            getActivity().runOnUiThread(() -> {
+                // Load astronomy elements
+                AstroElement astroElement = collectionWeatherDay.getAstronomy();
+
+                astroView.setMoonRise(astroElement.getMoonRise());
+                astroView.setMoonSet(astroElement.getMoonSet());
+                astroView.setSunRise(astroElement.getSunRise());
+                astroView.setSunSet(astroElement.getSunSet());
+            });
+
         }
-
-
-
     }
 }
