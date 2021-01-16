@@ -14,14 +14,16 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.controller.activities.MainActivity;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpResponse;
 
 public class ErrorPageListener implements Response.ErrorListener {
 
     // Used for error pages
     public static final int API_ERROR_CODE = 403;
-    public static final String API_ERROR_MESSAGE = "API Key Error!";
+    public static final String API_ERROR_MESSAGE = "Server Communication Error!";
     public static final String NO_CONNECTION_MESSAGE = "No internet connection";
 
     private MainActivity activity;
@@ -54,7 +56,7 @@ public class ErrorPageListener implements Response.ErrorListener {
                 drawableToDisplay = R.drawable.avd_no_connection;
             }
             // If an error to the weather api
-            else if (error.networkResponse.statusCode == API_ERROR_CODE) {
+            else {
                 errorMessageText = API_ERROR_MESSAGE;
                 drawableToDisplay = R.drawable.avd_error_warning;
             }

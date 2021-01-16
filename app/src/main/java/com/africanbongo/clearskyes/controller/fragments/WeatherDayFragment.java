@@ -114,6 +114,11 @@ public class WeatherDayFragment extends Fragment {
     public void requestData(String date) {
         new Thread(() -> {
 
+            String requestURL = WeatherRequestQueue.GET_DAY_WEATHER_START + date;
+
+            WeatherRequestQueue requestQueue = WeatherRequestQueue
+                    .getWeatherRequestQueue(getContext());
+
             // Listener for JSON Data
             Response.Listener<JSONObject> dayListener = response -> new Thread(() -> {
                 try {
@@ -242,8 +247,6 @@ public class WeatherDayFragment extends Fragment {
                 }
             }).start();
 
-            String requestURL = WeatherRequestQueue.GET_DAY_WEATHER_START + date;
-
             JsonObjectRequest requestDayWeather =
                     new JsonObjectRequest(
                             Request.Method.GET,
@@ -254,14 +257,13 @@ public class WeatherDayFragment extends Fragment {
                     );
 
             // Add request to queue
-            WeatherRequestQueue
-                    .getWeatherRequestQueue(getContext())
-                    .addRequest(requestDayWeather);
+            requestQueue.addRequest(requestDayWeather);
+
         }).start();
 
     }
 
-    public void startLoadingAnimation() {
+    private void startLoadingAnimation() {
         if (loadingLayout != null) {
 
             getActivity().runOnUiThread(() -> {
@@ -272,13 +274,15 @@ public class WeatherDayFragment extends Fragment {
                 AnimatedVectorDrawable vectorDrawable = (AnimatedVectorDrawable)
                         ResourcesCompat.getDrawable(getResources(), R.drawable.avd_loading, null);
 
-                loadingImage.setImageDrawable(vectorDrawable);
-                vectorDrawable.start();
+                if (vectorDrawable != null) {
+                    loadingImage.setImageDrawable(vectorDrawable);
+                    vectorDrawable.start();
+                }
             });
         }
     }
 
-    public void stopLoadingAnimation() {
+    private void stopLoadingAnimation() {
         if (loadingLayout != null) {
             // Get image  view and start the animation
             ImageView loadingImage = loadingLayout.findViewById(R.id.loading_image);
@@ -286,11 +290,11 @@ public class WeatherDayFragment extends Fragment {
             AnimatedVectorDrawable vectorDrawable =
                     (AnimatedVectorDrawable) loadingImage.getDrawable();
 
-            vectorDrawable.stop();
+            if (vectorDrawable != null) {vectorDrawable.stop();}
 
             // Switch the loading view with the normal weather view
             SwitchFadeAnimation switchFadeAnimation = new SwitchFadeAnimation();
-            switchFadeAnimation.switchViews(loadingLayout, layout, 2000L);
+            switchFadeAnimation.switchViews(loadingLayout, layout, 4000L);
         }
     }
 
@@ -328,7 +332,6 @@ public class WeatherDayFragment extends Fragment {
                 viewUp.setConditionText(conditionText);
 
                 day.getConditions().loadConditionImage(viewUp.getDayWeatherIcon());
-                viewUp.getDayWeatherIcon().setContentDescription(conditionText);
 
                 // Stop loading animation and show the weather view
                 stopLoadingAnimation();

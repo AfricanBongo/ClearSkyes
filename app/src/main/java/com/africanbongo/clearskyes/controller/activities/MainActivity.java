@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -24,6 +25,7 @@ import com.google.android.material.navigation.NavigationView;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private DrawerLayout drawerLayout;
     private ViewPager2 mainViewPager;
     private View errorPage;
 
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity
         setSupportActionBar(mainToolbar);
 
         // Set up navigation drawer
-        DrawerLayout drawerLayout = findViewById(R.id.drawer);
+        drawerLayout = findViewById(R.id.drawer);
         ActionBarDrawerToggle toggle =
                 new ActionBarDrawerToggle(
                         this, drawerLayout, mainToolbar,
@@ -109,7 +111,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         if (mainViewPager.getAdapter() != null) {
-            if (mainViewPager.getCurrentItem() != 0) {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START);
+                return;
+            }
+            else if (mainViewPager.getCurrentItem() != 0) {
                 mainViewPager.setCurrentItem(mainViewPager.getCurrentItem() - 1);
                 return;
             }

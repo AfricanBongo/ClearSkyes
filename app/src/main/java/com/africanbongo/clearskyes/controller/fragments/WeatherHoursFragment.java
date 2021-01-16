@@ -1,6 +1,7 @@
 package com.africanbongo.clearskyes.controller.fragments;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,7 @@ public class WeatherHoursFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -56,8 +58,12 @@ public class WeatherHoursFragment extends Fragment {
             DividerItemDecoration divider =
                     new DividerItemDecoration(context, DividerItemDecoration.VERTICAL);
 
-            divider.setDrawable(ResourcesCompat
-                    .getDrawable(getResources(), R.drawable.recycler_view_divider, null));
+            Drawable recyclerViewDivider = ResourcesCompat
+                    .getDrawable(getResources(), R.drawable.recycler_view_divider, null);
+
+            if (recyclerViewDivider != null) {
+                divider.setDrawable(recyclerViewDivider);
+            }
 
             recyclerView.addItemDecoration(divider);
 

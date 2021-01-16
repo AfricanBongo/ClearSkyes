@@ -56,11 +56,10 @@ public class WeatherTodayFragment extends Fragment {
 
     private RelativeLayout loadingLayout;
     private RelativeLayout layout;
-    private CustomDateView dateView;
     private CurrentWeatherViewUp viewUp;
     private AstroView astroView;
 
-    private String todayDate;
+    private final String todayDate;
 
 
     public WeatherTodayFragment() {
@@ -69,8 +68,7 @@ public class WeatherTodayFragment extends Fragment {
 
     public static WeatherTodayFragment newInstance(MainActivity activity) {
         errorPageListener = new ErrorPageListener(activity);
-        WeatherTodayFragment fragment = new WeatherTodayFragment();
-        return fragment;
+        return new WeatherTodayFragment();
     }
 
     @Override
@@ -86,7 +84,7 @@ public class WeatherTodayFragment extends Fragment {
         // Fetch loading page
         loadingLayout = view.findViewById(R.id.loading_anim);
 
-        dateView = view.findViewById(R.id.today_date_view);
+        CustomDateView dateView = view.findViewById(R.id.today_date_view);
         dateView.setDate(todayDate);
 
         viewUp = view.findViewById(R.id.now_weatherview_up);
@@ -101,157 +99,160 @@ public class WeatherTodayFragment extends Fragment {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void requestData() {
 
-        // Parse WeatherApi JSONObjects
-        Response.Listener<JSONObject> currentListener = (JSONObject response) -> new Thread(() -> {
-            try {
+        new Thread(() -> {
 
-                // Only start this animation when data has been successfully received
-                // from the API
-                startLoadingAnimation();
+            String url = WeatherRequestQueue.GET_CURRENT_WEATHER_START;
 
-                JSONObject currentWeatherJSON = response.getJSONObject("current");
+            WeatherRequestQueue requestQueue =
+                    WeatherRequestQueue.getWeatherRequestQueue(getContext());
 
-                String lastUpdatedTime = currentWeatherJSON.getString("last_updated");
+            // Parse WeatherApi JSONObjects
+            Response.Listener<JSONObject> currentListener = (JSONObject response) -> new Thread(() -> {
+                try {
 
-                double uvIndex = currentWeatherJSON.getDouble("uv");
+                    // Only start this animation when data has been successfully received
+                    // from the API
+                    startLoadingAnimation();
 
-                // WeatherTemp objects
-                double temp_c = currentWeatherJSON.getDouble("temp_c");
-                double temp_f = currentWeatherJSON.getDouble("temp_f");
-                double feelslike_c = currentWeatherJSON.getDouble("feelslike_c");
-                double feelslike_f = currentWeatherJSON.getDouble("feelslike_f");
+                    JSONObject currentWeatherJSON = response.getJSONObject("current");
 
-                WeatherTemp temps = new WeatherTemp(temp_c, temp_f);
-                WeatherTemp feelsLike = new WeatherTemp(feelslike_c, feelslike_f);
+                    String lastUpdatedTime = currentWeatherJSON.getString("last_updated");
 
-                // WeatherWind object
-                double wind_mph = currentWeatherJSON.getDouble("wind_mph");
-                double wind_kph = currentWeatherJSON.getDouble("wind_kph");
-                String wind_dir = currentWeatherJSON.getString("wind_dir");
-
-                WeatherWind wind = new WeatherWind(wind_mph, wind_kph, wind_dir);
-
-                // WeatherMisc object
-                double pressure_mb = currentWeatherJSON.getDouble("pressure_mb");
-                double precip_mm = currentWeatherJSON.getDouble("precip_mm");
-                int humidity = currentWeatherJSON.getInt("humidity");
-
-                WeatherMisc misc = new WeatherMisc(pressure_mb, precip_mm, humidity);
-
-                // WeatherCondition object
-                JSONObject conditions = currentWeatherJSON.getJSONObject("condition");
-                String conditionText = conditions.getString("text");
-                String conditionIcon = conditions.getString("icon");
-                int conditionCode = conditions.getInt("code");
-                boolean day = currentWeatherJSON.getInt("is_day") == 1;
-
-                WeatherCondition weatherCondition =
-                        new WeatherCondition(conditionText, conditionIcon, conditionCode, day);
-
-
-                // WeatherObject object
-                WeatherObject todayWeatherObject =
-                        new WeatherObject(temps, feelsLike, weatherCondition, misc, wind);
-
-
-                JSONObject forecast = response
-                        .getJSONObject("forecast")
-                        .getJSONArray("forecastday")
-                        .getJSONObject(0);
-
-                // AstroElement object
-                JSONObject astro = forecast.getJSONObject("astro");
-
-                String sunrise = astro.getString("sunrise");
-                String sunset = astro.getString("sunset");
-                String moonrise = astro.getString("moonrise");
-                String moonset = astro.getString("moonset");
-                String moonphase = astro.getString("moon_phase");
-
-                AstroElement astroElement =
-                        new AstroElement(sunrise, sunset, moonrise, moonset, moonphase);
-
-                // Initialize WeatherTodayObject
-                today = new WeatherToday(lastUpdatedTime, todayWeatherObject,
-                        astroElement, uvIndex);
-
-                // WeatherHour objects
-                JSONArray hours = forecast.getJSONArray("hour");
-                for (int i = 0; i < hours.length(); i++) {
-                    JSONObject hourWeatherJSON = hours.getJSONObject(i);
-
-                    String time = hourWeatherJSON.getString("time");
+                    double uvIndex = currentWeatherJSON.getDouble("uv");
 
                     // WeatherTemp objects
-                    double htemp_c = hourWeatherJSON.getDouble("temp_c");
-                    double htemp_f = hourWeatherJSON.getDouble("temp_f");
-                    double hfeelslike_c = hourWeatherJSON.getDouble("feelslike_c");
-                    double hfeelslike_f = hourWeatherJSON.getDouble("feelslike_f");
+                    double temp_c = currentWeatherJSON.getDouble("temp_c");
+                    double temp_f = currentWeatherJSON.getDouble("temp_f");
+                    double feelslike_c = currentWeatherJSON.getDouble("feelslike_c");
+                    double feelslike_f = currentWeatherJSON.getDouble("feelslike_f");
 
-                    WeatherTemp htemps = new WeatherTemp(htemp_c, htemp_f);
-                    WeatherTemp hfeelsLike = new WeatherTemp(hfeelslike_c, hfeelslike_f);
+                    WeatherTemp temps = new WeatherTemp(temp_c, temp_f);
+                    WeatherTemp feelsLike = new WeatherTemp(feelslike_c, feelslike_f);
 
                     // WeatherWind object
-                    double hwind_mph = hourWeatherJSON.getDouble("wind_mph");
-                    double hwind_kph = hourWeatherJSON.getDouble("wind_kph");
-                    String hwind_dir = hourWeatherJSON.getString("wind_dir");
+                    double wind_mph = currentWeatherJSON.getDouble("wind_mph");
+                    double wind_kph = currentWeatherJSON.getDouble("wind_kph");
+                    String wind_dir = currentWeatherJSON.getString("wind_dir");
 
-                    WeatherWind hwind = new WeatherWind(hwind_mph, hwind_kph, hwind_dir);
+                    WeatherWind wind = new WeatherWind(wind_mph, wind_kph, wind_dir);
 
                     // WeatherMisc object
-                    double hpressure_mb = hourWeatherJSON.getDouble("pressure_mb");
-                    double hprecip_mm = hourWeatherJSON.getDouble("precip_mm");
-                    int hhumidity = hourWeatherJSON.getInt("humidity");
+                    double pressure_mb = currentWeatherJSON.getDouble("pressure_mb");
+                    double precip_mm = currentWeatherJSON.getDouble("precip_mm");
+                    int humidity = currentWeatherJSON.getInt("humidity");
 
-                    WeatherMisc hmisc = new WeatherMisc(hpressure_mb, hprecip_mm, hhumidity);
+                    WeatherMisc misc = new WeatherMisc(pressure_mb, precip_mm, humidity);
 
                     // WeatherCondition object
-                    JSONObject hconditions = hourWeatherJSON.getJSONObject("condition");
-                    String hconditionText = hconditions.getString("text");
-                    String hconditionIcon = hconditions.getString("icon");
-                    int hconditionCode = hconditions.getInt("code");
-                    boolean hday = hourWeatherJSON.getInt("is_day") == 1;
+                    JSONObject conditions = currentWeatherJSON.getJSONObject("condition");
+                    String conditionText = conditions.getString("text");
+                    String conditionIcon = conditions.getString("icon");
+                    int conditionCode = conditions.getInt("code");
+                    boolean day = currentWeatherJSON.getInt("is_day") == 1;
 
-                    WeatherCondition hweatherCondition =
-                            new WeatherCondition(hconditionText, hconditionIcon, hconditionCode, hday);
+                    WeatherCondition weatherCondition =
+                            new WeatherCondition(conditionText, conditionIcon, conditionCode, day);
 
-                    // Other properties
-                    int chance_of_snow = hourWeatherJSON.getInt("chance_of_snow");
-                    int chance_of_rain = hourWeatherJSON.getInt("chance_of_rain");
 
                     // WeatherObject object
-                    WeatherObject hourWeatherObject =
-                            new WeatherObject(htemps, hfeelsLike, hweatherCondition, hmisc, hwind);
+                    WeatherObject todayWeatherObject =
+                            new WeatherObject(temps, feelsLike, weatherCondition, misc, wind);
 
-                    today.addHour(i,
-                            new WeatherHour(hourWeatherObject, time, chance_of_snow, chance_of_rain));
+
+                    JSONObject forecast = response
+                            .getJSONObject("forecast")
+                            .getJSONArray("forecastday")
+                            .getJSONObject(0);
+
+                    // AstroElement object
+                    JSONObject astro = forecast.getJSONObject("astro");
+
+                    String sunrise = astro.getString("sunrise");
+                    String sunset = astro.getString("sunset");
+                    String moonrise = astro.getString("moonrise");
+                    String moonset = astro.getString("moonset");
+                    String moonphase = astro.getString("moon_phase");
+
+                    AstroElement astroElement =
+                            new AstroElement(sunrise, sunset, moonrise, moonset, moonphase);
+
+                    // Initialize WeatherTodayObject
+                    today = new WeatherToday(lastUpdatedTime, todayWeatherObject,
+                            astroElement, uvIndex);
+
+                    // WeatherHour objects
+                    JSONArray hours = forecast.getJSONArray("hour");
+                    for (int i = 0; i < hours.length(); i++) {
+                        JSONObject hourWeatherJSON = hours.getJSONObject(i);
+
+                        String time = hourWeatherJSON.getString("time");
+
+                        // WeatherTemp objects
+                        double htemp_c = hourWeatherJSON.getDouble("temp_c");
+                        double htemp_f = hourWeatherJSON.getDouble("temp_f");
+                        double hfeelslike_c = hourWeatherJSON.getDouble("feelslike_c");
+                        double hfeelslike_f = hourWeatherJSON.getDouble("feelslike_f");
+
+                        WeatherTemp htemps = new WeatherTemp(htemp_c, htemp_f);
+                        WeatherTemp hfeelsLike = new WeatherTemp(hfeelslike_c, hfeelslike_f);
+
+                        // WeatherWind object
+                        double hwind_mph = hourWeatherJSON.getDouble("wind_mph");
+                        double hwind_kph = hourWeatherJSON.getDouble("wind_kph");
+                        String hwind_dir = hourWeatherJSON.getString("wind_dir");
+
+                        WeatherWind hwind = new WeatherWind(hwind_mph, hwind_kph, hwind_dir);
+
+                        // WeatherMisc object
+                        double hpressure_mb = hourWeatherJSON.getDouble("pressure_mb");
+                        double hprecip_mm = hourWeatherJSON.getDouble("precip_mm");
+                        int hhumidity = hourWeatherJSON.getInt("humidity");
+
+                        WeatherMisc hmisc = new WeatherMisc(hpressure_mb, hprecip_mm, hhumidity);
+
+                        // WeatherCondition object
+                        JSONObject hconditions = hourWeatherJSON.getJSONObject("condition");
+                        String hconditionText = hconditions.getString("text");
+                        String hconditionIcon = hconditions.getString("icon");
+                        int hconditionCode = hconditions.getInt("code");
+                        boolean hday = hourWeatherJSON.getInt("is_day") == 1;
+
+                        WeatherCondition hweatherCondition =
+                                new WeatherCondition(hconditionText, hconditionIcon, hconditionCode, hday);
+
+                        // Other properties
+                        int chance_of_snow = hourWeatherJSON.getInt("chance_of_snow");
+                        int chance_of_rain = hourWeatherJSON.getInt("chance_of_rain");
+
+                        // WeatherObject object
+                        WeatherObject hourWeatherObject =
+                                new WeatherObject(htemps, hfeelsLike, hweatherCondition, hmisc, hwind);
+
+                        today.addHour(i,
+                                new WeatherHour(hourWeatherObject, time, chance_of_snow, chance_of_rain));
+                    }
+
+                    loadData();
+                } catch (JSONException e) {
+                    Log.e("WeatherTodayFragment", "Failed to parse JSONObject");
+                    e.printStackTrace();
                 }
+            }).start();
 
-                loadData();
-            } catch (JSONException e) {
-                Log.e("WeatherTodayFragment", "Failed to parse JSONObject");
-                e.printStackTrace();
-            }
-        }).start();
 
-        // Display error page if an error is encountered
-
-        new Thread(() -> {
             // Create JSONObjectRequest
             JsonObjectRequest requestTodayWeather =
                     new JsonObjectRequest(Request.Method.GET,
-                            WeatherRequestQueue.GET_CURRENT_WEATHER_START, null, currentListener,
+                            url, null, currentListener,
                             errorPageListener);
 
             // Add to request queue
-            WeatherRequestQueue
-                    .getWeatherRequestQueue(getContext())
-                    .addRequest(requestTodayWeather);
+            requestQueue.addRequest(requestTodayWeather);
         }).start();
     }
 
 
-    public void startLoadingAnimation() {
+    private void startLoadingAnimation() {
         if (loadingLayout != null) {
 
             getActivity().runOnUiThread(() -> {
@@ -262,13 +263,15 @@ public class WeatherTodayFragment extends Fragment {
                 AnimatedVectorDrawable vectorDrawable = (AnimatedVectorDrawable)
                         ResourcesCompat.getDrawable(getResources(), R.drawable.avd_loading, null);
 
-                loadingImage.setImageDrawable(vectorDrawable);
-                vectorDrawable.start();
+                if (vectorDrawable != null) {
+                    loadingImage.setImageDrawable(vectorDrawable);
+                    vectorDrawable.start();
+                }
             });
         }
     }
 
-    public void stopLoadingAnimation() {
+    private void stopLoadingAnimation() {
         if (loadingLayout != null) {
             // Get image  view and start the animation
             ImageView loadingImage = loadingLayout.findViewById(R.id.loading_image);
@@ -276,7 +279,7 @@ public class WeatherTodayFragment extends Fragment {
             AnimatedVectorDrawable vectorDrawable =
                     (AnimatedVectorDrawable) loadingImage.getDrawable();
 
-            vectorDrawable.stop();
+            if (vectorDrawable != null) {vectorDrawable.stop();}
 
             // Switch the loading view with the normal weather view
             SwitchFadeAnimation switchFadeAnimation = new SwitchFadeAnimation();

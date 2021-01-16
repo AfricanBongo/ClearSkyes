@@ -2,11 +2,10 @@ package com.africanbongo.clearskyes.model.weatherobjects;
 
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Handler;
-import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.model.WeatherAVDS;
@@ -36,7 +35,11 @@ public class WeatherCondition {
      * Loads an image or drawable into the ImageView object given depending availability of either resource
      * @param view {@link ImageView} to load resource into
      */
-    public void loadConditionImage(ImageView view) {
+    public void loadConditionImage(@NonNull ImageView view) {
+
+        // Set the tooltip and description of the image view
+        view.setTooltipText(conditionText);
+        view.setContentDescription(conditionText);
 
         // Load AnimatedVectorDrawable from resources, if it exists
         for (WeatherAVDS avd : WeatherAVDS.values()) {
@@ -51,15 +54,21 @@ public class WeatherCondition {
                 }
 
                 // Load up the AVD
-                view.setImageResource(drawableId);
-                // Start animation if the drawable is a AnimatedVectorDrawable object
-                Drawable drawable = view.getDrawable();
+                Drawable drawable = ResourcesCompat
+                        .getDrawable(view.getResources(), drawableId, null);
 
-                if (drawable instanceof AnimatedVectorDrawable) {
-                    ((AnimatedVectorDrawable) drawable).start();
+                if (drawable != null) {
+                    Glide
+                            .with(view)
+                            .load(drawable)
+                            .error(IMAGE_NOT_FOUND)
+                            .into(view);
+
+                    // Start animation if the drawable is a AnimatedVectorDrawable object
+                    if (drawable instanceof AnimatedVectorDrawable) {
+                        ((AnimatedVectorDrawable) drawable).start();
+                    }
                 }
-
-                view.setTooltipText(conditionText);
 
                 return;
             }
