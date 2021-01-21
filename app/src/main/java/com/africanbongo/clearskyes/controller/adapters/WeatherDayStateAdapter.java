@@ -18,11 +18,13 @@ import com.africanbongo.clearskyes.model.WeatherTime;
 public class WeatherDayStateAdapter extends FragmentStateAdapter {
 
     MainActivity activity;
+    private String location;
 
-    public WeatherDayStateAdapter(@NonNull FragmentActivity fragmentActivity) {
+    public WeatherDayStateAdapter(@NonNull FragmentActivity fragmentActivity, String location) {
         super(fragmentActivity);
 
         activity = (MainActivity) fragmentActivity;
+        this.location = location;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -31,9 +33,9 @@ public class WeatherDayStateAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
 
         if (position == 0) {
-            return WeatherTodayFragment.newInstance(activity);
+            return WeatherTodayFragment.newInstance(activity, location);
         } else {
-            return WeatherDayFragment.newInstance(activity, position);
+            return WeatherDayFragment.newInstance(activity, location, position);
         }
     }
 
@@ -41,5 +43,14 @@ public class WeatherDayStateAdapter extends FragmentStateAdapter {
     public int getItemCount() {
         // The days in a week
         return 8;
+    }
+
+    /**
+     * Get the location of the weather data associated with this button
+     * @return {@link String} location eg. Harare
+     */
+    @NonNull
+    public String getLocation() {
+        return location;
     }
 }

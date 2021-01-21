@@ -60,15 +60,17 @@ public class WeatherTodayFragment extends Fragment {
     private AstroView astroView;
 
     private final String todayDate;
+    private final String location;
 
 
-    public WeatherTodayFragment() {
+    public WeatherTodayFragment(String location) {
         todayDate = getRelativeDay(LocalDate.now());
+        this.location = location;
     }
 
-    public static WeatherTodayFragment newInstance(MainActivity activity) {
+    public static WeatherTodayFragment newInstance(MainActivity activity, String location) {
         errorPageListener = new ErrorPageListener(activity);
-        return new WeatherTodayFragment();
+        return new WeatherTodayFragment(location);
     }
 
     @Override
@@ -95,13 +97,23 @@ public class WeatherTodayFragment extends Fragment {
     }
 
 
+    /**
+     * Generate the url used to get data from the Weather API
+     * @param location Titled {@link String} used to grab data for a specific location eg. Harare
+     * @return {@link String} url
+     */
+    public String generateURL(String location) {
+        return "https://api.weatherapi.com/v1/forecast.json?key=" +
+                WeatherRequestQueue.API_KEY +"&q=" + location + "&days=1";
+    }
+
     // Main Activity is used to display error page in the event of a failure
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void requestData() {
 
         new Thread(() -> {
 
-            String url = WeatherRequestQueue.GET_CURRENT_WEATHER_START;
+            String url = generateURL(location);
 
             WeatherRequestQueue requestQueue =
                     WeatherRequestQueue.getWeatherRequestQueue(getContext());

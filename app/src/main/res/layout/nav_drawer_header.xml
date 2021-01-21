@@ -3,17 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_marginTop="@dimen/medium_gap"
-    android:layout_marginStart="@dimen/small_gap"
-    android:layout_marginEnd="@dimen/small_gap"
-    android:background="@drawable/white_curved_background"
+    android:background="@color/white"
     android:layout_height="wrap_content">
 
     <ImageView
+        android:id="@+id/nav_header_image"
         android:layout_margin="@dimen/small_gap"
         android:layout_width="@dimen/weather_medium_icon"
         android:layout_height="@dimen/weather_medium_icon"
-        app:srcCompat="@drawable/ic_sunny"/>
+        app:srcCompat="@drawable/avd_sunny"/>
     <TextView
         style="@style/PurpleText.Medium"
         android:layout_width="wrap_content"

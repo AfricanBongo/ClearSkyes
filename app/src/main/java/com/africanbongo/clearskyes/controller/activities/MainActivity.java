@@ -1,11 +1,12 @@
 package com.africanbongo.clearskyes.controller.activities;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
-import android.net.Uri;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -18,14 +19,21 @@ import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.controller.adapters.WeatherDayStateAdapter;
 import com.africanbongo.clearskyes.controller.animations.SwitchFadeAnimation;
 import com.africanbongo.clearskyes.controller.animations.ZoomOutPageTransformer;
-import com.bumptech.glide.Glide;
+import com.africanbongo.clearskyes.controller.customviews.CustomNavigationView;
+import com.africanbongo.clearskyes.controller.customviews.LocationButton;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.navigation.NavigationView;
+
+import java.util.Set;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
+    private CustomNavigationView navigationView;
+    private MaterialButtonToggleGroup toggleGroup;
     private ViewPager2 mainViewPager;
     private View errorPage;
 
@@ -46,36 +54,22 @@ public class MainActivity extends AppCompatActivity
                 );
 
 
+
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         // Set up view pager
         mainViewPager = findViewById(R.id.main_viewpager);
-        errorPage = findViewById(R.id.warning_layout);
 
-        mainViewPager.setAdapter(new WeatherDayStateAdapter(this));
+        // Load location buttons and last location open onto the navigation drawer
+        toggleGroup = navigationView.getLocationsGroup();
+        loadLocations();
+
         mainViewPager.setPageTransformer(new ZoomOutPageTransformer());
-
-        // Load up credit image to WeatherAPI
-        ImageView creditImage =
-                navigationView
-                        .findViewById(R.id.poweredby_view)
-                        .findViewById(R.id.credit_image);
-
-        Glide
-                .with(this)
-                .load(R.drawable.weatherapi_logo)
-                .into(creditImage);
-
-        // Open site upon clicking image
-        creditImage.setOnClickListener(e -> {
-            String websiteURL = "https://www.weatherapi.com";
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(websiteURL));
-            startActivity(intent);
-        });
+        errorPage = findViewById(R.id.warning_layout);
     }
 
     /**
@@ -99,7 +93,12 @@ public class MainActivity extends AppCompatActivity
     public void reloadViewPager() {
         if (mainViewPager != null || !this.isDestroyed()) {
             // Refresh the view pager
-            mainViewPager.setAdapter(new WeatherDayStateAdapter(this));
+            WeatherDayStateAdapter presentAdapter = (WeatherDayStateAdapter) mainViewPager.getAdapter();
+
+            if (presentAdapter != null) {
+                String location = presentAdapter.getLocation();
+                mainViewPager.setAdapter(new WeatherDayStateAdapter(this, location));
+            }
 
             // Only switch the views if there's an internet connection
             // Otherwise the recurrence of the showError() method animation will overlap this one
@@ -127,5 +126,107 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         return false;
+    }
+
+    /**
+     * Check if there any locations that had been saved
+     * If present load the locations into the app
+     * If not, prompt the user to add location(s)
+     */
+    public void loadLocations() {
+        MaterialButton manageLocationsButton = navigationView.getManageLocationsButton();
+
+        SharedPreferences locationPreferences = getSharedPreferences("locations", MODE_PRIVATE);
+        Set<String> locations = locationPreferences.getStringSet("locationSet", null);
+
+        if (locations != null) {
+            // Loop through the set add a button to the toggle group
+            locations.forEach(this::addLocationButton);
+
+            int preferredLocation = locationPreferences.getInt("preferredLocation", -1);
+            LocationButton locationButton;
+
+            if (preferredLocation != -1) {
+                locationButton = (LocationButton) toggleGroup.getChildAt(preferredLocation);
+            } else {
+                locationButton = (LocationButton) toggleGroup.getChildAt(0);
+            }
+
+            // Load in location and show the weather info for the location
+            String location = locationButton.getLocation();
+            locationButton.setChecked(true);
+            mainViewPager.setAdapter(new WeatherDayStateAdapter(this, location));
+
+        } else {
+            // Open the drawer and prompt user to add a location
+            drawerLayout.openDrawer(GravityCompat.START);
+
+            // Animate the view to catch attention
+            float blinkButtonAlpha = 0f;
+            ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(manageLocationsButton, "alpha",
+                    1f ,blinkButtonAlpha);
+
+            alphaAnimator.setRepeatCount(5);
+            alphaAnimator.setRepeatMode(ValueAnimator.REVERSE);
+            alphaAnimator.setDuration(1500L).start();
+
+            getSupportActionBar().setTitle("No location selected");
+        }
+
+        // If the manageLocationsButton is clicked open LocationsActivity
+        manageLocationsButton.setOnClickListener(e -> {
+            Intent intent = new Intent(this, LocationsActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    public void addLocationButton(final String location) {
+
+        if (!location.isEmpty()) {
+            LocationButton newButton = new LocationButton(this, location);
+
+            // Add the button to the toggle group
+            final int insertPos = toggleGroup.getChildCount();
+            toggleGroup.addView(newButton, insertPos);
+
+            // When the button is pressed change toolbar title and load new state adapter
+            toggleGroup.addOnButtonCheckedListener(
+                    (MaterialButtonToggleGroup group, int checkedId, boolean isChecked) -> {
+
+                        if (isChecked) {
+                            LocationButton checkedButton = (LocationButton) toggleGroup.getChildAt(insertPos);
+
+                            String buttonLocation = checkedButton.getLocation();
+
+                            // If this button is checked create new viewpager adapter
+                            // Only if it doesn't already
+                            if (checkedButton.isChecked()) {
+
+                                WeatherDayStateAdapter currentAdapter =
+                                        (WeatherDayStateAdapter) mainViewPager.getAdapter();
+
+                                if (currentAdapter != null) {
+                                    if (!currentAdapter.getLocation().equals(buttonLocation)) {
+
+                                        // set adapter and close drawer
+                                        mainViewPager.setAdapter(new WeatherDayStateAdapter(this, buttonLocation));
+                                        getSupportActionBar().setTitle(buttonLocation);
+
+                                    } else {
+                                        checkedButton.setChecked(true);
+                                    }
+                                } else {
+                                    mainViewPager.setAdapter(new WeatherDayStateAdapter(this, buttonLocation));
+                                }
+
+
+                                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                                    drawerLayout.closeDrawer(GravityCompat.START);
+                                }
+                            }
+                        }
+                    });
+
+        }
     }
 }

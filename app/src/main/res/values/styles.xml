@@ -33,6 +33,9 @@
     <style name="WhiteText.Small">
         <item name="android:textSize">@dimen/small_font_size</item>
     </style>
+    <style name="WhiteText.Medium">
+        <item name="android:textSize">@dimen/medium_font_size</item>
+    </style>
 
     <!-- CustomTextView style-->
     <style name="CustomTextView" parent="Widget.AppCompat.TextView">
@@ -54,8 +57,8 @@
         <item name="android:textAppearance">@style/PurpleText.Medium</item>
     </style>
 
-
     <style name="CustomTextView.SmallWhiteText.PurpleBackground">
         <item name="android:background">@drawable/purple_curved_background</item>
     </style>
+
 </resources>

@@ -19,7 +19,6 @@
             android:layout_height="wrap_content"
             android:background="@color/purple_dark"
             app:titleTextColor="@color/white"
-            app:title="Harare"
             app:titleTextAppearance="@style/TextAppearance.AppCompat.Headline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -48,20 +47,9 @@
 
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-    <com.google.android.material.navigation.NavigationView
+    <com.africanbongo.clearskyes.controller.customviews.CustomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@color/purple_dark"
-        app:headerLayout="@layout/nav_drawer_header"
-        app:menu="@menu/nav_menu">
-        <include
-            android:id="@+id/poweredby_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small_gap"
-            layout="@layout/nav_footer"
-            android:layout_gravity="bottom|center" />
-    </com.google.android.material.navigation.NavigationView>
+        android:layout_gravity="start" />
 </androidx.drawerlayout.widget.DrawerLayout>

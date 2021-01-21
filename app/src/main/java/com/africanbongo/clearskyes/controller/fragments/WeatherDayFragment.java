@@ -57,14 +57,17 @@ public class WeatherDayFragment extends Fragment {
     private DayWeatherViewUp viewUp;
     private AstroView astroView;
 
+    private String location;
+
     // The day of the week to display
     String day;
     int daysOffset;
 
-    public WeatherDayFragment() {
+    public WeatherDayFragment(String location) {
+        this.location = location;
     }
 
-    public static WeatherDayFragment newInstance(MainActivity activity, int daysOffset) {
+    public static WeatherDayFragment newInstance(MainActivity activity, String location, int daysOffset) {
 
         // Set up error listener first
         errorListener = new ErrorPageListener(activity);
@@ -72,7 +75,7 @@ public class WeatherDayFragment extends Fragment {
         Bundle args = new Bundle();
         args.putInt("daysOffset", daysOffset);
 
-        WeatherDayFragment fragment = new WeatherDayFragment();
+        WeatherDayFragment fragment = new WeatherDayFragment(location);
         fragment.setArguments(args);
         return fragment;
     }
@@ -111,10 +114,15 @@ public class WeatherDayFragment extends Fragment {
     }
 
 
+    public String generateURL(String location, String date) {
+        return "https://api.weatherapi.com/v1/forecast.json?key=" +
+                WeatherRequestQueue.API_KEY + "&q=" + location +"&dt=" + date;
+    }
+
     public void requestData(String date) {
         new Thread(() -> {
 
-            String requestURL = WeatherRequestQueue.GET_DAY_WEATHER_START + date;
+            String requestURL = generateURL(location, date);
 
             WeatherRequestQueue requestQueue = WeatherRequestQueue
                     .getWeatherRequestQueue(getContext());

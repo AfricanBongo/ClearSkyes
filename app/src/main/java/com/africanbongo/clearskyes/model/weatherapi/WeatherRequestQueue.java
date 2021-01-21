@@ -20,11 +20,7 @@ public class WeatherRequestQueue {
 
 
     // Used for making API requests
-    private static final String API_KEY = "1092f3e10c9a4146890112852202212";
-    public static final String GET_CURRENT_WEATHER_START = "https://api.weatherapi.com/v1/forecast.json?key=" +
-            API_KEY +"&q=Harare&days=1";
-    public static final String GET_DAY_WEATHER_START = "https://api.weatherapi.com/v1/forecast.json?key=" +
-            API_KEY + "&q=Harare&dt=";
+    public static final String API_KEY = "1092f3e10c9a4146890112852202212";
 
 
     private WeatherRequestQueue(Context context) {

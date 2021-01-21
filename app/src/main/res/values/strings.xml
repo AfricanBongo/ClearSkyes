@@ -7,7 +7,7 @@
     <string name="condition">Weather condition</string>
     <string name="max_min_temp">Max temp / Min temp</string>
 
-<!--    TODO add other tooltips-->
+    <!--    TODO add other tooltips-->
     <string name="uv_content_description">Ultraviolet index</string>
     <string name="rain_content_description">Chance of rain</string>
     <string name="reload">Reload</string>
@@ -16,7 +16,11 @@
     <string name="nav_support">Support</string>
     <string name="nav_locations">Locations</string>
     <string name="nav_feedback">Feedback</string>
+    <string name="manage_locations">Manage Locations</string>
     <string name="powered">Powered by:</string>
     <string name="open_drawer">Open drawer</string>
     <string name="close_drawer">Close drawer</string>
+
+    <!-- Location activity-->
+    <string name="add_location">Add new location</string>
 </resources>
