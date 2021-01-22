@@ -1,6 +1,6 @@
 package com.africanbongo.clearskyes.model.weatherobjects;
 
-import static com.africanbongo.clearskyes.model.MiscMethods.getUVLevel;
+import static com.africanbongo.clearskyes.util.MiscMethodsUtil.getUVLevel;
 
 /**
 Contains generalized information about the weather on a certain day

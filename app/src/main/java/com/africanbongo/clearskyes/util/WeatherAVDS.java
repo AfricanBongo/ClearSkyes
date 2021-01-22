@@ -1,4 +1,4 @@
-package com.africanbongo.clearskyes.model;
+package com.africanbongo.clearskyes.util;
 
 import com.africanbongo.clearskyes.R;
 

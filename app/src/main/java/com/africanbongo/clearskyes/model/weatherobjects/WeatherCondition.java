@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.africanbongo.clearskyes.R;
-import com.africanbongo.clearskyes.model.WeatherAVDS;
+import com.africanbongo.clearskyes.util.WeatherAVDS;
 import com.bumptech.glide.Glide;
 
 /**

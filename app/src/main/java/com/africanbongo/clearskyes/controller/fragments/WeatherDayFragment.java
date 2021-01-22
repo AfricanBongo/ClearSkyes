@@ -19,9 +19,9 @@ import com.africanbongo.clearskyes.controller.animations.SwitchFadeAnimation;
 import com.africanbongo.clearskyes.controller.customviews.AstroView;
 import com.africanbongo.clearskyes.controller.customviews.CustomDateView;
 import com.africanbongo.clearskyes.controller.customviews.DayWeatherViewUp;
-import com.africanbongo.clearskyes.model.WeatherTime;
-import com.africanbongo.clearskyes.model.weatherapi.ErrorPageListener;
-import com.africanbongo.clearskyes.model.weatherapi.WeatherRequestQueue;
+import com.africanbongo.clearskyes.util.WeatherTimeUtil;
+import com.africanbongo.clearskyes.util.weatherapi.ErrorPageListener;
+import com.africanbongo.clearskyes.util.weatherapi.WeatherRequestQueue;
 import com.africanbongo.clearskyes.model.weatherobjects.AstroElement;
 import com.africanbongo.clearskyes.model.weatherobjects.CollectionWeatherDay;
 import com.africanbongo.clearskyes.model.weatherobjects.WeatherCondition;
@@ -102,10 +102,10 @@ public class WeatherDayFragment extends Fragment {
 
             // Get date string formatted so as to fetch JSON data
             DateTimeFormatter dateTimeFormatter =
-                    DateTimeFormatter.ofPattern(WeatherTime.DATE_FORMAT);
+                    DateTimeFormatter.ofPattern(WeatherTimeUtil.DATE_FORMAT);
 
             LocalDate localDate = LocalDate.now().plusDays(daysOffset);
-            day = WeatherTime.getRelativeDay(localDate);
+            day = WeatherTimeUtil.getRelativeDay(localDate);
 
             requestData(dateTimeFormatter.format(localDate));
         }

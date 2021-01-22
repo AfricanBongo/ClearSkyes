@@ -1,9 +1,9 @@
-package com.africanbongo.clearskyes.model;
+package com.africanbongo.clearskyes.util;
 
 /**
 Miscellaneous methods used through out the app
  */
-public class MiscMethods {
+public class MiscMethodsUtil {
     /**
      * Calculates if an integer value is within a range inclusively
      * @param x value

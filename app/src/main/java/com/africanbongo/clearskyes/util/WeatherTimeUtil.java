@@ -1,4 +1,4 @@
-package com.africanbongo.clearskyes.model;
+package com.africanbongo.clearskyes.util;
 
 import android.os.Build;
 
@@ -17,7 +17,7 @@ import java.util.Date;
 /**
  * Class that holds all methods and formats to derive Date and Time strings
  */
-public class WeatherTime {
+public class WeatherTimeUtil {
     // Formats for date and time
     public static final String TIME_FORMAT = "HH:mm";
     public static final String DATE_FORMAT = "yyyy-MM-dd";

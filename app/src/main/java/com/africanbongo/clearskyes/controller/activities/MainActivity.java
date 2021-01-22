@@ -1,9 +1,5 @@
 package com.africanbongo.clearskyes.controller.activities;
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -23,18 +19,14 @@ import com.africanbongo.clearskyes.controller.animations.ZoomOutPageTransformer;
 import com.africanbongo.clearskyes.controller.customviews.CustomNavigationView;
 import com.africanbongo.clearskyes.controller.customviews.LocationButton;
 import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.navigation.NavigationView;
-
-import java.util.Set;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawerLayout;
     private CustomNavigationView navigationView;
-    private MaterialButtonToggleGroup toggleGroup;
     private ViewPager2 mainViewPager;
     private View errorPage;
 
@@ -67,8 +59,7 @@ public class MainActivity extends AppCompatActivity
         mainViewPager = findViewById(R.id.main_viewpager);
 
         // Load location buttons and last location open onto the navigation drawer
-        toggleGroup = navigationView.getLocationsGroup();
-        loadLocations();
+        initLocations();
 
         mainViewPager.setPageTransformer(new ZoomOutPageTransformer());
         errorPage = findViewById(R.id.warning_layout);
@@ -135,100 +126,55 @@ public class MainActivity extends AppCompatActivity
      * If present load the locations into the app
      * If not, prompt the user to add location(s)
      */
-    public void loadLocations() {
-        MaterialButton manageLocationsButton = navigationView.getManageLocationsButton();
+    public void initLocations() {
+        String location = navigationView.loadLocations();
 
-        SharedPreferences locationPreferences = getSharedPreferences("locations", MODE_PRIVATE);
-        Set<String> locations = locationPreferences.getStringSet("locationSet", null);
-
-        if (locations != null) {
-            // Loop through the set add a button to the toggle group
-            locations.forEach(this::addLocationButton);
-
-            int preferredLocation = locationPreferences.getInt("preferredLocation", -1);
-            LocationButton locationButton;
-
-            if (preferredLocation != -1) {
-                locationButton = (LocationButton) toggleGroup.getChildAt(preferredLocation);
-            } else {
-                locationButton = (LocationButton) toggleGroup.getChildAt(0);
-            }
-
-            // Load in location and show the weather info for the location
-            String location = locationButton.getLocation();
-            locationButton.setChecked(true);
-            mainViewPager.setAdapter(new WeatherDayStateAdapter(this, location));
-
-        } else {
-            // Open the drawer and prompt user to add a location
-            drawerLayout.openDrawer(GravityCompat.START);
-
-            // Animate the view to catch attention
-            float blinkButtonAlpha = 0f;
-            ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(manageLocationsButton, "alpha",
-                    1f ,blinkButtonAlpha);
-
-            alphaAnimator.setRepeatCount(5);
-            alphaAnimator.setRepeatMode(ValueAnimator.REVERSE);
-            alphaAnimator.setDuration(1500L).start();
-
-            getSupportActionBar().setTitle("No location selected");
+        // Prompt the user to add new locations
+        if (location.equals(CustomNavigationView.NO_LOCATION_FOUND)) {
+            navigationView.promptForLocations(drawerLayout, true);
         }
 
-        // If the manageLocationsButton is clicked open LocationsActivity
-        manageLocationsButton.setOnClickListener(e -> {
-            Intent intent = new Intent(this, LocationsActivity.class);
-            startActivity(intent);
-        });
-    }
+        // Else load new adapter to view pager
+        else {
+            mainViewPager.setAdapter(new WeatherDayStateAdapter(this, location));
+        }
 
-    public void addLocationButton(final String location) {
+        getSupportActionBar().setTitle(location);
 
-        if (!location.isEmpty()) {
-            LocationButton newButton = new LocationButton(this, location);
+        // When the button is pressed change toolbar title and load new state adapter
+        navigationView.addOnLocationButtonCheckedListener(
+                (MaterialButtonToggleGroup group, int checkedId, boolean isChecked) -> {
+                    if (isChecked) {
 
-            // Add the button to the toggle group
-            final int insertPos = toggleGroup.getChildCount();
-            toggleGroup.addView(newButton, insertPos);
+                        LocationButton checkedButton = navigationView.findViewById(checkedId);
+                        String buttonLocation = checkedButton.getLocation();
 
-            // When the button is pressed change toolbar title and load new state adapter
-            toggleGroup.addOnButtonCheckedListener(
-                    (MaterialButtonToggleGroup group, int checkedId, boolean isChecked) -> {
+                        // If this button is checked create new viewpager adapter
+                        // Only if it doesn't already
+                        if (checkedButton.isChecked()) {
 
-                        if (isChecked) {
-                            LocationButton checkedButton = (LocationButton) toggleGroup.getChildAt(insertPos);
+                            WeatherDayStateAdapter currentAdapter =
+                                    (WeatherDayStateAdapter) mainViewPager.getAdapter();
 
-                            String buttonLocation = checkedButton.getLocation();
+                            if (currentAdapter != null) {
+                                if (!currentAdapter.getLocation().equals(buttonLocation)) {
 
-                            // If this button is checked create new viewpager adapter
-                            // Only if it doesn't already
-                            if (checkedButton.isChecked()) {
-
-                                WeatherDayStateAdapter currentAdapter =
-                                        (WeatherDayStateAdapter) mainViewPager.getAdapter();
-
-                                if (currentAdapter != null) {
-                                    if (!currentAdapter.getLocation().equals(buttonLocation)) {
-
-                                        // set adapter and close drawer
-                                        mainViewPager.setAdapter(new WeatherDayStateAdapter(this, buttonLocation));
-                                        getSupportActionBar().setTitle(buttonLocation);
-
-                                    } else {
-                                        checkedButton.setChecked(true);
-                                    }
-                                } else {
+                                    // set adapter and close drawer
                                     mainViewPager.setAdapter(new WeatherDayStateAdapter(this, buttonLocation));
-                                }
+                                    getSupportActionBar().setTitle(buttonLocation);
 
-
-                                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                                    drawerLayout.closeDrawer(GravityCompat.START);
+                                } else {
+                                    checkedButton.setChecked(true);
                                 }
+                            } else {
+                                mainViewPager.setAdapter(new WeatherDayStateAdapter(this, buttonLocation));
+                            }
+
+                            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                                drawerLayout.closeDrawer(GravityCompat.START);
                             }
                         }
-                    });
-
-        }
+                    }
+                });
     }
 }

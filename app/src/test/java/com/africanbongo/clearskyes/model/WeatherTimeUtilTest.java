@@ -1,5 +1,7 @@
 package com.africanbongo.clearskyes.model;
 
+import com.africanbongo.clearskyes.util.WeatherTimeUtil;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /*
 Test the WeatherTime class
  */
-class WeatherTimeTest {
+class WeatherTimeUtilTest {
 
     final String timeString = "2020-01-06 00:00";
 
@@ -29,27 +31,27 @@ class WeatherTimeTest {
     @ParameterizedTest
     @MethodSource("provideStringsForGetRelativeDay")
     void getRelativeDay(String expectedOutput, LocalDate date) {
-        assertEquals(expectedOutput, WeatherTime.getRelativeDay(date));
+        assertEquals(expectedOutput, WeatherTimeUtil.getRelativeDay(date));
     }
 
     @Test
     void getRelativeDayAndProperTime() {
         String expectedOutput = "Monday, 00:00";
 
-        assertEquals(expectedOutput, WeatherTime.getRelativeDayAndProperTime(timeString));
+        assertEquals(expectedOutput, WeatherTimeUtil.getRelativeDayAndProperTime(timeString));
     }
 
     @Test
     void getHourPeriod() {
         String expectedOutput = "00:00 - 01:00";
 
-        assertEquals(expectedOutput, WeatherTime.getHourPeriod(timeString));
+        assertEquals(expectedOutput, WeatherTimeUtil.getHourPeriod(timeString));
     }
 
     @ParameterizedTest
     @ValueSource(strings = {"tuesday", "mONday", "mE", "Donell"})
     void titleString(String string) {
-        String titleString = WeatherTime.titleString(string);
+        String titleString = WeatherTimeUtil.titleString(string);
 
         // Check if the first letter is capitalized
         boolean firstLetterCaps = titleString
@@ -68,7 +70,7 @@ class WeatherTimeTest {
     @ParameterizedTest
     @ArgumentsSource(HourNotationArgumentsProvider.class)
     void get24HourNotation(String expectedOutput, String input) {
-        assertEquals(expectedOutput, WeatherTime.get24HourNotation(input));
+        assertEquals(expectedOutput, WeatherTimeUtil.get24HourNotation(input));
     }
 
 

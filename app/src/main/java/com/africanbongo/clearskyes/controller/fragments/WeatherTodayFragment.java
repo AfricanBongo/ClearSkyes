@@ -21,8 +21,8 @@ import com.africanbongo.clearskyes.controller.animations.SwitchFadeAnimation;
 import com.africanbongo.clearskyes.controller.customviews.AstroView;
 import com.africanbongo.clearskyes.controller.customviews.CurrentWeatherViewUp;
 import com.africanbongo.clearskyes.controller.customviews.CustomDateView;
-import com.africanbongo.clearskyes.model.weatherapi.ErrorPageListener;
-import com.africanbongo.clearskyes.model.weatherapi.WeatherRequestQueue;
+import com.africanbongo.clearskyes.util.weatherapi.ErrorPageListener;
+import com.africanbongo.clearskyes.util.weatherapi.WeatherRequestQueue;
 import com.africanbongo.clearskyes.model.weatherobjects.AstroElement;
 import com.africanbongo.clearskyes.model.weatherobjects.WeatherCondition;
 import com.africanbongo.clearskyes.model.weatherobjects.WeatherHour;
@@ -42,8 +42,8 @@ import org.json.JSONObject;
 import java.time.LocalDate;
 
 import static android.view.View.GONE;
-import static com.africanbongo.clearskyes.model.WeatherTime.getCurrentHourAsIndex;
-import static com.africanbongo.clearskyes.model.WeatherTime.getRelativeDay;
+import static com.africanbongo.clearskyes.util.WeatherTimeUtil.getCurrentHourAsIndex;
+import static com.africanbongo.clearskyes.util.WeatherTimeUtil.getRelativeDay;
 
 /*
 Fragment containing today's weather

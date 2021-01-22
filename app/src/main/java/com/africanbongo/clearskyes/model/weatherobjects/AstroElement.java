@@ -4,7 +4,7 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import static com.africanbongo.clearskyes.model.WeatherTime.get24HourNotation;
+import static com.africanbongo.clearskyes.util.WeatherTimeUtil.get24HourNotation;
 
 /**
 Contains astronomy properties

@@ -1,4 +1,4 @@
-package com.africanbongo.clearskyes.model.weatherapi;
+package com.africanbongo.clearskyes.util.weatherapi;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

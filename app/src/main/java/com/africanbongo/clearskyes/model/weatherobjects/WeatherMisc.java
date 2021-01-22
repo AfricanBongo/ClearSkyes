@@ -1,7 +1,5 @@
 package com.africanbongo.clearskyes.model.weatherobjects;
 
-import static com.africanbongo.clearskyes.model.MiscMethods.isBetween;
-
 /**
 Contains other miscellaneous weather properties
  */

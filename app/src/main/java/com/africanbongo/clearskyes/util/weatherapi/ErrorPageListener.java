@@ -1,4 +1,4 @@
-package com.africanbongo.clearskyes.model.weatherapi;
+package com.africanbongo.clearskyes.util.weatherapi;
 
 import android.content.Context;
 import android.graphics.drawable.Animatable2;
@@ -14,10 +14,8 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.controller.activities.MainActivity;
-import com.android.volley.NetworkResponse;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.HttpResponse;
 
 public class ErrorPageListener implements Response.ErrorListener {
 
