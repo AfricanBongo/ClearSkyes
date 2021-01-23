@@ -1,4 +1,4 @@
-package com.africanbongo.clearskyes.util.weatherapi;
+package com.africanbongo.clearskyes.model.util.weatherapi;
 
 import android.content.Context;
 import android.graphics.drawable.Animatable2;

@@ -1,4 +1,4 @@
-package com.africanbongo.clearskyes.util;
+package com.africanbongo.clearskyes.model.util;
 
 import android.os.Build;
 

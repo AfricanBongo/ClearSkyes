@@ -1,4 +1,4 @@
-package com.africanbongo.clearskyes.model.weatherobjects;
+package com.africanbongo.clearskyes.model.weather;
 
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.africanbongo.clearskyes.R;
-import com.africanbongo.clearskyes.util.WeatherAVDS;
+import com.africanbongo.clearskyes.model.util.WeatherAVDS;
 import com.bumptech.glide.Glide;
 
 /**

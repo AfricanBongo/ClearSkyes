@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity
                     if (isChecked) {
 
                         LocationButton checkedButton = navigationView.findViewById(checkedId);
-                        String buttonLocation = checkedButton.getLocation();
+                        String buttonLocation = checkedButton.getLocation().getUrlLocation();
 
                         // If this button is checked create new viewpager adapter
                         // Only if it doesn't already

@@ -13,7 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.africanbongo.clearskyes.R;
 
 /**
- * Custom view for holding minimal {@link com.africanbongo.clearskyes.model.weatherobjects.WeatherDay} data
+ * Custom view for holding minimal {@link com.africanbongo.clearskyes.model.weather.WeatherDay} data
  */
 public class DayWeatherViewUp extends ConstraintLayout {
 

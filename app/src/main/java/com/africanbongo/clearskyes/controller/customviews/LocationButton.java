@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.africanbongo.clearskyes.R;
+import com.africanbongo.clearskyes.model.location.WeatherLocation;
+import com.africanbongo.clearskyes.model.util.LocationUtil;
 import com.google.android.material.button.MaterialButton;
 
 /**
@@ -18,7 +20,9 @@ import com.google.android.material.button.MaterialButton;
  * Upon installation of the app, the current location is taken to get a weather location
  */
 public class LocationButton extends MaterialButton {
-    private String location;
+    private WeatherLocation location;
+
+    private static final String BUTTON_TEXT_SEPARATOR = ", ";
 
     private static final int WHITE_COLOR = Color.WHITE;
     private static final int PURPLE_COLOR = R.color.purple_dark;
@@ -28,16 +32,12 @@ public class LocationButton extends MaterialButton {
     private static final float SCALE_EXTEND = 1.2f;
     private static final long EXTENSION_DURATION = 500L;
 
-    public LocationButton(Context context, String location) {
+    public LocationButton(Context context, WeatherLocation location) {
         this(context);
 
         // Always make the location a title string, eg. Harare, Gold, Reef
         // Make sure to remove whitespaces too
-        this.location = location
-                .substring(0, 1)
-                .toUpperCase()
-                .concat(location.substring(1).toLowerCase())
-                .trim();
+        this.location = location;
 
         init();
     }
@@ -58,7 +58,21 @@ public class LocationButton extends MaterialButton {
 
     public void init() {
         // Label the button
-        setText(location);
+        String buttonLabel = location.getCity() + BUTTON_TEXT_SEPARATOR +
+                location.getCountryCode();
+
+        String buttonToolTipText;
+
+        if (location.getRegion().equals(LocationUtil.NOT_APPLICABLE)) {
+            buttonToolTipText = location.getCity() + BUTTON_TEXT_SEPARATOR +
+                    location.getCountry();
+        } else {
+            buttonToolTipText = location.getCity() + BUTTON_TEXT_SEPARATOR +
+                    location.getRegion() + BUTTON_TEXT_SEPARATOR + location.getCountry();
+        }
+
+        setText(buttonLabel);
+        setTooltipText(buttonToolTipText);
 
         // Change view colors
         int color = ResourcesCompat.getColor(getResources(), PURPLE_COLOR, null);
@@ -114,10 +128,10 @@ public class LocationButton extends MaterialButton {
 
     /**
      * Get the location of the weather data associated with this button
-     * @return {@link String} location eg. Harare
+     * @return {@link WeatherLocation} object eg. for Harare
      */
     @NonNull
-    public String getLocation() {
+    public WeatherLocation getLocation() {
         return location;
     }
 }

@@ -1,13 +1,11 @@
-package com.africanbongo.clearskyes.util.weatherapi;
+package com.africanbongo.clearskyes.model.util.weatherapi;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 /**
  {@link RequestQueue} for making requests for JSON to WeatherApi
@@ -49,25 +47,6 @@ public class WeatherRequestQueue {
     }
 
     /**
-     * Creates a VolleyResponse ErrorListener for delivering error responses
-     * @param tag Preferably class name where the error should be tagged to
-     * @return {@link com.android.volley.Response.ErrorListener} in case of request errors
-     */
-    public Response.ErrorListener createGenericErrorListener(String tag) {
-        return error -> Log.e(tag, error.getMessage());
-    }
-
-    /**
-     *
-     * @param tag Preferably class name where the error should be tagged to
-     * @param errorMessage {@link String} to display as error message in the log
-     * @return {@link com.android.volley.Response.ErrorListener} used for API requests
-     */
-    public Response.ErrorListener createGenericErrorListener(String tag, String errorMessage) {
-        return error -> Log.e(tag, errorMessage);
-    }
-
-    /**
      * Check if the host device has an internet connection
      * @return True, if an internet connection exists
      */
@@ -76,11 +55,5 @@ public class WeatherRequestQueue {
                 = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
         return activeNetworkInfo != null && activeNetworkInfo.isConnectedOrConnecting();
-    }
-
-
-
-    public RequestQueue getRequestQueue() {
-        return requestQueue;
     }
 }

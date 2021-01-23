@@ -1,9 +1,9 @@
-package com.africanbongo.clearskyes.model.weatherobjects;
+package com.africanbongo.clearskyes.model.weather;
 
 import androidx.annotation.NonNull;
 
-import static com.africanbongo.clearskyes.util.MiscMethodsUtil.getUVLevel;
-import static com.africanbongo.clearskyes.util.WeatherTimeUtil.getRelativeDayAndProperTime;
+import static com.africanbongo.clearskyes.model.util.MiscMethodsUtil.getUVLevel;
+import static com.africanbongo.clearskyes.model.util.WeatherTimeUtil.getRelativeDayAndProperTime;
 
 /**
  * Contains all the weather information of the current day

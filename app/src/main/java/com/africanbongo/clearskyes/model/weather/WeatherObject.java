@@ -1,4 +1,4 @@
-package com.africanbongo.clearskyes.model.weatherobjects;
+package com.africanbongo.clearskyes.model.weather;
 
 /**
 Class that holds common base information about weather

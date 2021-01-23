@@ -1,10 +1,10 @@
-package com.africanbongo.clearskyes.model.weatherobjects;
+package com.africanbongo.clearskyes.model.weather;
 
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import static com.africanbongo.clearskyes.util.WeatherTimeUtil.get24HourNotation;
+import static com.africanbongo.clearskyes.model.util.WeatherTimeUtil.get24HourNotation;
 
 /**
 Contains astronomy properties

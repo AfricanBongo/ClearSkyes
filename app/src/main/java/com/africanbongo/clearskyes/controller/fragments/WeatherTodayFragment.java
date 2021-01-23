@@ -21,16 +21,16 @@ import com.africanbongo.clearskyes.controller.animations.SwitchFadeAnimation;
 import com.africanbongo.clearskyes.controller.customviews.AstroView;
 import com.africanbongo.clearskyes.controller.customviews.CurrentWeatherViewUp;
 import com.africanbongo.clearskyes.controller.customviews.CustomDateView;
-import com.africanbongo.clearskyes.util.weatherapi.ErrorPageListener;
-import com.africanbongo.clearskyes.util.weatherapi.WeatherRequestQueue;
-import com.africanbongo.clearskyes.model.weatherobjects.AstroElement;
-import com.africanbongo.clearskyes.model.weatherobjects.WeatherCondition;
-import com.africanbongo.clearskyes.model.weatherobjects.WeatherHour;
-import com.africanbongo.clearskyes.model.weatherobjects.WeatherMisc;
-import com.africanbongo.clearskyes.model.weatherobjects.WeatherObject;
-import com.africanbongo.clearskyes.model.weatherobjects.WeatherTemp;
-import com.africanbongo.clearskyes.model.weatherobjects.WeatherToday;
-import com.africanbongo.clearskyes.model.weatherobjects.WeatherWind;
+import com.africanbongo.clearskyes.model.util.weatherapi.ErrorPageListener;
+import com.africanbongo.clearskyes.model.util.weatherapi.WeatherRequestQueue;
+import com.africanbongo.clearskyes.model.weather.AstroElement;
+import com.africanbongo.clearskyes.model.weather.WeatherCondition;
+import com.africanbongo.clearskyes.model.weather.WeatherHour;
+import com.africanbongo.clearskyes.model.weather.WeatherMisc;
+import com.africanbongo.clearskyes.model.weather.WeatherObject;
+import com.africanbongo.clearskyes.model.weather.WeatherTemp;
+import com.africanbongo.clearskyes.model.weather.WeatherToday;
+import com.africanbongo.clearskyes.model.weather.WeatherWind;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -42,8 +42,8 @@ import org.json.JSONObject;
 import java.time.LocalDate;
 
 import static android.view.View.GONE;
-import static com.africanbongo.clearskyes.util.WeatherTimeUtil.getCurrentHourAsIndex;
-import static com.africanbongo.clearskyes.util.WeatherTimeUtil.getRelativeDay;
+import static com.africanbongo.clearskyes.model.util.WeatherTimeUtil.getCurrentHourAsIndex;
+import static com.africanbongo.clearskyes.model.util.WeatherTimeUtil.getRelativeDay;
 
 /*
 Fragment containing today's weather

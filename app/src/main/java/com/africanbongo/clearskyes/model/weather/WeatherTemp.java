@@ -1,4 +1,4 @@
-package com.africanbongo.clearskyes.model.weatherobjects;
+package com.africanbongo.clearskyes.model.weather;
 
 /**
 Base class for holding temperatures celsius and fahrenheit

@@ -21,11 +21,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.controller.activities.LocationsActivity;
-import com.africanbongo.clearskyes.util.LocationUtil;
+import com.africanbongo.clearskyes.model.location.WeatherLocation;
+import com.africanbongo.clearskyes.model.util.LocationUtil;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.navigation.NavigationView;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -129,8 +131,12 @@ public class CustomNavigationView extends NavigationView {
         Set<String> locations = locationPreferences.getStringSet("locationSet", null);
 
         if (locations != null) {
+
+            ArrayList<WeatherLocation> weatherLocations =
+                    new ArrayList<>(LocationUtil.deserializeAll(locations));
+
             // Loop through the set add a button to the toggle group
-            locations.forEach(s -> addLocationButton(s));
+            weatherLocations.forEach(this::addLocationButton);
 
             int preferredLocation = locationPreferences.getInt("preferredLocation", -1);
             LocationButton locationButton;
@@ -142,7 +148,7 @@ public class CustomNavigationView extends NavigationView {
             }
 
             // Load in location and show the weather info for the location
-            String location = locationButton.getLocation();
+            String location = locationButton.getLocation().getUrlLocation();
             locationButton.setChecked(true);
 
             return location;
@@ -207,8 +213,12 @@ public class CustomNavigationView extends NavigationView {
         new Handler().post(runBlinkAnim);
     }
 
-    public void addLocationButton(@NonNull final String location){
-        if (!location.isEmpty()) {
+    /**
+     * Add a location button to the view's location buttons toggle group
+     * @param location {@link WeatherLocation} used to identify the location's weather info being displayed
+     */
+    public void addLocationButton(WeatherLocation location){
+        if (location != null) {
             LocationButton newButton = new LocationButton(getContext(), location);
 
             // Add the button to the toggle group
@@ -225,13 +235,5 @@ public class CustomNavigationView extends NavigationView {
      */
     public void addOnLocationButtonCheckedListener(@NonNull MaterialButtonToggleGroup.OnButtonCheckedListener checkedListener) {
         locationsGroup.addOnButtonCheckedListener(checkedListener);
-    }
-
-    public MaterialButtonToggleGroup getLocationsGroup() {
-        return locationsGroup;
-    }
-
-    public MaterialButton getManageLocationsButton() {
-        return manageLocationsButton;
     }
 }

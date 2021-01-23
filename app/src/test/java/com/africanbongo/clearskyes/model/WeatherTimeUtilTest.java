@@ -1,6 +1,6 @@
 package com.africanbongo.clearskyes.model;
 
-import com.africanbongo.clearskyes.util.WeatherTimeUtil;
+import com.africanbongo.clearskyes.model.util.WeatherTimeUtil;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtensionContext;

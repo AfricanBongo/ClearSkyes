@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.africanbongo.clearskyes.R;
-import com.africanbongo.clearskyes.model.weatherobjects.WeatherHour;
+import com.africanbongo.clearskyes.model.weather.WeatherHour;
 
 /**
  * Adapter for setting up and feeding the recycler view.

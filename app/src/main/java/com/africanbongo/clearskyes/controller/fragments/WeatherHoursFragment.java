@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.controller.adapters.WeatherHoursRecyclerViewAdapter;
-import com.africanbongo.clearskyes.model.weatherobjects.WeatherHour;
+import com.africanbongo.clearskyes.model.weather.WeatherHour;
 
 import java.time.LocalTime;
 
