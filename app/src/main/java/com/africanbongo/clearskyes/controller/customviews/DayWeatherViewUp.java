@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.africanbongo.clearskyes.R;
+import com.africanbongo.clearskyes.model.weather.WeatherDay;
 
 /**
  * Custom view for holding minimal {@link com.africanbongo.clearskyes.model.weather.WeatherDay} data
@@ -56,25 +57,37 @@ public class DayWeatherViewUp extends ConstraintLayout {
         dayWeatherIcon = layout.findViewById(R.id.weather_day_image);
     }
 
-    public void setAvgTemp(double temp) {
+    /**
+     * Load weather info into this custom view
+     * @param day {@link WeatherDay} object where its members will be used to populate this view
+     */
+    public void loadData(WeatherDay day) {
+        String conditionText = day.getConditions().getConditionText();
+
+        setAvgTemp(day.getAvgTemp().getTempC());
+        setDayUVIndex(day.getUvLevel());
+        setMaxAndMinTemp(day.getMaxTemp().getTempC(),
+                day.getMinTemp().getTempC());
+        setConditionText(conditionText);
+
+        day.getConditions().loadConditionImage(dayWeatherIcon);
+    }
+
+    private void setAvgTemp(double temp) {
         String temperature = temp + "°";
         dayAvgTempView.setText(temperature);
     }
 
-    public void setMaxAndMinTemp(double maxTemp, double minTemp) {
+    private void setMaxAndMinTemp(double maxTemp, double minTemp) {
         String temps = maxTemp + "°" + " / " + minTemp + "°";
         dayMaxMinTemp.setText(temps);
     }
 
-    public void setConditionText(String conditionString) {
+    private void setConditionText(String conditionString) {
         dayConditionText.setText(conditionString);
     }
 
-    public void setDayUVIndex(String uvIndex) {
+    private void setDayUVIndex(String uvIndex) {
         dayUVIndex.setText(uvIndex);
-    }
-
-    public ImageView getDayWeatherIcon() {
-        return dayWeatherIcon;
     }
 }

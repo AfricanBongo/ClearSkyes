@@ -9,7 +9,17 @@ import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-public class LocationUtil {
+/**
+ * Utility class used to perform operations involving {@link WeatherLocation}
+ * <p>
+ *     Can be used for :
+ *     <ul>
+ *         <li>Serializing and de-serializing {@link WeatherLocation} objects</li>
+ *         <li>Parsing a Location {@link org.json.JSONObject} from the API into a local {@link WeatherLocation}</li>
+ *    </ul>
+ * </p>
+ */
+public final class LocationUtil {
 
     public static final String NOT_APPLICABLE = "N/A";
     // Used to separate info in a WeatherInfo String
@@ -20,6 +30,8 @@ public class LocationUtil {
     // Shared Preferences variables
     public static final String SP_LOCATION_SET = "locationSet";
     public static final String SP_LOCATIONS = "locations";
+
+    private LocationUtil() {}
 
     /**
      * <p>
@@ -95,8 +107,8 @@ public class LocationUtil {
 
     /**
      * Deserializes a {@link Set}<{@link String}> into {@link WeatherLocation} objects
-     * @param locationSet {@link Set}<{@link Set}<{@link String}>> to be de-serialized
-     * @return {@link Collection}<{@link WeatherLocation}>>
+     * @param locationSet {@link Set}<{@link String}> to be de-serialized
+     * @return {@link Collection}<{@link WeatherLocation}>
      */
     public static synchronized Collection<WeatherLocation> deserializeAll(@NonNull Set<String> locationSet) {
         Collection<WeatherLocation> locations = new ArrayList<>();

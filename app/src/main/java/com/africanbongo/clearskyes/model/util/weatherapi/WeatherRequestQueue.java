@@ -15,8 +15,6 @@ public class WeatherRequestQueue {
     private final RequestQueue requestQueue;
     private final Context context;
 
-
-
     // Used for making API requests
     public static final String API_KEY = "1092f3e10c9a4146890112852202212";
 

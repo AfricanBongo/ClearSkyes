@@ -12,8 +12,10 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.africanbongo.clearskyes.R;
+import com.africanbongo.clearskyes.model.weather.WeatherToday;
 
 import static com.africanbongo.clearskyes.model.util.MiscMethodsUtil.getUVLevel;
+import static com.africanbongo.clearskyes.model.util.WeatherTimeUtil.getCurrentHourAsIndex;
 
 /*
 Custom view that shows the current hour weather details
@@ -85,6 +87,25 @@ public class CurrentWeatherViewUp extends ConstraintLayout {
         setConditionText(condText);
 
         a.recycle();
+    }
+
+    /**
+     * Loads {@link WeatherToday} info into this custom view
+     * @param today
+     */
+    public synchronized void loadData(WeatherToday today) {
+        // Load ViewUp elements
+        setUvIndex(today.getUvLevel());
+        setFeelsLikeTemp((int) today.getNowWeather().getFeelsLikeTemp().getTempC());
+        setNowTemp((int) today.getNowWeather().getActualTemp().getTempC());
+
+        String conditionText = today.getNowWeather().getConditions().getConditionText();
+
+        setConditionText(conditionText);
+
+        // Load weather icon
+        today.getNowWeather().getConditions().loadConditionImage(iconImageView);
+        iconImageView.setContentDescription(conditionText);
     }
 
     public void setNowTemp(int temperature) {

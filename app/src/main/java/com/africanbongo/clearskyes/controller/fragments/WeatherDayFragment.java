@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -19,34 +20,28 @@ import com.africanbongo.clearskyes.controller.animations.SwitchFadeAnimation;
 import com.africanbongo.clearskyes.controller.customviews.AstroView;
 import com.africanbongo.clearskyes.controller.customviews.CustomDateView;
 import com.africanbongo.clearskyes.controller.customviews.DayWeatherViewUp;
+import com.africanbongo.clearskyes.model.util.WeatherJsonUtil;
 import com.africanbongo.clearskyes.model.util.WeatherTimeUtil;
 import com.africanbongo.clearskyes.model.util.weatherapi.ErrorPageListener;
 import com.africanbongo.clearskyes.model.util.weatherapi.WeatherRequestQueue;
 import com.africanbongo.clearskyes.model.weather.AstroElement;
-import com.africanbongo.clearskyes.model.weather.CollectionWeatherDay;
-import com.africanbongo.clearskyes.model.weather.WeatherCondition;
 import com.africanbongo.clearskyes.model.weather.WeatherDay;
 import com.africanbongo.clearskyes.model.weather.WeatherHour;
-import com.africanbongo.clearskyes.model.weather.WeatherMisc;
-import com.africanbongo.clearskyes.model.weather.WeatherObject;
-import com.africanbongo.clearskyes.model.weather.WeatherTemp;
-import com.africanbongo.clearskyes.model.weather.WeatherWind;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static android.view.View.GONE;
 
 public class WeatherDayFragment extends Fragment {
-
-    private CollectionWeatherDay collectionWeatherDay;
 
     // Error Listener for fetching Weather JSON data
     private static ErrorPageListener errorListener;
@@ -58,6 +53,8 @@ public class WeatherDayFragment extends Fragment {
     private AstroView astroView;
 
     private String location;
+
+    private static final String FRAGMENT_NAME = "WeatherDayFragment";
 
     // The day of the week to display
     String day;
@@ -135,120 +132,42 @@ public class WeatherDayFragment extends Fragment {
                     // from the API
                     startLoadingAnimation();
 
-                    JSONObject dayWeatherJSON = response
+                    JSONObject json = response
                             .getJSONObject("forecast")
                             .getJSONArray("forecastday")
                             .getJSONObject(0);
 
                     // Get the Weather Day details first
-                    // Get the temp details first
+                    ExecutorService weatherExecutorService = Executors.newFixedThreadPool(3);
 
-                    JSONObject dayJSON = dayWeatherJSON.getJSONObject("day");
-
-                    double maxtemp_c = dayJSON.getDouble("maxtemp_c");
-                    double maxtemp_f = dayJSON.getDouble("maxtemp_f");
-                    double mintemp_c = dayJSON.getDouble("mintemp_c");
-                    double mintemp_f = dayJSON.getDouble("mintemp_f");
-                    double avgtemp_c = dayJSON.getDouble("avgtemp_c");
-                    double avgtemp_f = dayJSON.getDouble("avgtemp_f");
-
-                    WeatherTemp maxTemp = new WeatherTemp(maxtemp_c, maxtemp_f);
-                    WeatherTemp minTemp = new WeatherTemp(mintemp_c, mintemp_f);
-                    WeatherTemp avgTemp = new WeatherTemp(avgtemp_c, avgtemp_f);
-
-                    // Get miscellaneous details
-                    int avghumidity = dayJSON.getInt("avghumidity");
-                    int uvIndex = dayJSON.getInt("uv");
-                    double totalprecip_mm = dayJSON.getInt("totalprecip_mm");
-                    double maxwind_kph = dayJSON.getDouble("maxwind_kph");
-                    double maxwind_mph = dayJSON.getDouble("maxwind_mph");
+                    weatherExecutorService.submit(() -> {
+                        try {
+                            loadViewUp(WeatherJsonUtil.parseIntoWeatherDay(json));
+                        } catch (JSONException e) {
+                            Log.e(FRAGMENT_NAME, e.getMessage(), e);
+                        }
+                    });
 
 
-                    WeatherMisc misc = new WeatherMisc(0, totalprecip_mm, avghumidity);
+                    // Parse and load astronomy information
+                    weatherExecutorService.submit(() -> {
+                        try {
+                            loadAstroView(WeatherJsonUtil.parseIntoAstroElement(json));
+                        } catch (JSONException e) {
+                            Log.e(FRAGMENT_NAME, e.getMessage(), e);
+                        }
+                    });
 
-                    // Get weather conditions
-                    JSONObject conditionJSON = dayJSON.getJSONObject("condition");
+                    // Parse and load weather hours information
+                    weatherExecutorService.submit(() -> {
+                       try {
+                           loadWeatherHours(WeatherJsonUtil.parseIntoWeatherHourArray(json));
+                       } catch (JSONException e) {
+                           Log.e(FRAGMENT_NAME, e.getMessage(), e);
+                       }
+                    });
 
-                    String conditionString = conditionJSON.getString("text");
-                    String icon = conditionJSON.getString("icon");
-                    int code = conditionJSON.getInt("code");
-
-                    WeatherCondition condition =
-                            new WeatherCondition(conditionString, icon, code, true);
-
-                    WeatherDay dayObject =
-                            new WeatherDay(maxTemp, minTemp, avgTemp, condition,
-                                    misc, maxwind_kph, maxwind_mph, uvIndex);
-
-                    // AstroElement object
-                    JSONObject astro = dayWeatherJSON.getJSONObject("astro");
-
-                    String sunrise = astro.getString("sunrise");
-                    String sunset = astro.getString("sunset");
-                    String moonrise = astro.getString("moonrise");
-                    String moonset = astro.getString("moonset");
-                    String moonphase = astro.getString("moon_phase");
-
-                    AstroElement astroElement =
-                            new AstroElement(sunrise, sunset, moonrise, moonset, moonphase);
-
-                    // Instantiate collectionWeatherDay object
-                    collectionWeatherDay = new CollectionWeatherDay(dayObject, astroElement);
-
-                    // WeatherHour objects
-                    JSONArray hours = dayWeatherJSON.getJSONArray("hour");
-
-                    for (int i = 0; i < hours.length(); i++) {
-                        JSONObject hourWeatherJSON = hours.getJSONObject(i);
-
-                        String time = hourWeatherJSON.getString("time");
-
-                        // WeatherTemp objects
-                        double htemp_c = hourWeatherJSON.getDouble("temp_c");
-                        double htemp_f = hourWeatherJSON.getDouble("temp_f");
-                        double hfeelslike_c = hourWeatherJSON.getDouble("feelslike_c");
-                        double hfeelslike_f = hourWeatherJSON.getDouble("feelslike_f");
-
-                        WeatherTemp htemps = new WeatherTemp(htemp_c, htemp_f);
-                        WeatherTemp hfeelsLike = new WeatherTemp(hfeelslike_c, hfeelslike_f);
-
-                        // WeatherWind object
-                        double hwind_mph = hourWeatherJSON.getDouble("wind_mph");
-                        double hwind_kph = hourWeatherJSON.getDouble("wind_kph");
-                        String hwind_dir = hourWeatherJSON.getString("wind_dir");
-
-                        WeatherWind hwind = new WeatherWind(hwind_mph, hwind_kph, hwind_dir);
-
-                        // WeatherMisc object
-                        double hpressure_mb = hourWeatherJSON.getDouble("pressure_mb");
-                        double hprecip_mm = hourWeatherJSON.getDouble("precip_mm");
-                        int hhumidity = hourWeatherJSON.getInt("humidity");
-
-                        WeatherMisc hmisc = new WeatherMisc(hpressure_mb, hprecip_mm, hhumidity);
-
-                        // WeatherCondition object
-                        JSONObject hconditions = hourWeatherJSON.getJSONObject("condition");
-                        String hconditionText = hconditions.getString("text");
-                        String hconditionIcon = hconditions.getString("icon");
-                        int hconditionCode = hconditions.getInt("code");
-                        boolean hday = hourWeatherJSON.getInt("is_day") == 1;
-
-                        WeatherCondition hweatherCondition =
-                                new WeatherCondition(hconditionText, hconditionIcon, hconditionCode, hday);
-
-                        // Other properties
-                        int chance_of_snow = hourWeatherJSON.getInt("chance_of_snow");
-                        int chance_of_rain = hourWeatherJSON.getInt("chance_of_rain");
-
-                        // WeatherObject object
-                        WeatherObject hourWeatherObject =
-                                new WeatherObject(htemps, hfeelsLike, hweatherCondition, hmisc, hwind);
-
-                        collectionWeatherDay.addWeatherHour(i,
-                                new WeatherHour(hourWeatherObject, time, chance_of_snow, chance_of_rain));
-                    }
-
-                    loadData();
+                    weatherExecutorService.shutdown();
 
                 } catch (JSONException e) {
                     Log.e("WeatherDayFragment", "Failed to parse JSON object", e);
@@ -306,45 +225,32 @@ public class WeatherDayFragment extends Fragment {
         }
     }
 
-    // Load data into respective views
-    public void loadData() {
-        if (collectionWeatherDay != null && viewUp != null && astroView != null) {
+    // Load data into ViewUp
+    public void loadViewUp(@NonNull WeatherDay weatherDay) {
+        getActivity().runOnUiThread(() -> {
+            // Populate the dateView first
+            dateView.setDate(day);
+            // Populate viewUp
+            viewUp.loadData(weatherDay);
+        });
+    }
 
-            getActivity().runOnUiThread(() -> {
-                // Load the weather hours fragment
-                getChildFragmentManager().beginTransaction()
-                        .replace(R.id.day_weather_hours, WeatherHoursFragment.newInstance(collectionWeatherDay.getHours()))
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-                        .commit();
+    // Load data into AstroView
+    public void loadAstroView(@NonNull AstroElement astroElement) {
+        getActivity().runOnUiThread(() -> astroView.loadData(astroElement));
+    }
 
-                // Populate the dateView first
-                dateView.setDate(day);
+    // Load data into
+    public void loadWeatherHours(@NonNull WeatherHour[] hours) {
+        getActivity().runOnUiThread(() -> {
+            // Load the weather hours fragment
+            getChildFragmentManager().beginTransaction()
+                    .replace(R.id.day_weather_hours, WeatherHoursFragment.newInstance(hours))
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                    .commit();
 
-                // Load astronomy elements
-                AstroElement astroElement = collectionWeatherDay.getAstronomy();
-
-                astroView.setMoonRise(astroElement.getMoonRise());
-                astroView.setMoonSet(astroElement.getMoonSet());
-                astroView.setSunRise(astroElement.getSunRise());
-                astroView.setSunSet(astroElement.getSunSet());
-
-                // Populate viewUp
-                WeatherDay day = collectionWeatherDay.getDay();
-
-                String conditionText = day.getConditions().getConditionText();
-
-                viewUp.setAvgTemp(day.getAvgTemp().getTempC());
-                viewUp.setDayUVIndex(day.getUvLevel());
-                viewUp.setMaxAndMinTemp(day.getMaxTemp().getTempC(),
-                        day.getMinTemp().getTempC());
-                viewUp.setConditionText(conditionText);
-
-                day.getConditions().loadConditionImage(viewUp.getDayWeatherIcon());
-
-                // Stop loading animation and show the weather view
-                stopLoadingAnimation();
-            });
-
-        }
+            // Stop loading animation and show the weather view
+            stopLoadingAnimation();
+        });
     }
 }

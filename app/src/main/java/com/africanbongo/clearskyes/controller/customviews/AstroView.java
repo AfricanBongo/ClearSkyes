@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.africanbongo.clearskyes.R;
+import com.africanbongo.clearskyes.model.weather.AstroElement;
 
 /**
 Custom view shown on current today page at the bottom of the screen
@@ -95,6 +96,13 @@ public class AstroView extends GridLayout {
 
     }
 
+    public void loadData(AstroElement astroElement) {
+        // Load astronomy elements
+        setMoonRise(astroElement.getMoonRise());
+        setMoonSet(astroElement.getMoonSet());
+        setSunRise(astroElement.getSunRise());
+        setSunSet(astroElement.getSunSet());
+    }
     public void setMoonRise(@NonNull String time) {
         moonRise.setText(time);
     }
