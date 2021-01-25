@@ -21,6 +21,8 @@
     <string name="open_drawer">Open drawer</string>
     <string name="close_drawer">Close drawer</string>
 
-    <!-- Location activity-->
-    <string name="add_location">Add new weatherLocation</string>
+    <!-- Location and AddLocation activities-->
+    <string name="add_location">Add new location</string>
+    <string name="searchable_hint">Enter a new location...</string>
+    <string name="searchable_toolbar_title">Add a new location</string>
 </resources>

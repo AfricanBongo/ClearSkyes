@@ -46,6 +46,9 @@
     <style name="CustomTextView.SmallWhiteText">
         <item name="android:textAppearance">@style/WhiteText.Small</item>
     </style>
+    <style name="CustomTextView.MediumWhiteText">
+        <item name="android:textAppearance">@style/WhiteText.Medium</item>
+    </style>
     <style name="CustomTextView.SmallGreyText">
         <item name="android:textAppearance">@style/GreyText.Small</item>
     </style>

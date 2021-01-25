@@ -14,8 +14,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.model.weather.WeatherToday;
 
-import static com.africanbongo.clearskyes.model.util.MiscMethodsUtil.getUVLevel;
-import static com.africanbongo.clearskyes.model.util.WeatherTimeUtil.getCurrentHourAsIndex;
+import static com.africanbongo.clearskyes.model.weatherapi.util.MiscMethodsUtil.getUVLevel;
 
 /*
 Custom view that shows the current hour weather details

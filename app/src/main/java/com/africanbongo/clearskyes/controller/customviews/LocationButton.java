@@ -5,14 +5,13 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.util.AttributeSet;
-import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.africanbongo.clearskyes.R;
-import com.africanbongo.clearskyes.model.location.WeatherLocation;
-import com.africanbongo.clearskyes.model.util.LocationUtil;
+import com.africanbongo.clearskyes.model.weather.WeatherLocation;
+import com.africanbongo.clearskyes.model.weatherapi.util.LocationUtil;
 import com.google.android.material.button.MaterialButton;
 
 /**

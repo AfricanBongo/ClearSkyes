@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/purple_light"
+    tools:context=".controller.activities.SearchableActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/searchable_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/purple_dark"
+        app:title="@string/searchable_toolbar_title"
+        app:titleTextAppearance="@android:style/TextAppearance.Material.Large"
+        app:titleTextColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/search_results_text"
+        style="@style/CustomTextView.MediumWhiteText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/medium_gap"
+        android:layout_marginStart="@dimen/medium_gap"
+        app:layout_constraintTop_toBottomOf="@id/searchable_toolbar"
+        app:layout_constraintStart_toStartOf="parent"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/medium_gap"
+        android:layout_marginStart="@dimen/medium_gap"
+        android:layout_marginEnd="@dimen/medium_gap"
+        android:padding="@dimen/small_gap"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/search_results_text">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/new_location_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

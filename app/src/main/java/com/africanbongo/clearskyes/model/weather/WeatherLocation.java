@@ -1,4 +1,4 @@
-package com.africanbongo.clearskyes.model.location;
+package com.africanbongo.clearskyes.model.weather;
 
 /**
  * A class that represents the data of a certain geolocation, that is:
@@ -13,6 +13,7 @@ package com.africanbongo.clearskyes.model.location;
  */
 public class WeatherLocation {
 
+    private static final String SEPARATOR = ", ";
     private final String urlLocation;
     private final String city;
     private final String country;
@@ -44,4 +45,6 @@ public class WeatherLocation {
     public String getRegion() {
         return region;
     }
+
+    public String getSimpleName() {return getCity() + SEPARATOR + getRegion() + SEPARATOR + getCountry();}
 }

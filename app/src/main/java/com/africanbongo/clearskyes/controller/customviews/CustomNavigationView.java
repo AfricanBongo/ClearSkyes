@@ -21,8 +21,8 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.controller.activities.LocationsActivity;
-import com.africanbongo.clearskyes.model.location.WeatherLocation;
-import com.africanbongo.clearskyes.model.util.LocationUtil;
+import com.africanbongo.clearskyes.model.weather.WeatherLocation;
+import com.africanbongo.clearskyes.model.weatherapi.util.LocationUtil;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.navigation.NavigationView;

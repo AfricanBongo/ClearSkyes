@@ -1,8 +1,14 @@
-package com.africanbongo.clearskyes.model.util;
+package com.africanbongo.clearskyes.model.weatherapi.util;
 
 import androidx.annotation.NonNull;
 
-import com.africanbongo.clearskyes.model.location.WeatherLocation;
+import com.africanbongo.clearskyes.model.weather.WeatherLocation;
+import com.africanbongo.clearskyes.model.weatherapi.WeatherRequestQueue;
+import com.neovisionaries.i18n.CountryCode;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -30,6 +36,15 @@ public final class LocationUtil {
     // Shared Preferences variables
     public static final String SP_LOCATION_SET = "locationSet";
     public static final String SP_LOCATIONS = "locations";
+
+    // Search/Autocomplete JSON titles
+    public static final String SEARCH_URL =
+            "https://api.weatherapi.com/v1/search.json?key=" +
+            WeatherRequestQueue.API_KEY + "&q=";
+    private static final String NAME = "name";
+    private static final String REGION = "region";
+    private static final String COUNTRY = "country";
+    private static final String URL = "url";
 
     private LocationUtil() {}
 
@@ -110,11 +125,57 @@ public final class LocationUtil {
      * @param locationSet {@link Set}<{@link String}> to be de-serialized
      * @return {@link Collection}<{@link WeatherLocation}>
      */
-    public static synchronized Collection<WeatherLocation> deserializeAll(@NonNull Set<String> locationSet) {
+    public static Collection<WeatherLocation> deserializeAll(@NonNull Set<String> locationSet) {
         Collection<WeatherLocation> locations = new ArrayList<>();
 
         locationSet.forEach(string -> locations.add(deserialize(string)));
 
         return locations;
+    }
+
+    /**
+     * <p>
+     *     Parses a {@link JSONArray} into a {@link WeatherLocation}[]
+     * </p>
+     * Credit to <a href="https://github.com/TakahikoKawasaki/nv-i18n">Takahiko Kawasaki's nv-i18n</a> for getting 2 letter country codes
+     * @param locationArray {@link JSONArray} to be parsed
+     * @return {@link WeatherLocation}[]
+     * @throws JSONException if error occurred whilst parsing the {@link JSONArray} object
+     */
+    public static WeatherLocation[] parseIntoWeatherLocations(JSONArray locationArray) throws JSONException {
+
+        if (locationArray.length() != 0) {
+            try {
+
+                WeatherLocation[] weatherLocations =
+                        new WeatherLocation[locationArray.length()];
+
+                for (int i = 0; i < locationArray.length(); i++) {
+                    JSONObject location = locationArray.getJSONObject(i);
+
+                    String city = location.getString(NAME).split(", ")[0];
+                    String urlLocation = location.getString(URL);
+                    String country = location.getString(COUNTRY);
+                    String region = location.getString(REGION);
+
+                    String countryCode = null;
+
+                    for (CountryCode code : CountryCode.values()) {
+                        if (code.getName().equals(country)) {
+                            countryCode = code.getAlpha2();
+                        }
+                    }
+
+                    weatherLocations[i] =
+                            new WeatherLocation(urlLocation, city, country, countryCode, region);
+                }
+
+                return weatherLocations;
+            } catch (JSONException e) {
+                throw e;
+            }
+        }
+
+        return null;
     }
 }
