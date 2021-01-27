@@ -4,7 +4,6 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.util.AttributeSet;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
@@ -32,26 +31,8 @@ public class LocationButton extends MaterialButton {
     private static final long EXTENSION_DURATION = 500L;
 
     public LocationButton(Context context, WeatherLocation location) {
-        this(context);
-
-        // Always make the location a title string, eg. Harare, Gold, Reef
-        // Make sure to remove whitespaces too
-        this.location = location;
-
-        init();
-    }
-    public LocationButton(Context context) {
         super(context);
-        init();
-    }
-
-    public LocationButton(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init();
-    }
-
-    public LocationButton(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+        this.location = location;
         init();
     }
 

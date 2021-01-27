@@ -35,28 +35,22 @@ public class CurrentWeatherViewUp extends ConstraintLayout {
     public CurrentWeatherViewUp(@NonNull Context context) {
         super(context);
         this.context = context;
-        init(null);
+        init();
     }
 
     public CurrentWeatherViewUp(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        init(attrs);
+        init();
     }
 
     public CurrentWeatherViewUp(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
-        init(attrs);
+        init();
     }
 
-    public CurrentWeatherViewUp(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        this.context = context;
-        init(attrs);
-    }
-
-    private void init(AttributeSet attrs) {
+    private void init() {
         // Inflate the xml and attach to this class
         ConstraintLayout constraintLayout = (ConstraintLayout) LayoutInflater
                 .from(context)
@@ -70,29 +64,13 @@ public class CurrentWeatherViewUp extends ConstraintLayout {
         chanceOfRain = constraintLayout.findViewById(R.id.chance_of_rain);
 
         iconImageView = constraintLayout.findViewById(R.id.weather_now_image);
-
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CurrentWeatherViewUp);
-
-        int currentTemp = a.getInteger(R.styleable.CurrentWeatherViewUp_current_temp, 0);
-        int feelsTemp = a.getInteger(R.styleable.CurrentWeatherViewUp_feels_like_temp, 0);
-        int sunIndex = a.getInteger(R.styleable.CurrentWeatherViewUp_uv_index, 0);
-        String condText = a.getString(R.styleable.CurrentWeatherViewUp_condition_text);
-        int chanceORain = a.getInteger(R.styleable.CurrentWeatherViewUp_chance_of_rain, 0);
-
-        setNowTemp(currentTemp);
-        setFeelsLikeTemp(feelsTemp);
-        setUvIndex(getUVLevel(sunIndex));
-        setChanceOfRain(chanceORain);
-        setConditionText(condText);
-
-        a.recycle();
     }
 
     /**
      * Loads {@link WeatherToday} info into this custom view
      * @param today
      */
-    public synchronized void loadData(WeatherToday today) {
+    public void loadData(WeatherToday today) {
         // Load ViewUp elements
         setUvIndex(today.getUvLevel());
         setFeelsLikeTemp((int) today.getNowWeather().getFeelsLikeTemp().getTempC());
@@ -128,9 +106,5 @@ public class CurrentWeatherViewUp extends ConstraintLayout {
     public void setChanceOfRain(int rainPercentageChance) {
         String rain = rainPercentageChance + "%";
         chanceOfRain.setText(rain);
-    }
-
-    public ImageView getIconImageView() {
-        return iconImageView;
     }
 }

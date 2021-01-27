@@ -1,32 +1,29 @@
 package com.africanbongo.clearskyes.controller.fragments;
 
-import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.controller.activities.MainActivity;
-import com.africanbongo.clearskyes.controller.animations.SwitchFadeAnimation;
+import com.africanbongo.clearskyes.controller.animations.LoadingLayoutAnimation;
 import com.africanbongo.clearskyes.controller.customviews.AstroView;
 import com.africanbongo.clearskyes.controller.customviews.CustomDateView;
 import com.africanbongo.clearskyes.controller.customviews.DayWeatherViewUp;
-import com.africanbongo.clearskyes.model.weatherapi.util.WeatherJsonUtil;
-import com.africanbongo.clearskyes.model.weatherapi.util.WeatherTimeUtil;
-import com.africanbongo.clearskyes.model.weatherapi.ErrorPageListener;
-import com.africanbongo.clearskyes.model.weatherapi.WeatherRequestQueue;
 import com.africanbongo.clearskyes.model.weather.AstroElement;
 import com.africanbongo.clearskyes.model.weather.WeatherDay;
 import com.africanbongo.clearskyes.model.weather.WeatherHour;
+import com.africanbongo.clearskyes.model.weatherapi.ErrorPageListener;
+import com.africanbongo.clearskyes.model.weatherapi.WeatherRequestQueue;
+import com.africanbongo.clearskyes.model.weatherapi.util.WeatherJsonUtil;
+import com.africanbongo.clearskyes.model.weatherapi.util.WeatherTimeUtil;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -46,8 +43,7 @@ public class WeatherDayFragment extends Fragment {
     // Error Listener for fetching Weather JSON data
     private static ErrorPageListener errorListener;
 
-    private RelativeLayout loadingLayout;
-    private RelativeLayout layout;
+    private LoadingLayoutAnimation loadingLayoutAnimation;
     private CustomDateView dateView;
     private DayWeatherViewUp viewUp;
     private AstroView astroView;
@@ -84,11 +80,13 @@ public class WeatherDayFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_weather_day, container, false);
 
         // Fetch views
-        layout = view.findViewById(R.id.day_layout);
+        RelativeLayout layout = view.findViewById(R.id.day_layout);
         layout.setVisibility(GONE);
 
         // Fetch loading page
-        loadingLayout = view.findViewById(R.id.day_loading_layout);
+        RelativeLayout loadingLayout = view.findViewById(R.id.day_loading_layout);
+        loadingLayoutAnimation =
+                new LoadingLayoutAnimation(getActivity(), loadingLayout, layout);
 
         viewUp = view.findViewById(R.id.day_weatherview_up);
         dateView = view.findViewById(R.id.day_date_view);
@@ -130,7 +128,7 @@ public class WeatherDayFragment extends Fragment {
 
                     // Only start this animation when data has been successfully received
                     // from the API
-                    startLoadingAnimation();
+                    loadingLayoutAnimation.start();
 
                     JSONObject json = response
                             .getJSONObject("forecast")
@@ -190,41 +188,6 @@ public class WeatherDayFragment extends Fragment {
 
     }
 
-    private void startLoadingAnimation() {
-        if (loadingLayout != null) {
-
-            getActivity().runOnUiThread(() -> {
-
-                // Get image  view and start the animation
-                ImageView loadingImage = loadingLayout.findViewById(R.id.loading_image);
-
-                AnimatedVectorDrawable vectorDrawable = (AnimatedVectorDrawable)
-                        ResourcesCompat.getDrawable(getResources(), R.drawable.avd_loading, null);
-
-                if (vectorDrawable != null) {
-                    loadingImage.setImageDrawable(vectorDrawable);
-                    vectorDrawable.start();
-                }
-            });
-        }
-    }
-
-    private void stopLoadingAnimation() {
-        if (loadingLayout != null) {
-            // Get image  view and start the animation
-            ImageView loadingImage = loadingLayout.findViewById(R.id.loading_image);
-
-            AnimatedVectorDrawable vectorDrawable =
-                    (AnimatedVectorDrawable) loadingImage.getDrawable();
-
-            if (vectorDrawable != null) {vectorDrawable.stop();}
-
-            // Switch the loading view with the normal weather view
-            SwitchFadeAnimation switchFadeAnimation = new SwitchFadeAnimation();
-            switchFadeAnimation.switchViews(loadingLayout, layout, 4000L);
-        }
-    }
-
     // Load data into ViewUp
     public void loadViewUp(@NonNull WeatherDay weatherDay) {
         getActivity().runOnUiThread(() -> {
@@ -250,7 +213,7 @@ public class WeatherDayFragment extends Fragment {
                     .commit();
 
             // Stop loading animation and show the weather view
-            stopLoadingAnimation();
+            loadingLayoutAnimation.stop();
         });
     }
 }

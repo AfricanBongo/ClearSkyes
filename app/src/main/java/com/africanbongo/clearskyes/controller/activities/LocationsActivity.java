@@ -38,7 +38,8 @@ public class LocationsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Allow the user to add a location to the app by entering through the search dialog
             case R.id.add_new_location:
-                onSearchRequested();
+                Intent intent = new Intent(this, SearchableActivity.class);
+                startActivity(intent);
                 break;
         }
         return true;

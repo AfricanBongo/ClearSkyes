@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-    android:background="@drawable/purple_curved_background"
-    android:layout_marginBottom="@dimen/smaller_gap"
+    android:background="@drawable/white_curved_background"
+    android:foreground="?selectableItemBackground"
     android:paddingTop="@dimen/smaller_gap"
     android:paddingBottom="@dimen/smaller_gap"
+    android:layout_marginBottom="@dimen/small_gap"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -11,26 +12,34 @@
 
     <ImageView
         android:id="@+id/new_loc"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_width="@dimen/weather_small_icon"
+        android:layout_height="@dimen/weather_small_icon"
         android:layout_marginStart="@dimen/smaller_gap"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_location_24" />
 
-    <TextView
-        android:id="@+id/new_location_text"
-        style="@style/CustomTextView.SmallWhiteText"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="@dimen/smaller_gap"
-        android:layout_marginStart="@dimen/small_gap"
-        android:maxLines="2"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="@dimen/smaller_gap"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.002"
         app:layout_constraintStart_toEndOf="@id/new_loc"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        android:layout_marginStart="@dimen/small_gap"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/new_location_city"
+            style="@style/CustomTextView.MediumPurpleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/new_location_rest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/CustomTextView.SmallPurpleText"
+            android:layout_marginBottom="@dimen/smallest_gap" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

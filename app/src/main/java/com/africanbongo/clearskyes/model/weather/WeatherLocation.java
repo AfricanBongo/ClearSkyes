@@ -13,7 +13,7 @@ package com.africanbongo.clearskyes.model.weather;
  */
 public class WeatherLocation {
 
-    private static final String SEPARATOR = ", ";
+    public static final String SEPARATOR = ", ";
     private final String urlLocation;
     private final String city;
     private final String country;
@@ -45,6 +45,4 @@ public class WeatherLocation {
     public String getRegion() {
         return region;
     }
-
-    public String getSimpleName() {return getCity() + SEPARATOR + getRegion() + SEPARATOR + getCountry();}
 }

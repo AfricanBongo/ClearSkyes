@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -27,6 +28,8 @@ import java.util.Set;
  */
 public final class LocationUtil {
 
+    public static final String SAVED_SUCCESS = "New location saved successfully";
+    public static final String SAVED_FAILURE = "Location save failure\nTry again";
     public static final String NOT_APPLICABLE = "N/A";
     // Used to separate info in a WeatherInfo String
     public static final String STRING_SEPARATOR = "\t";
@@ -36,6 +39,7 @@ public final class LocationUtil {
     // Shared Preferences variables
     public static final String SP_LOCATION_SET = "locationSet";
     public static final String SP_LOCATIONS = "locations";
+    public static final String SP_FAV_LOCATION = "favoriteLocation";
 
     // Search/Autocomplete JSON titles
     public static final String SEARCH_URL =
@@ -158,13 +162,7 @@ public final class LocationUtil {
                     String country = location.getString(COUNTRY);
                     String region = location.getString(REGION);
 
-                    String countryCode = null;
-
-                    for (CountryCode code : CountryCode.values()) {
-                        if (code.getName().equals(country)) {
-                            countryCode = code.getAlpha2();
-                        }
-                    }
+                    String countryCode = lookForCountryCode(country);
 
                     weatherLocations[i] =
                             new WeatherLocation(urlLocation, city, country, countryCode, region);
@@ -177,5 +175,19 @@ public final class LocationUtil {
         }
 
         return null;
+    }
+
+
+    private static String lookForCountryCode(String country) {
+
+        List<CountryCode> codeList = CountryCode.findByName(country);
+
+        for (CountryCode code : codeList) {
+            if (code.getName().equalsIgnoreCase(country)) {
+                return code.getAlpha2();
+            }
+        }
+
+        return NOT_APPLICABLE;
     }
 }

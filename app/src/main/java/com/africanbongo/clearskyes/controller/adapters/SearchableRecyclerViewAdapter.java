@@ -1,20 +1,34 @@
 package com.africanbongo.clearskyes.controller.adapters;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.NavUtils;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.model.weather.WeatherLocation;
+import com.africanbongo.clearskyes.model.weatherapi.util.LocationUtil;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class SearchableRecyclerViewAdapter extends RecyclerView.Adapter<SearchableRecyclerViewAdapter.SearchableViewHolder>{
 
+    private final FragmentActivity activity;
     private WeatherLocation[] weatherLocations;
 
+    public SearchableRecyclerViewAdapter(FragmentActivity activity) {
+        this.activity = activity;
+    }
     public void setData(WeatherLocation[] weatherLocations) {
         this.weatherLocations = weatherLocations;
         notifyDataSetChanged();
@@ -27,7 +41,6 @@ public class SearchableRecyclerViewAdapter extends RecyclerView.Adapter<Searchab
                 .from(parent.getContext())
                 .inflate(R.layout.new_location_view, parent, false);
 
-
         return new SearchableViewHolder(view);
     }
 
@@ -35,7 +48,15 @@ public class SearchableRecyclerViewAdapter extends RecyclerView.Adapter<Searchab
     public void onBindViewHolder(@NonNull SearchableViewHolder holder, int position) {
         if (weatherLocations != null) {
             WeatherLocation location = weatherLocations[position];
-            holder.locationView.setText(location.getSimpleName());
+
+            String locationRest =
+                    location.getRegion() + WeatherLocation.SEPARATOR + location.getCountry();
+
+            holder.locationCityView.setText(location.getCity());
+            holder.locationRestView.setText(locationRest);
+            holder.layout.setTag(location);
+
+
         }
 
     }
@@ -50,11 +71,45 @@ public class SearchableRecyclerViewAdapter extends RecyclerView.Adapter<Searchab
     }
 
     public class SearchableViewHolder extends RecyclerView.ViewHolder {
-        private TextView locationView;
+        private final ConstraintLayout layout;
+        private final TextView locationCityView;
+        private final TextView locationRestView;
 
         public SearchableViewHolder(@NonNull View itemView) {
             super(itemView);
-            this.locationView = itemView.findViewById(R.id.new_location_text);
+            layout = (ConstraintLayout) itemView;
+            locationCityView = layout.findViewById(R.id.new_location_city);
+            locationRestView = layout.findViewById(R.id.new_location_rest);
+
+            // When the layout is clicked, save the location and close activity
+            layout.setOnClickListener(e -> {
+                WeatherLocation location = (WeatherLocation) layout.getTag();
+
+                SharedPreferences preferences =
+                        activity.getSharedPreferences(LocationUtil.SP_LOCATIONS, Context.MODE_PRIVATE);
+
+                Set<String> locationSet = preferences.getStringSet(LocationUtil.SP_LOCATION_SET, null);
+
+                if (locationSet != null) {
+
+                    String locationString = LocationUtil.serialize(location);
+                    Set<String> newLocationSet = new LinkedHashSet<>(locationSet);
+                    newLocationSet.add(locationString);
+
+                    boolean written = preferences
+                            .edit()
+                            .putStringSet(LocationUtil.SP_LOCATION_SET, newLocationSet)
+                            .commit();
+
+                    // Close activity if the location is saved successfully
+                    if (written) {
+                        Toast.makeText(activity, LocationUtil.SAVED_SUCCESS, Toast.LENGTH_SHORT).show();
+                        NavUtils.navigateUpFromSameTask(activity);
+                    } else {
+                        Toast.makeText(activity, LocationUtil.SAVED_FAILURE, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
         }
     }
 }

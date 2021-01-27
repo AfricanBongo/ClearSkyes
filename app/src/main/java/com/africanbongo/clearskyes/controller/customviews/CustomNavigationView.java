@@ -28,6 +28,7 @@ import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -126,33 +127,46 @@ public class CustomNavigationView extends NavigationView {
      */
     public String loadLocations() {
         SharedPreferences locationPreferences =
-                getContext().getSharedPreferences("locations", MODE_PRIVATE);
+                getContext().getSharedPreferences(LocationUtil.SP_LOCATIONS, MODE_PRIVATE);
 
-        Set<String> locations = locationPreferences.getStringSet("locationSet", null);
 
-        if (locations != null) {
+        if (locationPreferences != null) {
+            Set<String> locations =
+                    locationPreferences.getStringSet(LocationUtil.SP_LOCATION_SET, null);
 
-            ArrayList<WeatherLocation> weatherLocations =
-                    new ArrayList<>(LocationUtil.deserializeAll(locations));
+            if (locations != null) {
+                if (!locations.isEmpty()) {
+                    ArrayList<WeatherLocation> weatherLocations =
+                            new ArrayList<>(LocationUtil.deserializeAll(locations));
 
-            // Loop through the set add a button to the toggle group
-            weatherLocations.forEach(this::addLocationButton);
+                    // Loop through the set add a button to the toggle group
+                    weatherLocations.forEach(this::addLocationButton);
 
-            int preferredLocation = locationPreferences.getInt("preferredLocation", -1);
-            LocationButton locationButton;
+                    int preferredLocation =
+                            locationPreferences.getInt(LocationUtil.SP_FAV_LOCATION, -1);
+                    LocationButton locationButton;
 
-            if (preferredLocation != -1) {
-                locationButton = (LocationButton) locationsGroup.getChildAt(preferredLocation);
-            } else {
-                locationButton = (LocationButton) locationsGroup.getChildAt(0);
+                    if (preferredLocation != -1) {
+                        locationButton = (LocationButton) locationsGroup.getChildAt(preferredLocation);
+                    } else {
+                        locationButton = (LocationButton) locationsGroup.getChildAt(0);
+                    }
+
+                    // Load in location and show the weather info for the location
+                    String location = locationButton.getLocation().getUrlLocation();
+                    locationButton.setChecked(true);
+
+                    return location;
+                }
             }
 
-            // Load in location and show the weather info for the location
-            String location = locationButton.getLocation().getUrlLocation();
-            locationButton.setChecked(true);
-
-            return location;
         }
+
+        // Initialize the string set
+        locationPreferences
+                .edit()
+                .putStringSet(LocationUtil.SP_LOCATION_SET, new LinkedHashSet<>())
+                .apply();
 
         return NO_LOCATION_FOUND;
     }
@@ -202,7 +216,7 @@ public class CustomNavigationView extends NavigationView {
                 Set<String> locations =
                         sharedPreferences.getStringSet(LocationUtil.SP_LOCATION_SET, null);
 
-                if (locations == null) {
+                if (locations.isEmpty()) {
                     new Handler().postDelayed(this, blinkDuration * 2);
                 } else {
                     loadLocations();

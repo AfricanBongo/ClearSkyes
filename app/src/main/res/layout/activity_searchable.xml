@@ -7,44 +7,90 @@
     android:background="@color/purple_light"
     tools:context=".controller.activities.SearchableActivity">
 
-    <com.google.android.material.appbar.MaterialToolbar
+    <RelativeLayout
         android:id="@+id/searchable_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/purple_dark"
-        app:title="@string/searchable_toolbar_title"
-        app:titleTextAppearance="@android:style/TextAppearance.Material.Large"
-        app:titleTextColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/purple_curved_background"
+        android:layout_marginHorizontal="@dimen/smaller_gap"
+        android:orientation="horizontal"
+        android:padding="@dimen/smaller_gap"
+        android:elevation="@dimen/large_gap"
+        android:layout_marginTop="@dimen/small_gap"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" >
+        <ImageButton
+            android:id="@+id/new_back_arrow"
+            android:layout_width="@dimen/weather_anim_icon"
+            android:layout_height="@dimen/weather_anim_icon"
+            android:layout_marginTop="@dimen/small_gap"
+            android:layout_marginStart="@dimen/smallest_gap"
+            android:clickable="true"
+            android:background="@drawable/ic_baseline_arrow_back_24" />
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchable_searchview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="@dimen/small_gap"
+            android:layout_toEndOf="@+id/new_back_arrow"
+            android:background="@drawable/purple_curved_background"
+            android:paddingStart="-48dp"
+            android:paddingEnd="-8dp"
+            app:iconifiedByDefault="false"
+            android:elevation="@dimen/large_gap"
+            app:queryBackground="@drawable/white_curved_background"
+            app:queryHint="@string/searchable_hint"
+            app:searchIcon="@color/purple_dark">
+            <requestFocus />
+        </androidx.appcompat.widget.SearchView>
+    </RelativeLayout>
+
+
+    <requestFocus />
 
     <TextView
         android:id="@+id/search_results_text"
         style="@style/CustomTextView.MediumWhiteText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/medium_gap"
         android:layout_marginStart="@dimen/medium_gap"
-        app:layout_constraintTop_toBottomOf="@id/searchable_toolbar"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:layout_marginTop="@dimen/medium_gap"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.01"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchable_toolbar" />
 
     <FrameLayout
+        android:id="@+id/new_frame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/medium_gap"
         android:layout_marginStart="@dimen/medium_gap"
         android:layout_marginEnd="@dimen/medium_gap"
-        android:padding="@dimen/small_gap"
+        android:layout_marginBottom="@dimen/small_gap"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/purple_curved_background"
         app:layout_constraintStart_toStartOf="parent"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/search_results_text">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/new_location_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:paddingVertical="@dimen/small_gap"
+            android:paddingHorizontal="@dimen/small_gap"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:scrollbarStyle="insideOverlay"
+            android:fadeScrollbars="true"
+            android:visibility="gone"/>
+
+        <include
+            android:id="@+id/new_loading"
+            layout="@layout/loading_layout" />
 
     </FrameLayout>
 

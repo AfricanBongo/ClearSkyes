@@ -10,8 +10,9 @@ import androidx.annotation.NonNull;
  */
 public class SwitchFadeAnimation {
 
-    public static final long NORMAL_DURATION = 1500;
-    
+    public static final long NORMAL_DURATION = 1500L;
+    public static final long LONG_DURATION = 4000L;
+
     /**
      * Switches views by fading one out and the other in
      * @param viewBeingRemoved {@link View} being faded out of focus
