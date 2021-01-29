@@ -15,7 +15,7 @@ import com.africanbongo.clearskyes.R;
  * Makes uses of {@link android.view.ViewPropertyAnimator} class
  */
 public class LoadingLayoutAnimation {
-    private SwitchFadeAnimation switchFadeAnimation;
+    private final SwitchFadeAnimation switchFadeAnimation;
     private final FragmentActivity activity;
     private final View loadingLayout;
     private final View mainLayout;

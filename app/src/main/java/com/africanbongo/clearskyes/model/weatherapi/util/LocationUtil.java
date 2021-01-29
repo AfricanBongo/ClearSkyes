@@ -31,6 +31,10 @@ public final class LocationUtil {
     public static final String SAVED_SUCCESS = "New location saved successfully";
     public static final String SAVED_FAILURE = "Location save failure\nTry again";
     public static final String NOT_APPLICABLE = "N/A";
+    public static final String NO_LOCATION_FOUND = "No location found";
+    public static final String SEPARATOR = ", ";
+    public static final String PUSHPIN_EMOJI = "📍\t";
+
     // Used to separate info in a WeatherInfo String
     public static final String STRING_SEPARATOR = "\t";
     // Used to identify a set contains WeatherLocation data

@@ -20,11 +20,39 @@
         app:titleTextAppearance="@style/TextAppearance.AppCompat.Headline"
         app:titleTextColor="@color/white" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/locations_recyclerview"
+    <FrameLayout
+        android:id="@+id/loc_frame"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/small_gap"
+        android:layout_marginTop="@dimen/medium_gap"
+        android:layout_marginStart="@dimen/medium_gap"
+        android:layout_marginEnd="@dimen/medium_gap"
+        android:layout_marginBottom="@dimen/small_gap"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/locations_toolbar" />
+        app:layout_constraintTop_toBottomOf="@+id/locations_toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@drawable/purple_curved_background"
+        app:layout_constraintStart_toStartOf="parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/locations_recyclerview"
+            android:layout_width="match_parent"
+            android:paddingVertical="@dimen/small_gap"
+            android:paddingHorizontal="@dimen/small_gap"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:scrollbarStyle="insideOverlay"
+            android:fadeScrollbars="true"
+            />
+        <TextView
+            android:id="@+id/loc_add_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/small_gap"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="@string/no_location_found"
+            android:visibility="gone"
+            style="@style/CustomTextView.MediumWhiteText" />
+
+    </FrameLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -35,10 +35,8 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class CustomNavigationView extends NavigationView {
 
-    private DrawerLayout mDrawerLayout = null;
     private MaterialButtonToggleGroup locationsGroup;
     private MaterialButton manageLocationsButton;
-    public static final String NO_LOCATION_FOUND = "No location found";
 
     public CustomNavigationView(@NonNull Context context) {
         super(context);
@@ -110,22 +108,13 @@ public class CustomNavigationView extends NavigationView {
         });
     }
 
-
-    /**
-     * Attach the parent drawer layout
-     * @param parentDrawer {@link DrawerLayout} containing this {@link CustomNavigationView}
-     */
-    public void setParentDrawer(@NonNull DrawerLayout parentDrawer) {
-        mDrawerLayout = parentDrawer;
-    }
-
     /**
      * Loads all the location toggle buttons into their toggle group
      * Return a {@link String} location,
-     * If location returned is {@value NO_LOCATION_FOUND} means that no location exists.
+     * If location returned is null means that no location exists.
      * @return {@link String} location of which location data which should be displayed.
      */
-    public String loadLocations() {
+    public WeatherLocation loadLocations() {
         SharedPreferences locationPreferences =
                 getContext().getSharedPreferences(LocationUtil.SP_LOCATIONS, MODE_PRIVATE);
 
@@ -153,10 +142,9 @@ public class CustomNavigationView extends NavigationView {
                     }
 
                     // Load in location and show the weather info for the location
-                    String location = locationButton.getLocation().getUrlLocation();
                     locationButton.setChecked(true);
 
-                    return location;
+                    return locationButton.getLocation();
                 }
             }
 
@@ -168,7 +156,7 @@ public class CustomNavigationView extends NavigationView {
                 .putStringSet(LocationUtil.SP_LOCATION_SET, new LinkedHashSet<>())
                 .apply();
 
-        return NO_LOCATION_FOUND;
+        return null;
     }
 
     /**
@@ -188,12 +176,8 @@ public class CustomNavigationView extends NavigationView {
             repeatCount = 1;
         }
 
-        if (mDrawerLayout == null) {
-            mDrawerLayout = parentDrawerLayout;
-        }
-
         // Open the drawer and prompt user to add a location
-        mDrawerLayout.openDrawer(GravityCompat.START);
+        parentDrawerLayout.openDrawer(GravityCompat.START);
 
         // Animate the view to catch attention
         ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(manageLocationsButton, "alpha",

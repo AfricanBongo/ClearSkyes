@@ -15,7 +15,6 @@ import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.controller.activities.MainActivity;
 import com.africanbongo.clearskyes.controller.animations.LoadingLayoutAnimation;
 import com.africanbongo.clearskyes.controller.customviews.AstroView;
-import com.africanbongo.clearskyes.controller.customviews.CustomDateView;
 import com.africanbongo.clearskyes.controller.customviews.DayWeatherViewUp;
 import com.africanbongo.clearskyes.model.weather.AstroElement;
 import com.africanbongo.clearskyes.model.weather.WeatherDay;
@@ -44,20 +43,18 @@ public class WeatherDayFragment extends Fragment {
     private static ErrorPageListener errorListener;
 
     private LoadingLayoutAnimation loadingLayoutAnimation;
-    private CustomDateView dateView;
     private DayWeatherViewUp viewUp;
     private AstroView astroView;
 
-    private String location;
+    private final String location;
 
-    private static final String FRAGMENT_NAME = "WeatherDayFragment";
+    private final String FRAGMENT_NAME;
 
-    // The day of the week to display
-    String day;
     int daysOffset;
 
     public WeatherDayFragment(String location) {
         this.location = location;
+        FRAGMENT_NAME = this.getClass().getSimpleName();
     }
 
     public static WeatherDayFragment newInstance(MainActivity activity, String location, int daysOffset) {
@@ -89,7 +86,6 @@ public class WeatherDayFragment extends Fragment {
                 new LoadingLayoutAnimation(getActivity(), loadingLayout, layout);
 
         viewUp = view.findViewById(R.id.day_weatherview_up);
-        dateView = view.findViewById(R.id.day_date_view);
         astroView = view.findViewById(R.id.day_astro_view);
 
         if (getArguments() != null) {
@@ -100,7 +96,6 @@ public class WeatherDayFragment extends Fragment {
                     DateTimeFormatter.ofPattern(WeatherTimeUtil.DATE_FORMAT);
 
             LocalDate localDate = LocalDate.now().plusDays(daysOffset);
-            day = WeatherTimeUtil.getRelativeDay(localDate);
 
             requestData(dateTimeFormatter.format(localDate));
         }
@@ -191,8 +186,6 @@ public class WeatherDayFragment extends Fragment {
     // Load data into ViewUp
     public void loadViewUp(@NonNull WeatherDay weatherDay) {
         getActivity().runOnUiThread(() -> {
-            // Populate the dateView first
-            dateView.setDate(day);
             // Populate viewUp
             viewUp.loadData(weatherDay);
         });

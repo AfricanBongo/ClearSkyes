@@ -9,13 +9,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".controller.fragments.WeatherDayFragment">
-
-        <com.africanbongo.clearskyes.controller.customviews.CustomDateView
-            android:id="@+id/day_date_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true" />
-
         <com.africanbongo.clearskyes.controller.customviews.DayWeatherViewUp
             android:id="@+id/day_weatherview_up"
             android:layout_width="match_parent"
@@ -23,7 +16,7 @@
             android:layout_marginStart="@dimen/smaller_gap"
             android:layout_marginEnd="@dimen/smaller_gap"
             android:layout_marginTop="@dimen/small_gap"
-            android:layout_below="@id/day_date_view"
+            android:layout_alignParentTop="true"
             android:elevation="@dimen/large_gap" />
 
         <FrameLayout

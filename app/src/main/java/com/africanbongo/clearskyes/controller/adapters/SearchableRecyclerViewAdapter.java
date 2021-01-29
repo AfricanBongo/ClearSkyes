@@ -49,8 +49,7 @@ public class SearchableRecyclerViewAdapter extends RecyclerView.Adapter<Searchab
         if (weatherLocations != null) {
             WeatherLocation location = weatherLocations[position];
 
-            String locationRest =
-                    location.getRegion() + WeatherLocation.SEPARATOR + location.getCountry();
+            String locationRest = location.getStandardStringLocation();
 
             holder.locationCityView.setText(location.getCity());
             holder.locationRestView.setText(locationRest);

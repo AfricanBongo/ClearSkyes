@@ -44,6 +44,7 @@ public class SearchableActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private TextView searchResultsView;
+    private ImageButton backButton;
 
     private LoadingLayoutAnimation loadingLayoutAnimation;
 
@@ -87,10 +88,17 @@ public class SearchableActivity extends AppCompatActivity {
         });
 
         // Close activity when back button is pressed
-        ImageButton backButton = findViewById(R.id.new_back_arrow);
+        backButton = findViewById(R.id.new_back_arrow);
         backButton.setOnClickListener(e -> {
             NavUtils.navigateUpFromSameTask(this);
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (backButton != null) {
+            backButton.callOnClick();
+        }
     }
 
     // Load query result and display said results

@@ -32,11 +32,29 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
-            <androidx.viewpager2.widget.ViewPager2
-                android:id="@+id/main_viewpager"
+
+            <LinearLayout
+                android:id="@+id/tab_viewpager_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                />
+                android:orientation="vertical">
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/main_tab_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/purple_light"
+                    app:tabMode="scrollable"
+                    app:tabTextColor="@color/yellow_dark"
+                    app:tabIndicatorColor="@color/yellow_dark"
+                    app:tabBackground="@color/purple_light" />
+
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/main_viewpager"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+            </LinearLayout>
 
             <include
                 android:id="@+id/warning_layout"

@@ -64,4 +64,12 @@
         <item name="android:background">@drawable/purple_curved_background</item>
     </style>
 
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="android:paddingStart">-48dp</item>
+        <item name="android:paddingEnd">-8dp</item>
+        <item name="queryBackground">@drawable/white_curved_background</item>
+        <item name="iconifiedByDefault">false</item>
+        <item name="background">@drawable/purple_curved_background</item>
+        <item name="elevation">50dp</item>
+    </style>
 </resources>

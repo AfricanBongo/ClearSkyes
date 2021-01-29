@@ -15,7 +15,7 @@
         android:layout_marginHorizontal="@dimen/smaller_gap"
         android:orientation="horizontal"
         android:padding="@dimen/smaller_gap"
-        android:elevation="@dimen/large_gap"
+        android:elevation="56dp"
         android:layout_marginTop="@dimen/small_gap"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" >
@@ -26,23 +26,18 @@
             android:layout_marginTop="@dimen/small_gap"
             android:layout_marginStart="@dimen/smallest_gap"
             android:clickable="true"
-            android:background="@drawable/ic_baseline_arrow_back_24" />
+            android:background="@drawable/ic_baseline_arrow_back_24"
+            android:foreground="?selectableItemBackground"/>
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchable_searchview"
+            style="@style/SearchViewStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="@dimen/small_gap"
             android:layout_toEndOf="@+id/new_back_arrow"
-            android:background="@drawable/purple_curved_background"
-            android:paddingStart="-48dp"
-            android:paddingEnd="-8dp"
-            app:iconifiedByDefault="false"
-            android:elevation="@dimen/large_gap"
-            app:queryBackground="@drawable/white_curved_background"
-            app:queryHint="@string/searchable_hint"
-            app:searchIcon="@color/purple_dark">
+            app:queryHint="@string/searchable_hint">
             <requestFocus />
         </androidx.appcompat.widget.SearchView>
     </RelativeLayout>

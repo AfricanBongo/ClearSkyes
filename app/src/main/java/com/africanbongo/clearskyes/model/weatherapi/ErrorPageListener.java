@@ -24,7 +24,7 @@ public class ErrorPageListener implements Response.ErrorListener {
     public static final String API_ERROR_MESSAGE = "Server Communication Error!";
     public static final String NO_CONNECTION_MESSAGE = "No internet connection";
 
-    private MainActivity activity;
+    private final MainActivity activity;
 
     public ErrorPageListener(MainActivity activity) {
         this.activity = activity;

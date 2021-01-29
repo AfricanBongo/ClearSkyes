@@ -24,5 +24,5 @@
     <!-- Location and AddLocation activities-->
     <string name="add_location">Add new location</string>
     <string name="searchable_hint">Enter a new location...</string>
-    <string name="searchable_toolbar_title">Add a new location</string>
+    <string name="no_location_found">+"\t Add Location</string>
 </resources>

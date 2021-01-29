@@ -15,7 +15,7 @@ import com.africanbongo.clearskyes.controller.fragments.WeatherTodayFragment;
 public class WeatherDayStateAdapter extends FragmentStateAdapter {
 
     MainActivity activity;
-    private String location;
+    private final String location;
 
     public WeatherDayStateAdapter(@NonNull FragmentActivity fragmentActivity, String location) {
         super(fragmentActivity);
@@ -50,4 +50,6 @@ public class WeatherDayStateAdapter extends FragmentStateAdapter {
     public String getLocation() {
         return location;
     }
+
+
 }

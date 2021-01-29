@@ -18,7 +18,6 @@ import com.africanbongo.clearskyes.controller.activities.MainActivity;
 import com.africanbongo.clearskyes.controller.animations.LoadingLayoutAnimation;
 import com.africanbongo.clearskyes.controller.customviews.AstroView;
 import com.africanbongo.clearskyes.controller.customviews.CurrentWeatherViewUp;
-import com.africanbongo.clearskyes.controller.customviews.CustomDateView;
 import com.africanbongo.clearskyes.model.weather.AstroElement;
 import com.africanbongo.clearskyes.model.weather.WeatherHour;
 import com.africanbongo.clearskyes.model.weather.WeatherToday;
@@ -32,13 +31,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.LocalDate;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static android.view.View.GONE;
 import static com.africanbongo.clearskyes.model.weatherapi.util.WeatherTimeUtil.getCurrentHourAsIndex;
-import static com.africanbongo.clearskyes.model.weatherapi.util.WeatherTimeUtil.getRelativeDay;
 
 /*
 Fragment containing today's weather
@@ -52,12 +49,10 @@ public class WeatherTodayFragment extends Fragment {
     private AstroView astroView;
 
     private static final String FRAGMENT_NAME = "WeatherTodayFragment";
-    private final String todayDate;
     private final String location;
 
 
     public WeatherTodayFragment(String location) {
-        todayDate = getRelativeDay(LocalDate.now());
         this.location = location;
     }
 
@@ -80,10 +75,6 @@ public class WeatherTodayFragment extends Fragment {
         RelativeLayout loadingLayout = view.findViewById(R.id.loading_anim);
         loadingLayoutAnimation =
                 new LoadingLayoutAnimation(getActivity(), loadingLayout, layout);
-
-
-        CustomDateView dateView = view.findViewById(R.id.today_date_view);
-        dateView.setDate(todayDate);
 
         viewUp = view.findViewById(R.id.now_weatherview_up);
         astroView = view.findViewById(R.id.now_weatherview_down);

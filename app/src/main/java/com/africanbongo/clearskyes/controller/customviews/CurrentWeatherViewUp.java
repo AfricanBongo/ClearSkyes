@@ -1,7 +1,6 @@
 package com.africanbongo.clearskyes.controller.customviews;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -13,8 +12,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.model.weather.WeatherToday;
-
-import static com.africanbongo.clearskyes.model.weatherapi.util.MiscMethodsUtil.getUVLevel;
 
 /*
 Custom view that shows the current hour weather details
@@ -47,6 +44,12 @@ public class CurrentWeatherViewUp extends ConstraintLayout {
     public CurrentWeatherViewUp(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.context = context;
+        init();
+    }
+
+    public CurrentWeatherViewUp(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes, Context context1) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        this.context = context1;
         init();
     }
 

@@ -39,8 +39,8 @@ public final class WeatherJsonUtil {
 
     /**
      * Parses a {@link JSONObject} into a local {@link WeatherToday} object
-     * @param json
-     * @return
+     * @param json {@link JSONObject} containing the current day's weather information
+     * @return {@link WeatherToday} object
      * @throws JSONException
      */
     public static WeatherToday parseIntoWeatherToday(JSONObject json) throws JSONException{
@@ -51,7 +51,7 @@ public final class WeatherJsonUtil {
                 String lastUpdatedTime = currentWeatherJSON.getString("last_updated");
                 double uvIndex = currentWeatherJSON.getDouble("uv");
 
-                WeatherObject weatherObject = parseIntoWeatherObject(json);
+                WeatherObject weatherObject = parseIntoWeatherObject(currentWeatherJSON);
 
                 return new WeatherToday(lastUpdatedTime, weatherObject, uvIndex);
             } catch (JSONException error){

@@ -32,7 +32,7 @@ public class AstroView extends GridLayout {
     private TextView sunRise;
     private TextView sunSet;
 
-    private Context context;
+    private final Context context;
 
     public AstroView(Context context) {
         super(context);

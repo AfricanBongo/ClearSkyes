@@ -49,24 +49,25 @@ public class WeatherTimeUtil {
     }
 
     /**
-     * Get day relative to now, i.e. LocalDate.now()
+     * Get day relative to today, i.e. LocalDate.now()
      * @param date {@link LocalDate} used for comparison
      * @return {@link String} of relative day to now, eg. "Today"
      */
     @NonNull
     @RequiresApi(api = Build.VERSION_CODES.O)
     public static String getRelativeDay(LocalDate date) {
-        LocalDate now = LocalDate.now();
+        int intNow = LocalDate.now().getDayOfYear();
+        int intDate = date.getDayOfYear();
 
-        if (now.isEqual(date)) {
+        if (intNow == intDate) {
             return "Today";
-        } else if (now.compareTo(date) == -1 && date.getYear() == now.getYear()) {
+        } else if (intNow == date.getDayOfYear() - 1) {
             return "Tomorrow";
-        } else if (now.compareTo(date) == 1 && date.getYear() == now.getYear()) {
-            return "Yesterday";
-        } else {
-            return titleString(date.getDayOfWeek().toString());
         }
+
+        // Even if the date's day is the next day of today but of the next year
+        // it is run this condition
+        return titleString(date.getDayOfWeek().toString());
     }
 
     /**

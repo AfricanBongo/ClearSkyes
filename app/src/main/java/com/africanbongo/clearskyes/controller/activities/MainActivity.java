@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -18,12 +19,22 @@ import com.africanbongo.clearskyes.controller.animations.SwitchFadeAnimation;
 import com.africanbongo.clearskyes.controller.animations.ZoomOutPageTransformer;
 import com.africanbongo.clearskyes.controller.customviews.CustomNavigationView;
 import com.africanbongo.clearskyes.controller.customviews.LocationButton;
+import com.africanbongo.clearskyes.model.weather.WeatherLocation;
+import com.africanbongo.clearskyes.model.weatherapi.util.LocationUtil;
+import com.africanbongo.clearskyes.model.weatherapi.util.WeatherTimeUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
+
+import java.time.LocalDate;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    // View holding the tab and view pager layout
+    private LinearLayout tabAndViewPagerParent;
 
     private DrawerLayout drawerLayout;
     private CustomNavigationView navigationView;
@@ -38,6 +49,8 @@ public class MainActivity extends AppCompatActivity
         MaterialToolbar mainToolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(mainToolbar);
 
+        tabAndViewPagerParent = findViewById(R.id.tab_viewpager_layout);
+
         // Set up navigation drawer
         drawerLayout = findViewById(R.id.drawer);
         ActionBarDrawerToggle toggle =
@@ -46,8 +59,6 @@ public class MainActivity extends AppCompatActivity
                         R.string.open_drawer, R.string.close_drawer
                 );
 
-
-
         toggle.getDrawerArrowDrawable().setColor(Color.WHITE);
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
@@ -55,7 +66,6 @@ public class MainActivity extends AppCompatActivity
         navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        // Set up view pager
         mainViewPager = findViewById(R.id.main_viewpager);
 
         // Load location buttons and last location open onto the navigation drawer
@@ -65,15 +75,29 @@ public class MainActivity extends AppCompatActivity
         errorPage = findViewById(R.id.warning_layout);
     }
 
+    // Attach the tab layout to the view pager
+    // Only when the view pager has info
+    public void attachTabAndPager() {
+        if (mainViewPager != null) {
+            TabLayout tabLayout = findViewById(R.id.main_tab_layout);
+            new TabLayoutMediator(tabLayout, mainViewPager,
+                    ((tab, position) -> {
+                        LocalDate date = LocalDate.now().plusDays(position);
+                        tab.setText(WeatherTimeUtil.getRelativeDay(date));
+                    })
+            ).attach();
+        }
+    }
+
     /**
      * Hide the main view pager and show the error page
      * @return The {@link View} containing the error page
      */
     public View showError() {
-        if (mainViewPager != null || !this.isDestroyed()) {
+        if (tabAndViewPagerParent != null || !this.isDestroyed()) {
             // Switch the view pager with the error page
             SwitchFadeAnimation animation = new SwitchFadeAnimation();
-            animation.switchViews(mainViewPager, errorPage, SwitchFadeAnimation.NORMAL_DURATION);
+            animation.switchViews(tabAndViewPagerParent, errorPage, SwitchFadeAnimation.NORMAL_DURATION);
 
             return errorPage;
         }
@@ -91,12 +115,13 @@ public class MainActivity extends AppCompatActivity
             if (presentAdapter != null) {
                 String location = presentAdapter.getLocation();
                 mainViewPager.setAdapter(new WeatherDayStateAdapter(this, location));
+                attachTabAndPager();
             }
 
             // Only switch the views if there's an internet connection
             // Otherwise the recurrence of the showError() method animation will overlap this one
             SwitchFadeAnimation animation = new SwitchFadeAnimation();
-            animation.switchViews(errorPage, mainViewPager, SwitchFadeAnimation.NORMAL_DURATION);
+            animation.switchViews(errorPage, tabAndViewPagerParent, SwitchFadeAnimation.NORMAL_DURATION);
         }
     }
 
@@ -127,19 +152,23 @@ public class MainActivity extends AppCompatActivity
      * If not, prompt the user to add location(s)
      */
     public void initLocations() {
-        String location = navigationView.loadLocations();
+        WeatherLocation location = navigationView.loadLocations();
+        String actionBarTitle;
 
         // Prompt the user to add new locations
-        if (location.equals(CustomNavigationView.NO_LOCATION_FOUND)) {
+        if (location == null) {
             navigationView.promptForLocations(drawerLayout, true);
+            actionBarTitle = LocationUtil.NO_LOCATION_FOUND;
         }
 
         // Else load new adapter to view pager
         else {
-            mainViewPager.setAdapter(new WeatherDayStateAdapter(this, location));
+            mainViewPager.setAdapter(new WeatherDayStateAdapter(this, location.getUrlLocation()));
+            actionBarTitle = LocationUtil.PUSHPIN_EMOJI + location.getShortStringLocation();
+            attachTabAndPager();
         }
 
-        getSupportActionBar().setTitle(location);
+        getSupportActionBar().setTitle(actionBarTitle);
 
         // When the button is pressed change toolbar title and load new state adapter
         navigationView.addOnLocationButtonCheckedListener(
@@ -161,10 +190,9 @@ public class MainActivity extends AppCompatActivity
 
                                     // set adapter and close drawer
                                     mainViewPager.setAdapter(new WeatherDayStateAdapter(this, buttonLocation));
-                                    getSupportActionBar().setTitle(buttonLocation);
 
-                                } else {
-                                    checkedButton.setChecked(true);
+                                    String actionTitle = LocationUtil.PUSHPIN_EMOJI + checkedButton.getText();
+                                    getSupportActionBar().setTitle(actionTitle);
                                 }
                             } else {
                                 mainViewPager.setAdapter(new WeatherDayStateAdapter(this, buttonLocation));

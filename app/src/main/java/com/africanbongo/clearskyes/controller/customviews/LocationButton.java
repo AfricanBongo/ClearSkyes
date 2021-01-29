@@ -1,6 +1,7 @@
 package com.africanbongo.clearskyes.controller.customviews;
 
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -10,7 +11,6 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.model.weather.WeatherLocation;
-import com.africanbongo.clearskyes.model.weatherapi.util.LocationUtil;
 import com.google.android.material.button.MaterialButton;
 
 /**
@@ -18,13 +18,10 @@ import com.google.android.material.button.MaterialButton;
  * Upon installation of the app, the current location is taken to get a weather location
  */
 public class LocationButton extends MaterialButton {
-    private WeatherLocation location;
-
-    private static final String BUTTON_TEXT_SEPARATOR = ", ";
+    private final WeatherLocation location;
 
     private static final int WHITE_COLOR = Color.WHITE;
     private static final int PURPLE_COLOR = R.color.purple_dark;
-    private static final int MARGIN = R.dimen.medium_gap;
     private static final int INSET_TOP_BOTTOM = 5;
     private static final float SCALE_NORMAL = 1f;
     private static final float SCALE_EXTEND = 1.2f;
@@ -36,21 +33,11 @@ public class LocationButton extends MaterialButton {
         init();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     public void init() {
         // Label the button
-        String buttonLabel = location.getCity() + BUTTON_TEXT_SEPARATOR +
-                location.getCountryCode();
-
-        String buttonToolTipText;
-
-        if (location.getRegion().equals(LocationUtil.NOT_APPLICABLE)) {
-            buttonToolTipText = location.getCity() + BUTTON_TEXT_SEPARATOR +
-                    location.getCountry();
-        } else {
-            buttonToolTipText = location.getCity() + BUTTON_TEXT_SEPARATOR +
-                    location.getRegion() + BUTTON_TEXT_SEPARATOR + location.getCountry();
-        }
-
+        String buttonLabel = location.getShortStringLocation();
+        String buttonToolTipText = location.getLongStringLocation();
         setText(buttonLabel);
         setTooltipText(buttonToolTipText);
 
@@ -63,46 +50,55 @@ public class LocationButton extends MaterialButton {
         setInsetTop(INSET_TOP_BOTTOM);
         setInsetBottom(INSET_TOP_BOTTOM);
 
+        int purpleBackgroundColor = ResourcesCompat.getColor(getResources(), PURPLE_COLOR, null);
+
+        // Don't allow button to lose checked state if touched again
+        setOnTouchListener((v, event) -> {
+            setChecked(true);
+            return true;
+        });
+
         // Change view scale and colors when checked and unchecked
         addOnCheckedChangeListener((MaterialButton button, boolean isChecked) -> {
-                int textColor;
-                int backgroundColor;
-                float scaleTo;
-                float scaleFrom;
+            int textColor;
+            int backgroundColor;
+            float scaleTo;
+            float scaleFrom;
 
-                if (isChecked()) {
-                    textColor = PURPLE_COLOR;
-                    backgroundColor = WHITE_COLOR;
+            if (isChecked()) {
+                textColor = PURPLE_COLOR;
+                backgroundColor = WHITE_COLOR;
 
-                    // Extend the button's scaleX
-                    scaleFrom = SCALE_NORMAL;
-                    scaleTo = SCALE_EXTEND;
+                // Extend the button's scaleX
+                scaleFrom = SCALE_NORMAL;
+                scaleTo = SCALE_EXTEND;
 
-                } else {
-                    textColor = WHITE_COLOR;
-                    backgroundColor = ResourcesCompat.getColor(getResources(), PURPLE_COLOR, null);
+            } else {
+                textColor = WHITE_COLOR;
+                backgroundColor = purpleBackgroundColor;
 
-                    // Return the button's scaleX to normal
-                    scaleFrom = SCALE_EXTEND;
-                    scaleTo = SCALE_NORMAL;
-                }
+                // Return the button's scaleX to normal
+                scaleFrom = SCALE_EXTEND;
+                scaleTo = SCALE_NORMAL;
 
-                // Set the button attributes
-                setTextColor(textColor);
-                setBackgroundTintList(ColorStateList.valueOf(backgroundColor));
+            }
+
+            // Set the button attributes
+            setTextColor(textColor);
+            setBackgroundTintList(ColorStateList.valueOf(backgroundColor));
 
 
-                ValueAnimator extensionAnimator = ValueAnimator.ofFloat(scaleFrom, scaleTo);
-                extensionAnimator.setDuration(EXTENSION_DURATION);
+            ValueAnimator extensionAnimator = ValueAnimator.ofFloat(scaleFrom, scaleTo);
+            extensionAnimator.setDuration(EXTENSION_DURATION);
 
-                extensionAnimator.addUpdateListener((ValueAnimator valueAnimator) -> {
-                    float animatedValue = (float) valueAnimator.getAnimatedValue();
-                    // Extend the scaleX of the button gradually
-                    setScaleX(animatedValue);
-                    setScaleY(animatedValue);
-                });
+            extensionAnimator.addUpdateListener((ValueAnimator valueAnimator) -> {
+                float animatedValue = (float) valueAnimator.getAnimatedValue();
+                // Extend the scaleX of the button gradually
+                setScaleX(animatedValue);
+                setScaleY(animatedValue);
+            });
 
-                extensionAnimator.start();
+            extensionAnimator.start();
         });
     }
 
