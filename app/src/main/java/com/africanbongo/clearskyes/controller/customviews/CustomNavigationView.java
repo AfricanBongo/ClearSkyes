@@ -21,6 +21,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.controller.activities.LocationsActivity;
+import com.africanbongo.clearskyes.controller.activities.SettingsActivity;
 import com.africanbongo.clearskyes.model.weather.WeatherLocation;
 import com.africanbongo.clearskyes.model.weatherapi.util.LocationUtil;
 import com.google.android.material.button.MaterialButton;
@@ -33,10 +34,12 @@ import java.util.Set;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class CustomNavigationView extends NavigationView {
+public class CustomNavigationView extends NavigationView
+    implements View.OnClickListener {
 
     private MaterialButtonToggleGroup locationsGroup;
     private MaterialButton manageLocationsButton;
+    private View drawerHeader;
 
     public CustomNavigationView(@NonNull Context context) {
         super(context);
@@ -64,35 +67,7 @@ public class CustomNavigationView extends NavigationView {
         manageLocationsButton = navigationView.findViewById(R.id.manage_locations_button);
         locationsGroup = navigationView.findViewById(R.id.locations_toggle_group);
         locationsGroup.setSingleSelection(true);
-
-        View drawerHeader = navigationView.findViewById(R.id.nav_header);
-        ImageView sunImage = drawerHeader.findViewById(R.id.nav_header_image);
-
-        // If the manageLocationsButton is clicked open LocationsActivity
-        manageLocationsButton.setOnClickListener(e -> {
-            Intent intent = new Intent(localContext, LocationsActivity.class);
-            getContext().startActivity(intent);
-        });
-
-        // Rotate sun and open github page when the drawer header is clicked
-        drawerHeader.setOnClickListener(e -> {
-
-            Drawable drawable = sunImage.getDrawable();
-
-            if (drawable instanceof AnimatedVectorDrawable) {
-                ((AnimatedVectorDrawable) drawable).start();
-
-                // Stop animation and open github page
-                new Handler().postDelayed(() -> {
-                    String githubPage = "https://github.com/AfricanBongo/ClearSkyes";
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(githubPage));
-                    localContext.startActivity(intent);
-
-                    ((AnimatedVectorDrawable) drawable).stop();
-
-                }, 2000L);
-            }
-        });
+        drawerHeader = navigationView.findViewById(R.id.nav_header);
 
         // Load up credit image to WeatherAPI
         ImageView creditImage =
@@ -100,12 +75,15 @@ public class CustomNavigationView extends NavigationView {
                         .findViewById(R.id.poweredby_view)
                         .findViewById(R.id.credit_image);
 
+        // Open settings activity when click
+        MaterialButton settingsButton = navigationView.findViewById(R.id.settings_button);
+        settingsButton.setOnClickListener(this);
+        // If the manageLocationsButton is clicked open LocationsActivity
+        manageLocationsButton.setOnClickListener(this);
+        // Rotate sun and open github page when the drawer header is clicked
+        drawerHeader.setOnClickListener(this);
         // Open site upon clicking image
-        creditImage.setOnClickListener(e -> {
-            String websiteURL = "https://www.weatherapi.com";
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(websiteURL));
-            localContext.startActivity(intent);
-        });
+        creditImage.setOnClickListener(this);
     }
 
     /**
@@ -131,19 +109,31 @@ public class CustomNavigationView extends NavigationView {
                     // Loop through the set add a button to the toggle group
                     weatherLocations.forEach(this::addLocationButton);
 
-                    int preferredLocation =
-                            locationPreferences.getInt(LocationUtil.SP_FAV_LOCATION, -1);
-                    LocationButton locationButton;
+                    String preferredLocation =
+                            locationPreferences.getString(LocationUtil.SP_FAV_LOCATION, null);
+                    LocationButton locationButton = null;
 
-                    if (preferredLocation != -1) {
-                        locationButton = (LocationButton) locationsGroup.getChildAt(preferredLocation);
+                    if (preferredLocation != null) {
+                        WeatherLocation location = LocationUtil.deserialize(preferredLocation);
+
+                        // Load in location and show the weather info for the location
+                        for (int i = 0; i < locationsGroup.getChildCount(); i++) {
+                            locationButton = (LocationButton) locationsGroup.getChildAt(i);
+
+                            if (locationButton.getLocation().equals(location)) {
+                                break;
+                            }
+                        }
                     } else {
                         locationButton = (LocationButton) locationsGroup.getChildAt(0);
+
+                        locationPreferences
+                                .edit()
+                                .putString(LocationUtil.SP_FAV_LOCATION, LocationUtil.serialize(locationButton.getLocation()))
+                                .apply();
                     }
 
-                    // Load in location and show the weather info for the location
                     locationButton.setChecked(true);
-
                     return locationButton.getLocation();
                 }
             }
@@ -233,5 +223,54 @@ public class CustomNavigationView extends NavigationView {
      */
     public void addOnLocationButtonCheckedListener(@NonNull MaterialButtonToggleGroup.OnButtonCheckedListener checkedListener) {
         locationsGroup.addOnButtonCheckedListener(checkedListener);
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            // If the manageLocationsButton is clicked open LocationsActivity
+            case R.id.manage_locations_button: {
+                Intent intent = new Intent(getContext(), LocationsActivity.class);
+                getContext().startActivity(intent);
+                break;
+            }
+
+            // Rotate sun and open github page when the drawer header is clicked
+            case R.id.nav_header: {
+                ImageView sunImage = drawerHeader.findViewById(R.id.nav_header_image);
+                Drawable drawable = sunImage.getDrawable();
+
+                if (drawable instanceof AnimatedVectorDrawable) {
+                    ((AnimatedVectorDrawable) drawable).start();
+
+                    // Stop animation and open github page
+                    new Handler().postDelayed(() -> {
+                        String githubPage = "https://github.com/AfricanBongo/ClearSkyes";
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(githubPage));
+                        getContext().startActivity(intent);
+
+                        ((AnimatedVectorDrawable) drawable).stop();
+
+                    }, 2000L);
+                }
+                break;
+            }
+
+            // Open site upon clicking image
+            case R.id.credit_image: {
+                String websiteURL = "https://www.weatherapi.com";
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(websiteURL));
+                getContext().startActivity(intent);
+                break;
+            }
+
+            // Open settings activity when clicked
+            case R.id.settings_button: {
+                Intent intent = new Intent(getContext(), SettingsActivity.class);
+                getContext().startActivity(intent);
+                break;
+            }
+        }
     }
 }

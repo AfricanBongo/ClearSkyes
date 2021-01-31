@@ -76,6 +76,39 @@
                     android:layout_marginTop="@dimen/small_gap"
                     android:elevation="-25dp"
                     xmlns:android="http://schemas.android.com/apk/res/android" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/settings_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/small_gap"
+                    android:layout_marginStart="@dimen/small_gap"
+                    android:layout_marginEnd="@dimen/small_gap"
+                    android:padding="@dimen/smaller_gap"
+                    app:rippleColor="@color/white"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:text="@string/settings"
+                    android:textAllCaps="false"
+                    app:strokeColor="@android:color/transparent"
+                    android:textColor="@color/white"
+                    android:gravity="start|center" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/feedback_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/medium_gap"
+                    android:layout_marginStart="@dimen/small_gap"
+                    android:layout_marginEnd="@dimen/small_gap"
+                    android:paddingStart="@dimen/smaller_gap"
+                    app:rippleColor="@color/white"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:text="@string/nav_feedback"
+                    android:textAllCaps="false"
+                    app:strokeColor="@android:color/transparent"
+                    android:textColor="@color/white"
+                    android:gravity="start|center" />
+
             </LinearLayout>
         </ScrollView>
         <include

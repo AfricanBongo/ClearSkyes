@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:divider="@drawable/recycler_view_divider">
+    <PreferenceCategory
+        app:key="@string/prefences_key"
+        app:title="@string/preferences"
+        app:iconSpaceReserved="false">
+        <ListPreference
+            app:key="@string/degrees_key"
+            app:title="@string/degrees"
+            app:entries="@array/degrees_list"
+            app:icon="@drawable/ic_thermometer"
+            android:entryValues="@array/degrees_list"
+            app:useSimpleSummaryProvider="true"/>
+        <ListPreference
+            app:key="@string/measurements_key"
+            app:title="@string/measurements"
+            app:icon="@drawable/ic_ruler"
+            app:entries="@array/measurements_list"
+            android:entryValues="@array/measurements_list"
+            app:useSimpleSummaryProvider="true"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:key="@string/notifications_key"
+        app:title="@string/notifications"
+        app:iconSpaceReserved="false">
+        <SwitchPreferenceCompat
+            app:key="@string/notify_show_key"
+            app:title="@string/notify_show"
+            app:icon="@drawable/ic_baseline_notifications_24"
+            android:defaultValue="true" />
+        <com.africanbongo.clearskyes.controller.customviews.TimePreference
+            app:key="@string/notify_time_key"
+            app:title="@string/notify_time"
+            app:icon="@drawable/ic_baseline_timer_24"
+            android:dependency="@string/notify_show_key"/>
+    </PreferenceCategory>
+</PreferenceScreen>

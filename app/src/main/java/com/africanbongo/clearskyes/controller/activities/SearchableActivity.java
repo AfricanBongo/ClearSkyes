@@ -38,7 +38,7 @@ import java.util.concurrent.Executors;
  * </p>
  *
  */
-public class SearchableActivity extends AppCompatActivity {
+public class SearchableActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final String SEARCH_TEXT = "Search results for ";
 
@@ -89,9 +89,7 @@ public class SearchableActivity extends AppCompatActivity {
 
         // Close activity when back button is pressed
         backButton = findViewById(R.id.new_back_arrow);
-        backButton.setOnClickListener(e -> {
-            NavUtils.navigateUpFromSameTask(this);
-        });
+        backButton.setOnClickListener(this);
     }
 
     @Override
@@ -154,5 +152,10 @@ public class SearchableActivity extends AppCompatActivity {
         });
     }
 
-
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.new_back_arrow) {
+            NavUtils.navigateUpFromSameTask(this);
+        }
+    }
 }

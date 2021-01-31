@@ -2,6 +2,8 @@ package com.africanbongo.clearskyes.model.weather;
 
 import com.africanbongo.clearskyes.model.weatherapi.util.LocationUtil;
 
+import java.util.Objects;
+
 /**
  * A class that represents the data of a certain geolocation, that is:
  *
@@ -95,5 +97,22 @@ public class WeatherLocation {
         }
 
         return region + LocationUtil.SEPARATOR + country;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof WeatherLocation)) return false;
+        WeatherLocation location = (WeatherLocation) o;
+        return Objects.equals(urlLocation, location.urlLocation) &&
+                Objects.equals(city, location.city) &&
+                Objects.equals(country, location.country) &&
+                Objects.equals(countryCode, location.countryCode) &&
+                Objects.equals(region, location.region);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(urlLocation, city, country, countryCode, region);
     }
 }

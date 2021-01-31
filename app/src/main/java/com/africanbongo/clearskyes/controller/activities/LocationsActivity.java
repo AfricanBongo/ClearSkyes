@@ -66,13 +66,11 @@ public class LocationsActivity extends AppCompatActivity {
         }
 
         // Otherwise show TextView to add location
-        // If parent is clicked open SearchableActivity
         TextView addTextView = findViewById(R.id.loc_add_text);
         addTextView.setVisibility(View.VISIBLE);
-        addTextView.setOnClickListener(e -> openSearchableActivity());
     }
 
-    public void openSearchableActivity() {
+    public void openSearchableActivity(View view) {
         Intent intent = new Intent(this, SearchableActivity.class);
         startActivity(intent);
     }
@@ -89,7 +87,7 @@ public class LocationsActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             // Allow the user to add a location to the app by entering through the search dialog
             case R.id.add_new_location: {
-                openSearchableActivity();
+                openSearchableActivity(null);
                 break;
             }
 

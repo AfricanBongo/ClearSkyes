@@ -5,6 +5,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.view.MotionEvent;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
@@ -17,7 +19,8 @@ import com.google.android.material.button.MaterialButton;
  * Button linked to state adapter to show weather for a certain location
  * Upon installation of the app, the current location is taken to get a weather location
  */
-public class LocationButton extends MaterialButton {
+public class LocationButton extends MaterialButton
+    implements View.OnTouchListener {
     private final WeatherLocation location;
 
     private static final int WHITE_COLOR = Color.WHITE;
@@ -53,10 +56,7 @@ public class LocationButton extends MaterialButton {
         int purpleBackgroundColor = ResourcesCompat.getColor(getResources(), PURPLE_COLOR, null);
 
         // Don't allow button to lose checked state if touched again
-        setOnTouchListener((v, event) -> {
-            setChecked(true);
-            return true;
-        });
+        setOnTouchListener(this);
 
         // Change view scale and colors when checked and unchecked
         addOnCheckedChangeListener((MaterialButton button, boolean isChecked) -> {
@@ -100,6 +100,12 @@ public class LocationButton extends MaterialButton {
 
             extensionAnimator.start();
         });
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        setChecked(true);
+        return true;
     }
 
     /**

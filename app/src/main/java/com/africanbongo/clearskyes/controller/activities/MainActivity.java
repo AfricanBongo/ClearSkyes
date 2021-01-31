@@ -2,11 +2,9 @@ package com.africanbongo.clearskyes.controller.activities;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -24,14 +22,13 @@ import com.africanbongo.clearskyes.model.weatherapi.util.LocationUtil;
 import com.africanbongo.clearskyes.model.weatherapi.util.WeatherTimeUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButtonToggleGroup;
-import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.time.LocalDate;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements MaterialButtonToggleGroup.OnButtonCheckedListener {
 
     // View holding the tab and view pager layout
     private LinearLayout tabAndViewPagerParent;
@@ -64,8 +61,6 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
         mainViewPager = findViewById(R.id.main_viewpager);
 
         // Load location buttons and last location open onto the navigation drawer
@@ -141,11 +136,6 @@ public class MainActivity extends AppCompatActivity
         super.onBackPressed();
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
-    }
-
     /**
      * Check if there any locations that had been saved
      * If present load the locations into the app
@@ -171,38 +161,40 @@ public class MainActivity extends AppCompatActivity
         getSupportActionBar().setTitle(actionBarTitle);
 
         // When the button is pressed change toolbar title and load new state adapter
-        navigationView.addOnLocationButtonCheckedListener(
-                (MaterialButtonToggleGroup group, int checkedId, boolean isChecked) -> {
-                    if (isChecked) {
+        navigationView.addOnLocationButtonCheckedListener(this);
+    }
 
-                        LocationButton checkedButton = navigationView.findViewById(checkedId);
-                        String buttonLocation = checkedButton.getLocation().getUrlLocation();
+    @Override
+    public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+        if (isChecked) {
 
-                        // If this button is checked create new viewpager adapter
-                        // Only if it doesn't already
-                        if (checkedButton.isChecked()) {
+            LocationButton checkedButton = navigationView.findViewById(checkedId);
+            String buttonLocation = checkedButton.getLocation().getUrlLocation();
 
-                            WeatherDayStateAdapter currentAdapter =
-                                    (WeatherDayStateAdapter) mainViewPager.getAdapter();
+            // If this button is checked create new viewpager adapter
+            // Only if it doesn't already
+            if (checkedButton.isChecked()) {
 
-                            if (currentAdapter != null) {
-                                if (!currentAdapter.getLocation().equals(buttonLocation)) {
+                WeatherDayStateAdapter currentAdapter =
+                        (WeatherDayStateAdapter) mainViewPager.getAdapter();
 
-                                    // set adapter and close drawer
-                                    mainViewPager.setAdapter(new WeatherDayStateAdapter(this, buttonLocation));
+                if (currentAdapter != null) {
+                    if (!currentAdapter.getLocation().equals(buttonLocation)) {
 
-                                    String actionTitle = LocationUtil.PUSHPIN_EMOJI + checkedButton.getText();
-                                    getSupportActionBar().setTitle(actionTitle);
-                                }
-                            } else {
-                                mainViewPager.setAdapter(new WeatherDayStateAdapter(this, buttonLocation));
-                            }
+                        // set adapter and close drawer
+                        mainViewPager.setAdapter(new WeatherDayStateAdapter(this, buttonLocation));
 
-                            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                                drawerLayout.closeDrawer(GravityCompat.START);
-                            }
-                        }
+                        String actionTitle = LocationUtil.PUSHPIN_EMOJI + checkedButton.getText();
+                        getSupportActionBar().setTitle(actionTitle);
                     }
-                });
+                } else {
+                    mainViewPager.setAdapter(new WeatherDayStateAdapter(this, buttonLocation));
+                }
+
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                }
+            }
+        }
     }
 }
