@@ -92,7 +92,7 @@ public class TimePreference extends DialogPreference {
     public String setTime(int hour, int minute) {
         String time = convertTime(hour, minute);
         mHour = hour;
-        mMinute = hour;
+        mMinute = minute;
         persistString(time);
         setSummary(time);
         notifyChanged();
