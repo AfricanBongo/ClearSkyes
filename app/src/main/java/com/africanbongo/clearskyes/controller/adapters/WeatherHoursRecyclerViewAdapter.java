@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.model.weather.WeatherHour;
+import com.africanbongo.clearskyes.model.weather.WeatherTemp;
 
 /**
  * Adapter for setting up and feeding the recycler view.
@@ -19,9 +20,11 @@ import com.africanbongo.clearskyes.model.weather.WeatherHour;
 public class WeatherHoursRecyclerViewAdapter extends RecyclerView.Adapter<WeatherHoursRecyclerViewAdapter.WeatherHourViewHolder> {
 
     private final WeatherHour[] weatherHours;
+    private WeatherTemp.Degree degreesType;
 
-    public WeatherHoursRecyclerViewAdapter(WeatherHour[] weatherHours) {
+    public WeatherHoursRecyclerViewAdapter(WeatherHour[] weatherHours, WeatherTemp.Degree degreesType) {
         this.weatherHours = weatherHours;
+        this.degreesType = degreesType;
     }
 
     @Override
@@ -45,7 +48,7 @@ public class WeatherHoursRecyclerViewAdapter extends RecyclerView.Adapter<Weathe
         holder.hourTime.setText(hour.getTime());
 
         String chanceOfRain = hour.getChanceOfRain() + "%";
-        String temp = hour.getActualTemp().getTempC() + "°";
+        String temp = (int) Math.round(hour.getActualTemp().getTemp(degreesType)) + "°";
 
         holder.hourTemp.setText(temp);
         holder.hourChanceOfRain.setText(chanceOfRain);

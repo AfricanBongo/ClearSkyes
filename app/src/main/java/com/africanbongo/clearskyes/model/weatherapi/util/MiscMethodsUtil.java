@@ -3,7 +3,11 @@ package com.africanbongo.clearskyes.model.weatherapi.util;
 /**
 Miscellaneous methods used through out the app
  */
-public class MiscMethodsUtil {
+public final class MiscMethodsUtil {
+
+    private MiscMethodsUtil() {
+
+    }
     /**
      * Calculates if an integer value is within a range inclusively
      * @param x value

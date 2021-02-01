@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.africanbongo.clearskyes.R;
+import com.africanbongo.clearskyes.model.weather.WeatherTemp;
 import com.africanbongo.clearskyes.model.weather.WeatherToday;
 
 /*
@@ -73,11 +74,11 @@ public class CurrentWeatherViewUp extends ConstraintLayout {
      * Loads {@link WeatherToday} info into this custom view
      * @param today
      */
-    public void loadData(WeatherToday today) {
+    public void loadData(WeatherToday today, WeatherTemp.Degree degree) {
         // Load ViewUp elements
         setUvIndex(today.getUvLevel());
-        setFeelsLikeTemp((int) today.getNowWeather().getFeelsLikeTemp().getTempC());
-        setNowTemp((int) today.getNowWeather().getActualTemp().getTempC());
+        setFeelsLikeTemp(today.getNowWeather().getFeelsLikeTemp().getTemp(degree));
+        setNowTemp(today.getNowWeather().getActualTemp().getTemp(degree));
 
         String conditionText = today.getNowWeather().getConditions().getConditionText();
 
@@ -88,13 +89,13 @@ public class CurrentWeatherViewUp extends ConstraintLayout {
         iconImageView.setContentDescription(conditionText);
     }
 
-    public void setNowTemp(int temperature) {
-        String temp = temperature + "°";
+    public void setNowTemp(double temperature) {
+        String temp = (int) Math.round(temperature) + "°";
         nowTemp.setText(temp);
     }
 
-    public void setFeelsLikeTemp(int temperature) {
-        String temp = "Feels like " + temperature + "°";
+    public void setFeelsLikeTemp(double temperature) {
+        String temp = "Feels like " + (int) Math.round(temperature) + "°";
         feelsLikeTemp.setText(temp);
     }
 

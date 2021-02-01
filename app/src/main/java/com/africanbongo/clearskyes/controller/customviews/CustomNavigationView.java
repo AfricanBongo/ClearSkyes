@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.preference.PreferenceManager;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.controller.activities.LocationsActivity;
@@ -31,8 +32,6 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import static android.content.Context.MODE_PRIVATE;
 
 public class CustomNavigationView extends NavigationView
     implements View.OnClickListener {
@@ -94,7 +93,7 @@ public class CustomNavigationView extends NavigationView
      */
     public WeatherLocation loadLocations() {
         SharedPreferences locationPreferences =
-                getContext().getSharedPreferences(LocationUtil.SP_LOCATIONS, MODE_PRIVATE);
+                PreferenceManager.getDefaultSharedPreferences(getContext());
 
 
         if (locationPreferences != null) {
@@ -185,7 +184,7 @@ public class CustomNavigationView extends NavigationView
 
                 // if no new locations have been added keep running the animation
                 SharedPreferences sharedPreferences =
-                        getContext().getSharedPreferences(LocationUtil.SP_LOCATIONS, MODE_PRIVATE);
+                        PreferenceManager.getDefaultSharedPreferences(getContext());
 
                 Set<String> locations =
                         sharedPreferences.getStringSet(LocationUtil.SP_LOCATION_SET, null);

@@ -4,6 +4,20 @@ package com.africanbongo.clearskyes.model.weather;
 Contains wind properties of the weather
  */
 public class WeatherWind {
+    public enum Measurement {
+        M("Metric"),
+        F("Imperial");
+
+        private String type;
+        Measurement(String type) {
+            this.type = type;
+        }
+
+        public String getType() {
+            return type;
+        }
+    }
+
     private final double windSpeedMPH;
     private final double windSpeedKPH;
     private final String windDirection;

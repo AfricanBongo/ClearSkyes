@@ -34,10 +34,14 @@
     <string name="notify_time_key">notify_time</string>
     <string name="measurements_key">measurements</string>
     <string name="degrees_key">degree</string>
-    <string name="degrees">Degree in: </string>
-    <string name="measurements">Measurements in:</string>
+    <string name="degrees">Degree</string>
+    <string name="degrees_default">Celsius</string>
+    <string name="measurements">Measurements</string>
+    <string name="measurements_default">Metric</string>
     <string name="notify_show">Show notifications</string>
+    <string name="notify_show_summary">Only shows for favourite location</string>
     <string name="notify_time">Notification time</string>
+    <string name="notify_time_default">07:00</string>
     <string name="notifications">Notifications</string>
     <string name="preferences">Weather Preferences</string>
     <string-array name="degrees_list">

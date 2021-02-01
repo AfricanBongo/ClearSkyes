@@ -31,7 +31,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/locations_toolbar"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/purple_curved_background"
+        android:background="@drawable/primary_color_curved_background"
         app:layout_constraintStart_toStartOf="parent">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/locations_recyclerview"

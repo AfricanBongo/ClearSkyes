@@ -12,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.model.weather.WeatherDay;
+import com.africanbongo.clearskyes.model.weather.WeatherTemp;
 
 /**
  * Custom view for holding minimal {@link com.africanbongo.clearskyes.model.weather.WeatherDay} data
@@ -61,25 +62,25 @@ public class DayWeatherViewUp extends ConstraintLayout {
      * Load weather info into this custom view
      * @param day {@link WeatherDay} object where its members will be used to populate this view
      */
-    public void loadData(WeatherDay day) {
+    public void loadData(WeatherDay day, WeatherTemp.Degree degree) {
         String conditionText = day.getConditions().getConditionText();
 
-        setAvgTemp(day.getAvgTemp().getTempC());
+        setAvgTemp(day.getAvgTemp().getTemp(degree));
         setDayUVIndex(day.getUvLevel());
-        setMaxAndMinTemp(day.getMaxTemp().getTempC(),
-                day.getMinTemp().getTempC());
+        setMaxAndMinTemp(day.getMaxTemp().getTemp(degree),
+                day.getMinTemp().getTemp(degree));
         setConditionText(conditionText);
 
         day.getConditions().loadConditionImage(dayWeatherIcon);
     }
 
     private void setAvgTemp(double temp) {
-        String temperature = temp + "°";
+        String temperature = (int) Math.round(temp) + "°";
         dayAvgTempView.setText(temperature);
     }
 
     private void setMaxAndMinTemp(double maxTemp, double minTemp) {
-        String temps = maxTemp + "°" + " / " + minTemp + "°";
+        String temps = (int) Math.round(maxTemp) + "°" + " / " + (int) Math.round(minTemp) + "°";
         dayMaxMinTemp.setText(temps);
     }
 

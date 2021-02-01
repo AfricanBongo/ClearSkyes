@@ -1,15 +1,16 @@
 package com.africanbongo.clearskyes.controller.adapters;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.africanbongo.clearskyes.R;
@@ -64,29 +65,34 @@ public class LocationsRecyclerViewAdapter extends RecyclerView.Adapter<Locations
             String serializedLocation = LocationUtil.serialize(location);
             int adapterPosition = holder.getAdapterPosition();
 
+            View parent = (View) attachedRecyclerView.getParent();
+
             // Create snackbar to show upon deletion
             String snackText = "Location: \"" + location.getShortStringLocation() +
                     "\" has been deleted";
             String actionText = "UNDO";
             Snackbar snackbar =
-                    Snackbar.make(attachedRecyclerView.getRootView(), snackText,
+                    Snackbar.make(parent, snackText,
                             BaseTransientBottomBar.LENGTH_SHORT);
 
             // Delete location from app and shared preference
             weatherLocations.remove(position);
             SharedPreferences preferences =
-                    attachedRecyclerView.getContext().getSharedPreferences(LocationUtil.SP_LOCATIONS, Context.MODE_PRIVATE);
+                    PreferenceManager.getDefaultSharedPreferences(holder.rootLayout.getContext());
             Set<String> locations = preferences.getStringSet(LocationUtil.SP_LOCATION_SET, null);
             String preferredLocation = preferences.getString(LocationUtil.SP_FAV_LOCATION, null);
             locations.remove(serializedLocation);
 
             SharedPreferences.Editor editor = preferences.edit();
-            // if it was a favourite location remove from SharedPreferences too
-            if (location.equals(LocationUtil.deserialize(preferredLocation))) {
-                editor.remove(LocationUtil.SP_FAV_LOCATION);
 
-                // Discolor in the case it is added back into the app
-                colorHolder(holder, false);
+            if (preferredLocation != null) {
+                // if it was a favourite location remove from SharedPreferences too
+                if (location.equals(LocationUtil.deserialize(preferredLocation))) {
+                    editor.remove(LocationUtil.SP_FAV_LOCATION);
+
+                    // Discolor in the case it is added back into the app
+                    colorHolder(holder, false);
+                }
             }
 
             // Apply the changes
@@ -116,7 +122,7 @@ public class LocationsRecyclerViewAdapter extends RecyclerView.Adapter<Locations
         if (viewHolders != null) {
             // Set favourite location
             SharedPreferences preferences
-                    = attachedRecyclerView.getContext().getSharedPreferences(LocationUtil.SP_LOCATIONS, Context.MODE_PRIVATE);
+                    = PreferenceManager.getDefaultSharedPreferences(attachedRecyclerView.getContext());
             preferences
                     .edit()
                     .putString(LocationUtil.SP_FAV_LOCATION, LocationUtil.serialize(location))
@@ -157,7 +163,7 @@ public class LocationsRecyclerViewAdapter extends RecyclerView.Adapter<Locations
         // Allow user to pick favourite location
         holder.rootLayout.setOnClickListener(e -> pickFavouriteLocation(holder, holderLocation));
         SharedPreferences preferences =
-                attachedRecyclerView.getContext().getSharedPreferences(LocationUtil.SP_LOCATIONS, Context.MODE_PRIVATE);
+                PreferenceManager.getDefaultSharedPreferences(attachedRecyclerView.getContext());
 
         String favouriteLocation =
                 preferences.getString(LocationUtil.SP_FAV_LOCATION, null);

@@ -7,7 +7,6 @@ import android.util.AttributeSet;
 import androidx.annotation.Nullable;
 import androidx.preference.DialogPreference;
 
-import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.model.weatherapi.util.WeatherTimeUtil;
 
 import java.time.LocalTime;
@@ -24,8 +23,7 @@ public class TimePreference extends DialogPreference {
     private LocalTime notificationTime;
     private int mHour;
     private int mMinute;
-    private static final int DEFAULT_HOUR = 7;
-    private static final int DEFAULT_MINUTE = 0;
+    private static final String DEFAULT_TIME = "07:00";
     private static final String POSITIVE_TEXT = "Set";
     private static final String NEGATIVE_TEXT = "Cancel";
 
@@ -61,16 +59,16 @@ public class TimePreference extends DialogPreference {
 
     @Override
     protected void onSetInitialValue(@Nullable Object defaultValue) {
-        String defaultTime = convertTime(DEFAULT_HOUR, DEFAULT_MINUTE);
-        String time = getPersistedString(defaultTime);
+        String time;
 
-        mHour = DEFAULT_HOUR;
-        mMinute = DEFAULT_MINUTE;
-
-        if (!time.equals(defaultTime)) {
-            mHour = parseHour(time);
-            mMinute = parseMinute(time);
+        if (defaultValue == null) {
+            time = getPersistedString(DEFAULT_TIME);
+        } else {
+            time = defaultValue.toString();
         }
+
+        mHour = parseHour(time);
+        mMinute = parseMinute(time);
         setTime(mHour, mMinute);
     }
 

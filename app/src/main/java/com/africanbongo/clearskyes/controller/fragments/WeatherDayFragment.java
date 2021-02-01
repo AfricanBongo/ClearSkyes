@@ -19,8 +19,10 @@ import com.africanbongo.clearskyes.controller.customviews.DayWeatherViewUp;
 import com.africanbongo.clearskyes.model.weather.AstroElement;
 import com.africanbongo.clearskyes.model.weather.WeatherDay;
 import com.africanbongo.clearskyes.model.weather.WeatherHour;
+import com.africanbongo.clearskyes.model.weather.WeatherTemp;
 import com.africanbongo.clearskyes.model.weatherapi.ErrorPageListener;
 import com.africanbongo.clearskyes.model.weatherapi.WeatherRequestQueue;
+import com.africanbongo.clearskyes.model.weatherapi.util.LocationUtil;
 import com.africanbongo.clearskyes.model.weatherapi.util.WeatherJsonUtil;
 import com.africanbongo.clearskyes.model.weatherapi.util.WeatherTimeUtil;
 import com.android.volley.Request;
@@ -46,26 +48,21 @@ public class WeatherDayFragment extends Fragment {
     private DayWeatherViewUp viewUp;
     private AstroView astroView;
 
-    private final String location;
-
     private final String FRAGMENT_NAME;
 
-    int daysOffset;
-
-    public WeatherDayFragment(String location) {
-        this.location = location;
+    public WeatherDayFragment() {
         FRAGMENT_NAME = this.getClass().getSimpleName();
     }
 
-    public static WeatherDayFragment newInstance(MainActivity activity, String location, int daysOffset) {
-
+    public static WeatherDayFragment newInstance(MainActivity activity, String location, int daysOffset, WeatherTemp.Degree degree) {
         // Set up error listener first
         errorListener = new ErrorPageListener(activity);
-
         Bundle args = new Bundle();
         args.putInt("daysOffset", daysOffset);
+        args.putString(WeatherTemp.Degree.class.getSimpleName(), degree.getStringDegree());
+        args.putString(LocationUtil.class.getSimpleName(), location);
 
-        WeatherDayFragment fragment = new WeatherDayFragment(location);
+        WeatherDayFragment fragment = new WeatherDayFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -88,16 +85,23 @@ public class WeatherDayFragment extends Fragment {
         viewUp = view.findViewById(R.id.day_weatherview_up);
         astroView = view.findViewById(R.id.day_astro_view);
 
-        if (getArguments() != null) {
-            this.daysOffset = getArguments().getInt("daysOffset");
+        Bundle bundle = getArguments();
+
+        if (bundle != null) {
+
+            int daysOffset = bundle.getInt("daysOffset");
+            String degreesType = bundle.getString(WeatherTemp.Degree.class.getSimpleName());
+            String location = bundle.getString(LocationUtil.class.getSimpleName());
 
             // Get date string formatted so as to fetch JSON data
             DateTimeFormatter dateTimeFormatter =
                     DateTimeFormatter.ofPattern(WeatherTimeUtil.DATE_FORMAT);
-
             LocalDate localDate = LocalDate.now().plusDays(daysOffset);
-
-            requestData(dateTimeFormatter.format(localDate));
+            requestData(
+                    dateTimeFormatter.format(localDate),
+                    location,
+                    WeatherTemp.Degree.getDegree(degreesType)
+            );
         }
 
         return view;
@@ -109,7 +113,7 @@ public class WeatherDayFragment extends Fragment {
                 WeatherRequestQueue.API_KEY + "&q=" + location +"&dt=" + date;
     }
 
-    public void requestData(String date) {
+    public void requestData(String date, String location, WeatherTemp.Degree degree) {
         new Thread(() -> {
 
             String requestURL = generateURL(location, date);
@@ -135,7 +139,7 @@ public class WeatherDayFragment extends Fragment {
 
                     weatherExecutorService.submit(() -> {
                         try {
-                            loadViewUp(WeatherJsonUtil.parseIntoWeatherDay(json));
+                            loadViewUp(WeatherJsonUtil.parseIntoWeatherDay(json), degree);
                         } catch (JSONException e) {
                             Log.e(FRAGMENT_NAME, e.getMessage(), e);
                         }
@@ -154,7 +158,7 @@ public class WeatherDayFragment extends Fragment {
                     // Parse and load weather hours information
                     weatherExecutorService.submit(() -> {
                        try {
-                           loadWeatherHours(WeatherJsonUtil.parseIntoWeatherHourArray(json));
+                           loadWeatherHours(WeatherJsonUtil.parseIntoWeatherHourArray(json), degree);
                        } catch (JSONException e) {
                            Log.e(FRAGMENT_NAME, e.getMessage(), e);
                        }
@@ -184,11 +188,8 @@ public class WeatherDayFragment extends Fragment {
     }
 
     // Load data into ViewUp
-    public void loadViewUp(@NonNull WeatherDay weatherDay) {
-        getActivity().runOnUiThread(() -> {
-            // Populate viewUp
-            viewUp.loadData(weatherDay);
-        });
+    public void loadViewUp(@NonNull WeatherDay weatherDay, WeatherTemp.Degree degree) {
+        getActivity().runOnUiThread(() -> viewUp.loadData(weatherDay, degree));
     }
 
     // Load data into AstroView
@@ -197,11 +198,11 @@ public class WeatherDayFragment extends Fragment {
     }
 
     // Load data into
-    public void loadWeatherHours(@NonNull WeatherHour[] hours) {
+    public void loadWeatherHours(@NonNull WeatherHour[] hours, WeatherTemp.Degree degree) {
         getActivity().runOnUiThread(() -> {
             // Load the weather hours fragment
             getChildFragmentManager().beginTransaction()
-                    .replace(R.id.day_weather_hours, WeatherHoursFragment.newInstance(hours))
+                    .replace(R.id.day_weather_hours, WeatherHoursFragment.newInstance(hours, degree))
                     .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                     .commit();
 

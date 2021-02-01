@@ -1,13 +1,12 @@
 package com.africanbongo.clearskyes.controller.activities;
 
+import android.os.Bundle;
+import android.view.MenuItem;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
-import androidx.fragment.app.FragmentTransaction;
-
-import android.os.Bundle;
-import android.view.MenuItem;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.controller.fragments.SettingsFragment;

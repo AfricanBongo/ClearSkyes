@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.controller.adapters.WeatherHoursRecyclerViewAdapter;
 import com.africanbongo.clearskyes.model.weather.WeatherHour;
+import com.africanbongo.clearskyes.model.weather.WeatherTemp;
 
 import java.time.LocalTime;
 
@@ -33,10 +34,11 @@ public class WeatherHoursFragment extends Fragment {
 
     }
 
-    public static WeatherHoursFragment newInstance(WeatherHour[] weatherHours) {
+    public static WeatherHoursFragment newInstance(WeatherHour[] weatherHours, WeatherTemp.Degree degreesType) {
         hours = weatherHours;
-        Bundle args = new Bundle();
         WeatherHoursFragment fragment = new WeatherHoursFragment();
+        Bundle args = new Bundle();
+        args.putString(WeatherTemp.Degree.class.getSimpleName(), degreesType.getStringDegree());
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,7 +54,8 @@ public class WeatherHoursFragment extends Fragment {
             RecyclerView recyclerView = view.findViewById(R.id.now_weather_hours_list);
             recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-            recyclerView.setAdapter(new WeatherHoursRecyclerViewAdapter(hours));
+            String degreesType = getArguments().getString(WeatherTemp.Degree.class.getSimpleName());
+            recyclerView.setAdapter(new WeatherHoursRecyclerViewAdapter(hours,  WeatherTemp.Degree.getDegree(degreesType)));
 
             // Set the divider of the recycler view
             DividerItemDecoration divider =

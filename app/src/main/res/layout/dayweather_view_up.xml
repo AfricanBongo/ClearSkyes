@@ -65,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/smallest_gap"
-        android:background="@drawable/purple_curved_background"
+        android:background="@drawable/primary_color_curved_background"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/day_condition_text">
@@ -74,7 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/smallest_gap"
-            android:background="@drawable/white_curved_background"
+            android:background="@drawable/on_secondary_color_curved_background"
             android:orientation="horizontal">
 
             <ImageView

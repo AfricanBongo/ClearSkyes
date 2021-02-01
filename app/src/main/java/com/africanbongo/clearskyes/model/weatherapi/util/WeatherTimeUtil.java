@@ -17,13 +17,17 @@ import java.util.Date;
 /**
  * Class that holds all methods and formats to derive Date and Time strings
  */
-public class WeatherTimeUtil {
+public final class WeatherTimeUtil {
     // Formats for date and time
     public static final String TIME_FORMAT = "HH:mm";
     public static final String DATE_FORMAT = "yyyy-MM-dd";
     public static final String LONG_DATE_FORMAT = " dd MMMM yyyy";
     public static final String DATE_TIME_FORMAT = DATE_FORMAT + " " + TIME_FORMAT;
 
+
+    private WeatherTimeUtil() {
+
+    }
     /**
      * Derives the date from a String
      * @param dateString Date as a String, in the format of "yyyy-MM-dd"

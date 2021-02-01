@@ -16,6 +16,7 @@ Base class for holding base conditions and loading the weather icon into a Image
  */
 public class WeatherCondition {
 
+    private final String protocol = "https:";
     private final String conditionText;
     private final String conditionIcon;
     private final int conditionCode;
@@ -26,7 +27,7 @@ public class WeatherCondition {
 
     public WeatherCondition(@NonNull String conditionText, @NonNull String conditionIcon, int conditionCode, boolean day) {
         this.conditionText = conditionText;
-        this.conditionIcon = "https:" + conditionIcon;
+        this.conditionIcon = protocol + conditionIcon;
         this.conditionCode = conditionCode;
         this.day = day;
     }

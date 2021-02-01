@@ -11,7 +11,7 @@
         android:id="@+id/searchable_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/purple_curved_background"
+        android:background="@drawable/primary_color_curved_background"
         android:layout_marginHorizontal="@dimen/smaller_gap"
         android:orientation="horizontal"
         android:padding="@dimen/smaller_gap"
@@ -67,7 +67,7 @@
         android:layout_marginBottom="@dimen/small_gap"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/purple_curved_background"
+        android:background="@drawable/primary_color_curved_background"
         app:layout_constraintStart_toStartOf="parent"
         android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@+id/search_results_text">

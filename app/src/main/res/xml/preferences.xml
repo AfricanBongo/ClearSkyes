@@ -11,11 +11,13 @@
             app:title="@string/degrees"
             app:entries="@array/degrees_list"
             app:icon="@drawable/ic_thermometer"
+            app:defaultValue="@string/degrees_default"
             android:entryValues="@array/degrees_list"
             app:useSimpleSummaryProvider="true"/>
         <ListPreference
             app:key="@string/measurements_key"
             app:title="@string/measurements"
+            app:defaultValue="@string/measurements_default"
             app:icon="@drawable/ic_ruler"
             app:entries="@array/measurements_list"
             android:entryValues="@array/measurements_list"
@@ -28,11 +30,14 @@
         <SwitchPreferenceCompat
             app:key="@string/notify_show_key"
             app:title="@string/notify_show"
+            app:defaultValue="true"
+            app:summary="@string/notify_show_summary"
             app:icon="@drawable/ic_baseline_notifications_24"
             android:defaultValue="true" />
         <com.africanbongo.clearskyes.controller.customviews.TimePreference
             app:key="@string/notify_time_key"
             app:title="@string/notify_time"
+            app:defaultValue="@string/notify_time_default"
             app:icon="@drawable/ic_baseline_timer_24"
             android:dependency="@string/notify_show_key"/>
     </PreferenceCategory>

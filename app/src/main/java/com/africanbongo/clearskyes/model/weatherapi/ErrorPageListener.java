@@ -20,7 +20,6 @@ import com.android.volley.VolleyError;
 public class ErrorPageListener implements Response.ErrorListener {
 
     // Used for error pages
-    public static final int API_ERROR_CODE = 403;
     public static final String API_ERROR_MESSAGE = "Server Communication Error!";
     public static final String NO_CONNECTION_MESSAGE = "No internet connection";
 
@@ -45,8 +44,8 @@ public class ErrorPageListener implements Response.ErrorListener {
             reloadButton.setOnClickListener(e -> activity.reloadViewPager());
             reloadButton.setAlpha(0f);
 
-            String errorMessageText = null;
-            int drawableToDisplay = 0;
+            String errorMessageText;
+            int drawableToDisplay;
 
             // Or if there is no internet connection
             if (!WeatherRequestQueue.getWeatherRequestQueue(context).isNetworkAvailable()) {

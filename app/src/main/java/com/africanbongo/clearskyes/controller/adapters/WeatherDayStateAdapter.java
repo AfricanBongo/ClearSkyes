@@ -11,17 +11,19 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.africanbongo.clearskyes.controller.activities.MainActivity;
 import com.africanbongo.clearskyes.controller.fragments.WeatherDayFragment;
 import com.africanbongo.clearskyes.controller.fragments.WeatherTodayFragment;
+import com.africanbongo.clearskyes.model.weather.WeatherTemp;
 
 public class WeatherDayStateAdapter extends FragmentStateAdapter {
 
     MainActivity activity;
     private final String location;
+    private WeatherTemp.Degree degree;
 
-    public WeatherDayStateAdapter(@NonNull FragmentActivity fragmentActivity, String location) {
+    public WeatherDayStateAdapter(@NonNull FragmentActivity fragmentActivity, String location, WeatherTemp.Degree degree) {
         super(fragmentActivity);
-
         activity = (MainActivity) fragmentActivity;
         this.location = location;
+        this.degree = degree;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -30,9 +32,9 @@ public class WeatherDayStateAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
 
         if (position == 0) {
-            return WeatherTodayFragment.newInstance(activity, location);
+            return WeatherTodayFragment.newInstance(activity, location, degree);
         } else {
-            return WeatherDayFragment.newInstance(activity, location, position);
+            return WeatherDayFragment.newInstance(activity, location, position, degree);
         }
     }
 

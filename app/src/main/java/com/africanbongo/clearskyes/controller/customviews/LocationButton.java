@@ -4,7 +4,6 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -23,8 +22,6 @@ public class LocationButton extends MaterialButton
     implements View.OnTouchListener {
     private final WeatherLocation location;
 
-    private static final int WHITE_COLOR = Color.WHITE;
-    private static final int PURPLE_COLOR = R.color.purple_dark;
     private static final int INSET_TOP_BOTTOM = 5;
     private static final float SCALE_NORMAL = 1f;
     private static final float SCALE_EXTEND = 1.2f;
@@ -44,49 +41,37 @@ public class LocationButton extends MaterialButton
         setText(buttonLabel);
         setTooltipText(buttonToolTipText);
 
-        // Change view colors
-        int color = ResourcesCompat.getColor(getResources(), PURPLE_COLOR, null);
-        setBackgroundTintList(ColorStateList.valueOf(color));
-        setTextColor(WHITE_COLOR);
+        // Set view property colors
+        ColorStateList textColorList = ResourcesCompat
+                .getColorStateList(getResources(), R.color.location_button_text_color, null);
+        ColorStateList backgroundColorList = ResourcesCompat
+                .getColorStateList(getResources(), R.color.location_button_background_color, null);
+        setTextColor(textColorList);
+        setBackgroundTintList(backgroundColorList);
 
         // Configure the view insets
         setInsetTop(INSET_TOP_BOTTOM);
         setInsetBottom(INSET_TOP_BOTTOM);
-
-        int purpleBackgroundColor = ResourcesCompat.getColor(getResources(), PURPLE_COLOR, null);
 
         // Don't allow button to lose checked state if touched again
         setOnTouchListener(this);
 
         // Change view scale and colors when checked and unchecked
         addOnCheckedChangeListener((MaterialButton button, boolean isChecked) -> {
-            int textColor;
-            int backgroundColor;
             float scaleTo;
             float scaleFrom;
 
             if (isChecked()) {
-                textColor = PURPLE_COLOR;
-                backgroundColor = WHITE_COLOR;
-
                 // Extend the button's scaleX
                 scaleFrom = SCALE_NORMAL;
                 scaleTo = SCALE_EXTEND;
 
             } else {
-                textColor = WHITE_COLOR;
-                backgroundColor = purpleBackgroundColor;
-
                 // Return the button's scaleX to normal
                 scaleFrom = SCALE_EXTEND;
                 scaleTo = SCALE_NORMAL;
 
             }
-
-            // Set the button attributes
-            setTextColor(textColor);
-            setBackgroundTintList(ColorStateList.valueOf(backgroundColor));
-
 
             ValueAnimator extensionAnimator = ValueAnimator.ofFloat(scaleFrom, scaleTo);
             extensionAnimator.setDuration(EXTENSION_DURATION);

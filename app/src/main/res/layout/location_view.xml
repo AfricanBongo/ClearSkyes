@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
-    android:background="@drawable/white_curved_background"
+    android:background="@drawable/on_secondary_color_curved_background"
     android:paddingTop="@dimen/smaller_gap"
     android:paddingBottom="@dimen/smaller_gap"
     android:layout_marginBottom="@dimen/small_gap"

@@ -1,5 +1,6 @@
 package com.africanbongo.clearskyes.controller.activities;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -9,6 +10,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.preference.PreferenceManager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.africanbongo.clearskyes.R;
@@ -18,6 +20,7 @@ import com.africanbongo.clearskyes.controller.animations.ZoomOutPageTransformer;
 import com.africanbongo.clearskyes.controller.customviews.CustomNavigationView;
 import com.africanbongo.clearskyes.controller.customviews.LocationButton;
 import com.africanbongo.clearskyes.model.weather.WeatherLocation;
+import com.africanbongo.clearskyes.model.weather.WeatherTemp;
 import com.africanbongo.clearskyes.model.weatherapi.util.LocationUtil;
 import com.africanbongo.clearskyes.model.weatherapi.util.WeatherTimeUtil;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -33,6 +36,7 @@ public class MainActivity extends AppCompatActivity
     // View holding the tab and view pager layout
     private LinearLayout tabAndViewPagerParent;
 
+    private WeatherTemp.Degree degree;
     private DrawerLayout drawerLayout;
     private CustomNavigationView navigationView;
     private ViewPager2 mainViewPager;
@@ -62,6 +66,12 @@ public class MainActivity extends AppCompatActivity
 
         navigationView = findViewById(R.id.nav_view);
         mainViewPager = findViewById(R.id.main_viewpager);
+
+        SharedPreferences preferences
+                = PreferenceManager.getDefaultSharedPreferences(this);
+        String tempKey = getString(R.string.degrees_key);
+        String tempType = preferences.getString(tempKey, getString(R.string.degrees_default));
+        degree = WeatherTemp.Degree.getDegree(tempType);
 
         // Load location buttons and last location open onto the navigation drawer
         initLocations();
@@ -109,7 +119,7 @@ public class MainActivity extends AppCompatActivity
 
             if (presentAdapter != null) {
                 String location = presentAdapter.getLocation();
-                mainViewPager.setAdapter(new WeatherDayStateAdapter(this, location));
+                mainViewPager.setAdapter(new WeatherDayStateAdapter(this, location, degree));
                 attachTabAndPager();
             }
 
@@ -153,7 +163,7 @@ public class MainActivity extends AppCompatActivity
 
         // Else load new adapter to view pager
         else {
-            mainViewPager.setAdapter(new WeatherDayStateAdapter(this, location.getUrlLocation()));
+            mainViewPager.setAdapter(new WeatherDayStateAdapter(this, location.getUrlLocation(), degree));
             actionBarTitle = LocationUtil.PUSHPIN_EMOJI + location.getShortStringLocation();
             attachTabAndPager();
         }
@@ -182,13 +192,13 @@ public class MainActivity extends AppCompatActivity
                     if (!currentAdapter.getLocation().equals(buttonLocation)) {
 
                         // set adapter and close drawer
-                        mainViewPager.setAdapter(new WeatherDayStateAdapter(this, buttonLocation));
+                        mainViewPager.setAdapter(new WeatherDayStateAdapter(this, buttonLocation, degree));
 
                         String actionTitle = LocationUtil.PUSHPIN_EMOJI + checkedButton.getText();
                         getSupportActionBar().setTitle(actionTitle);
                     }
                 } else {
-                    mainViewPager.setAdapter(new WeatherDayStateAdapter(this, buttonLocation));
+                    mainViewPager.setAdapter(new WeatherDayStateAdapter(this, buttonLocation, degree));
                 }
 
                 if (drawerLayout.isDrawerOpen(GravityCompat.START)) {

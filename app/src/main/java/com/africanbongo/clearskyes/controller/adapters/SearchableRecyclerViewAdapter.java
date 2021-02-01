@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.NavUtils;
 import androidx.fragment.app.FragmentActivity;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.africanbongo.clearskyes.R;
@@ -85,7 +86,7 @@ public class SearchableRecyclerViewAdapter extends RecyclerView.Adapter<Searchab
                 WeatherLocation location = (WeatherLocation) layout.getTag();
 
                 SharedPreferences preferences =
-                        activity.getSharedPreferences(LocationUtil.SP_LOCATIONS, Context.MODE_PRIVATE);
+                        PreferenceManager.getDefaultSharedPreferences(itemView.getContext());
 
                 Set<String> locationSet = preferences.getStringSet(LocationUtil.SP_LOCATION_SET, null);
 

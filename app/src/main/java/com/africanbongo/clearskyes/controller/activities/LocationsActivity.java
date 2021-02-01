@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
+import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -47,7 +48,8 @@ public class LocationsActivity extends AppCompatActivity {
 
 
     public void loadData(RecyclerView recyclerView) {
-        SharedPreferences locationPreferences = getSharedPreferences(LocationUtil.SP_LOCATIONS, MODE_PRIVATE);
+        SharedPreferences locationPreferences =
+                PreferenceManager.getDefaultSharedPreferences(this);
 
         // Load locations into recyclerview
         if (locationPreferences != null) {

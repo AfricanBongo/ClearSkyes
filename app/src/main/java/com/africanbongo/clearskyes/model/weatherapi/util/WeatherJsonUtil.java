@@ -31,8 +31,6 @@ public final class WeatherJsonUtil {
     private static final String WEATHER_HOUR_ERROR = "Error parsing JSON into WeatherHour object";
     private static final String WEATHER_TODAY_ERROR = "Error parsing JSON into WeatherToday object";
 
-    // AstroElement JSON titles
-
 
     private WeatherJsonUtil() {}
 
