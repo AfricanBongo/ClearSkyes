@@ -33,6 +33,9 @@
     <string name="notify_show_key">notify_show</string>
     <string name="notify_time_key">notify_time</string>
     <string name="measurements_key">measurements</string>
+    <string name="forecast_key">forecasts</string>
+    <string name="forecast">Forecast</string>
+    <string name="forecast_summary">Number of forecast days</string>
     <string name="degrees_key">degree</string>
     <string name="degrees">Degree</string>
     <string name="degrees_default">Celsius</string>

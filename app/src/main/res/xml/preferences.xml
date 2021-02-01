@@ -2,6 +2,26 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:divider="@drawable/recycler_view_divider">
+
+    <PreferenceCategory
+        app:key="@string/notifications_key"
+        app:title="@string/notifications"
+        app:iconSpaceReserved="false">
+        <SwitchPreferenceCompat
+            app:key="@string/notify_show_key"
+            app:title="@string/notify_show"
+            app:defaultValue="true"
+            app:summary="@string/notify_show_summary"
+            app:icon="@drawable/ic_baseline_notifications_24"
+            android:defaultValue="true" />
+        <com.africanbongo.clearskyes.controller.customviews.TimePreference
+            app:key="@string/notify_time_key"
+            app:title="@string/notify_time"
+            app:defaultValue="@string/notify_time_default"
+            app:icon="@drawable/ic_baseline_timer_24"
+            android:dependency="@string/notify_show_key"/>
+    </PreferenceCategory>
+
     <PreferenceCategory
         app:key="@string/prefences_key"
         app:title="@string/preferences"
@@ -22,23 +42,16 @@
             app:entries="@array/measurements_list"
             android:entryValues="@array/measurements_list"
             app:useSimpleSummaryProvider="true"/>
-    </PreferenceCategory>
-    <PreferenceCategory
-        app:key="@string/notifications_key"
-        app:title="@string/notifications"
-        app:iconSpaceReserved="false">
-        <SwitchPreferenceCompat
-            app:key="@string/notify_show_key"
-            app:title="@string/notify_show"
-            app:defaultValue="true"
-            app:summary="@string/notify_show_summary"
-            app:icon="@drawable/ic_baseline_notifications_24"
-            android:defaultValue="true" />
-        <com.africanbongo.clearskyes.controller.customviews.TimePreference
-            app:key="@string/notify_time_key"
-            app:title="@string/notify_time"
-            app:defaultValue="@string/notify_time_default"
-            app:icon="@drawable/ic_baseline_timer_24"
-            android:dependency="@string/notify_show_key"/>
+        <SeekBarPreference
+            app:key="@string/forecast_key"
+            app:title="@string/forecast"
+            app:icon="@drawable/ic_forecast"
+            app:summary="@string/forecast_summary"
+            app:seekBarIncrement="1"
+            app:showSeekBarValue="true"
+            app:defaultValue="@integer/forecast_default_value"
+            app:min="@integer/forecast_min_days"
+            android:max="@integer/forecast_max_days" />
+
     </PreferenceCategory>
 </PreferenceScreen>

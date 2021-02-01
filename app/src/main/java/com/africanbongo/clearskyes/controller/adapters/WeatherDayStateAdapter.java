@@ -18,12 +18,14 @@ public class WeatherDayStateAdapter extends FragmentStateAdapter {
     MainActivity activity;
     private final String location;
     private WeatherTemp.Degree degree;
+    private int forecastDays;
 
-    public WeatherDayStateAdapter(@NonNull FragmentActivity fragmentActivity, String location, WeatherTemp.Degree degree) {
+    public WeatherDayStateAdapter(@NonNull FragmentActivity fragmentActivity, String location, WeatherTemp.Degree degree, int forecastDays) {
         super(fragmentActivity);
         activity = (MainActivity) fragmentActivity;
         this.location = location;
         this.degree = degree;
+        this.forecastDays = forecastDays;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -41,7 +43,7 @@ public class WeatherDayStateAdapter extends FragmentStateAdapter {
     @Override
     public int getItemCount() {
         // The days in a week
-        return 8;
+        return forecastDays + 1;
     }
 
     /**

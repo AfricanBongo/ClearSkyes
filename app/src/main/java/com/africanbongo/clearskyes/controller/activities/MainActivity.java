@@ -8,6 +8,7 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
@@ -35,12 +36,14 @@ public class MainActivity extends AppCompatActivity
 
     // View holding the tab and view pager layout
     private LinearLayout tabAndViewPagerParent;
-
-    private WeatherTemp.Degree degree;
     private DrawerLayout drawerLayout;
     private CustomNavigationView navigationView;
     private ViewPager2 mainViewPager;
     private View errorPage;
+
+    // Values fetched from Settings Page
+    private WeatherTemp.Degree degree;
+    private int forecastDays;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +70,14 @@ public class MainActivity extends AppCompatActivity
         navigationView = findViewById(R.id.nav_view);
         mainViewPager = findViewById(R.id.main_viewpager);
 
+        // Get values from settings page
         SharedPreferences preferences
                 = PreferenceManager.getDefaultSharedPreferences(this);
         String tempKey = getString(R.string.degrees_key);
         String tempType = preferences.getString(tempKey, getString(R.string.degrees_default));
+        String forecastDaysKey = getString(R.string.forecast_key);
+        int forecastDefaultValue = getResources().getInteger(R.integer.forecast_default_value);
+        forecastDays = preferences.getInt(forecastDaysKey, forecastDefaultValue);
         degree = WeatherTemp.Degree.getDegree(tempType);
 
         // Load location buttons and last location open onto the navigation drawer
@@ -119,7 +126,7 @@ public class MainActivity extends AppCompatActivity
 
             if (presentAdapter != null) {
                 String location = presentAdapter.getLocation();
-                mainViewPager.setAdapter(new WeatherDayStateAdapter(this, location, degree));
+                mainViewPager.setAdapter(new WeatherDayStateAdapter(this, location, degree, forecastDays));
                 attachTabAndPager();
             }
 
@@ -163,7 +170,7 @@ public class MainActivity extends AppCompatActivity
 
         // Else load new adapter to view pager
         else {
-            mainViewPager.setAdapter(new WeatherDayStateAdapter(this, location.getUrlLocation(), degree));
+            mainViewPager.setAdapter(new WeatherDayStateAdapter(this, location.getUrlLocation(), degree, forecastDays));
             actionBarTitle = LocationUtil.PUSHPIN_EMOJI + location.getShortStringLocation();
             attachTabAndPager();
         }
@@ -192,13 +199,13 @@ public class MainActivity extends AppCompatActivity
                     if (!currentAdapter.getLocation().equals(buttonLocation)) {
 
                         // set adapter and close drawer
-                        mainViewPager.setAdapter(new WeatherDayStateAdapter(this, buttonLocation, degree));
+                        mainViewPager.setAdapter(new WeatherDayStateAdapter(this, buttonLocation, degree, forecastDays));
 
                         String actionTitle = LocationUtil.PUSHPIN_EMOJI + checkedButton.getText();
                         getSupportActionBar().setTitle(actionTitle);
                     }
                 } else {
-                    mainViewPager.setAdapter(new WeatherDayStateAdapter(this, buttonLocation, degree));
+                    mainViewPager.setAdapter(new WeatherDayStateAdapter(this, buttonLocation, degree, forecastDays));
                 }
 
                 if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
