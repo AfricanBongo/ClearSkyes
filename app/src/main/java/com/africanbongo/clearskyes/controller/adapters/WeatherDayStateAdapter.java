@@ -14,15 +14,12 @@ import com.africanbongo.clearskyes.controller.fragments.WeatherTodayFragment;
 import com.africanbongo.clearskyes.model.weather.WeatherTemp;
 
 public class WeatherDayStateAdapter extends FragmentStateAdapter {
-
-    MainActivity activity;
     private final String location;
     private WeatherTemp.Degree degree;
     private int forecastDays;
 
     public WeatherDayStateAdapter(@NonNull FragmentActivity fragmentActivity, String location, WeatherTemp.Degree degree, int forecastDays) {
         super(fragmentActivity);
-        activity = (MainActivity) fragmentActivity;
         this.location = location;
         this.degree = degree;
         this.forecastDays = forecastDays;
@@ -34,9 +31,9 @@ public class WeatherDayStateAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
 
         if (position == 0) {
-            return WeatherTodayFragment.newInstance(activity, location, degree);
+            return WeatherTodayFragment.newInstance(location, degree);
         } else {
-            return WeatherDayFragment.newInstance(activity, location, position, degree);
+            return WeatherDayFragment.newInstance(location, position, degree);
         }
     }
 

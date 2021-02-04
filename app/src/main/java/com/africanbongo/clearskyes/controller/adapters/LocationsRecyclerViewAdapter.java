@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -15,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.model.weather.WeatherLocation;
-import com.africanbongo.clearskyes.model.weatherapi.util.LocationUtil;
+import com.africanbongo.clearskyes.util.LocationUtil;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 

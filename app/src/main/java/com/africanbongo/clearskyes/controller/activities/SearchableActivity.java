@@ -18,7 +18,7 @@ import com.africanbongo.clearskyes.controller.adapters.SearchableRecyclerViewAda
 import com.africanbongo.clearskyes.controller.animations.LoadingLayoutAnimation;
 import com.africanbongo.clearskyes.model.weather.WeatherLocation;
 import com.africanbongo.clearskyes.model.weatherapi.WeatherRequestQueue;
-import com.africanbongo.clearskyes.model.weatherapi.util.LocationUtil;
+import com.africanbongo.clearskyes.util.LocationUtil;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonArrayRequest;

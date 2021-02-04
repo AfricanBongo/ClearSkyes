@@ -1,6 +1,6 @@
 package com.africanbongo.clearskyes.model.weather;
 
-import static com.africanbongo.clearskyes.model.weatherapi.util.WeatherTimeUtil.getHourPeriod;
+import static com.africanbongo.clearskyes.util.WeatherTimeUtil.getHourPeriod;
 
 /**
 Weather properties specifically for the hour

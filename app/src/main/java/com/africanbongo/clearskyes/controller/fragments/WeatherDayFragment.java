@@ -22,9 +22,10 @@ import com.africanbongo.clearskyes.model.weather.WeatherHour;
 import com.africanbongo.clearskyes.model.weather.WeatherTemp;
 import com.africanbongo.clearskyes.model.weatherapi.ErrorPageListener;
 import com.africanbongo.clearskyes.model.weatherapi.WeatherRequestQueue;
-import com.africanbongo.clearskyes.model.weatherapi.util.LocationUtil;
-import com.africanbongo.clearskyes.model.weatherapi.util.WeatherJsonUtil;
-import com.africanbongo.clearskyes.model.weatherapi.util.WeatherTimeUtil;
+import com.africanbongo.clearskyes.util.AsyncUITaskUtil;
+import com.africanbongo.clearskyes.util.LocationUtil;
+import com.africanbongo.clearskyes.util.WeatherJsonUtil;
+import com.africanbongo.clearskyes.util.WeatherTimeUtil;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -34,15 +35,11 @@ import org.json.JSONObject;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.Callable;
 
 import static android.view.View.GONE;
 
 public class WeatherDayFragment extends Fragment {
-
-    // Error Listener for fetching Weather JSON data
-    private static ErrorPageListener errorListener;
 
     private LoadingLayoutAnimation loadingLayoutAnimation;
     private DayWeatherViewUp viewUp;
@@ -54,9 +51,7 @@ public class WeatherDayFragment extends Fragment {
         FRAGMENT_NAME = this.getClass().getSimpleName();
     }
 
-    public static WeatherDayFragment newInstance(MainActivity activity, String location, int daysOffset, WeatherTemp.Degree degree) {
-        // Set up error listener first
-        errorListener = new ErrorPageListener(activity);
+    public static WeatherDayFragment newInstance(String location, int daysOffset, WeatherTemp.Degree degree) {
         Bundle args = new Bundle();
         args.putInt("daysOffset", daysOffset);
         args.putString(WeatherTemp.Degree.class.getSimpleName(), degree.getStringDegree());
@@ -76,6 +71,7 @@ public class WeatherDayFragment extends Fragment {
         // Fetch views
         RelativeLayout layout = view.findViewById(R.id.day_layout);
         layout.setVisibility(GONE);
+
 
         // Fetch loading page
         RelativeLayout loadingLayout = view.findViewById(R.id.day_loading_layout);
@@ -114,87 +110,67 @@ public class WeatherDayFragment extends Fragment {
     }
 
     public void requestData(String date, String location, WeatherTemp.Degree degree) {
-        new Thread(() -> {
+        String requestURL = generateURL(location, date);
 
-            String requestURL = generateURL(location, date);
+        WeatherRequestQueue requestQueue = WeatherRequestQueue
+                .getWeatherRequestQueue(getContext());
 
-            WeatherRequestQueue requestQueue = WeatherRequestQueue
-                    .getWeatherRequestQueue(getContext());
+        // Listener for JSON Data
+        Response.Listener<JSONObject> dayListener = response -> {
+            try {
 
-            // Listener for JSON Data
-            Response.Listener<JSONObject> dayListener = response -> new Thread(() -> {
-                try {
+                // Only start this animation when data has been successfully received
+                // from the API
+                loadingLayoutAnimation.start();
 
-                    // Only start this animation when data has been successfully received
-                    // from the API
-                    loadingLayoutAnimation.start();
-
-                    JSONObject json = response
-                            .getJSONObject("forecast")
-                            .getJSONArray("forecastday")
-                            .getJSONObject(0);
-
-                    // Get the Weather Day details first
-                    ExecutorService weatherExecutorService = Executors.newFixedThreadPool(3);
-
-                    weatherExecutorService.submit(() -> {
-                        try {
-                            loadViewUp(WeatherJsonUtil.parseIntoWeatherDay(json), degree);
-                        } catch (JSONException e) {
-                            Log.e(FRAGMENT_NAME, e.getMessage(), e);
-                        }
-                    });
+                JSONObject json = response
+                        .getJSONObject("forecast")
+                        .getJSONArray("forecastday")
+                        .getJSONObject(0);
 
 
-                    // Parse and load astronomy information
-                    weatherExecutorService.submit(() -> {
-                        try {
-                            loadAstroView(WeatherJsonUtil.parseIntoAstroElement(json));
-                        } catch (JSONException e) {
-                            Log.e(FRAGMENT_NAME, e.getMessage(), e);
-                        }
-                    });
+                Callable<WeatherDay> getWeatherDay = () -> WeatherJsonUtil.parseIntoWeatherDay(json);
+                Callable<AstroElement> getAstroElement = () -> WeatherJsonUtil.parseIntoAstroElement(json);
+                Callable<WeatherHour[]> getWeatherHours = () -> WeatherJsonUtil.parseIntoWeatherHourArray(json);
 
-                    // Parse and load weather hours information
-                    weatherExecutorService.submit(() -> {
-                       try {
-                           loadWeatherHours(WeatherJsonUtil.parseIntoWeatherHourArray(json), degree);
-                       } catch (JSONException e) {
-                           Log.e(FRAGMENT_NAME, e.getMessage(), e);
-                       }
-                    });
+                // Callbacks to load the objects into the UI components
+                AsyncUITaskUtil.Callback<WeatherDay> consumeWeatherDay =
+                        weatherDay -> viewUp.loadData(weatherDay, degree);
+                AsyncUITaskUtil.Callback<AstroElement> consumeAstroElement =
+                        astroElement -> astroView.loadData(astroElement);
+                AsyncUITaskUtil.Callback<WeatherHour[]> consumeWeatherHours =
+                        weatherHours -> {
+                            getChildFragmentManager().beginTransaction()
+                                    .replace(R.id.day_weather_hours, WeatherHoursFragment.newInstance(weatherHours, degree))
+                                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                                    .commit();
 
-                    weatherExecutorService.shutdown();
+                            // Stop loading animation and show the weather view
+                            loadingLayoutAnimation.stop();
+                        };
 
-                } catch (JSONException e) {
-                    Log.e("WeatherDayFragment", "Failed to parse JSON object", e);
-                }
-            }).start();
+                // Run the tasks on background threads and load the objects
+                AsyncUITaskUtil.runOnBackgroundThread(getWeatherDay, consumeWeatherDay);
+                AsyncUITaskUtil.runOnBackgroundThread(getAstroElement, consumeAstroElement);
+                AsyncUITaskUtil.runOnBackgroundThread(getWeatherHours, consumeWeatherHours);
 
-            JsonObjectRequest requestDayWeather =
-                    new JsonObjectRequest(
-                            Request.Method.GET,
-                            requestURL,
-                            null,
-                            dayListener,
-                            errorListener
-                    );
+            } catch (JSONException e) {
+                Log.e("WeatherDayFragment", "Failed to parse JSON object", e);
+            }
+        };
 
-            // Add request to queue
-            requestQueue.addRequest(requestDayWeather);
+        JsonObjectRequest requestDayWeather =
+                new JsonObjectRequest(
+                        Request.Method.GET,
+                        requestURL,
+                        null,
+                        dayListener,
+                        new ErrorPageListener((MainActivity) getActivity())
+                );
 
-        }).start();
+        // Add request to queue
+        requestQueue.addRequest(requestDayWeather);
 
-    }
-
-    // Load data into ViewUp
-    public void loadViewUp(@NonNull WeatherDay weatherDay, WeatherTemp.Degree degree) {
-        getActivity().runOnUiThread(() -> viewUp.loadData(weatherDay, degree));
-    }
-
-    // Load data into AstroView
-    public void loadAstroView(@NonNull AstroElement astroElement) {
-        getActivity().runOnUiThread(() -> astroView.loadData(astroElement));
     }
 
     // Load data into

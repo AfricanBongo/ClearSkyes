@@ -1,6 +1,5 @@
 package com.africanbongo.clearskyes.controller.adapters;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.model.weather.WeatherLocation;
-import com.africanbongo.clearskyes.model.weatherapi.util.LocationUtil;
+import com.africanbongo.clearskyes.util.LocationUtil;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

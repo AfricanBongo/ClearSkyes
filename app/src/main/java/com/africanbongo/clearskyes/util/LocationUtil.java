@@ -1,4 +1,4 @@
-package com.africanbongo.clearskyes.model.weatherapi.util;
+package com.africanbongo.clearskyes.util;
 
 import androidx.annotation.NonNull;
 

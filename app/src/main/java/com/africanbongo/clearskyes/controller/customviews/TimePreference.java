@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import androidx.annotation.Nullable;
 import androidx.preference.DialogPreference;
 
-import com.africanbongo.clearskyes.model.weatherapi.util.WeatherTimeUtil;
+import com.africanbongo.clearskyes.util.WeatherTimeUtil;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;

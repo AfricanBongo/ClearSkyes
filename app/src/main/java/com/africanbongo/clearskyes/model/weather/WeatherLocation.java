@@ -1,6 +1,6 @@
 package com.africanbongo.clearskyes.model.weather;
 
-import com.africanbongo.clearskyes.model.weatherapi.util.LocationUtil;
+import com.africanbongo.clearskyes.util.LocationUtil;
 
 import java.util.Objects;
 
