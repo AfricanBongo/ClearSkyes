@@ -9,6 +9,7 @@ import com.africanbongo.clearskyes.model.weather.WeatherObject;
 import com.africanbongo.clearskyes.model.weather.WeatherTemp;
 import com.africanbongo.clearskyes.model.weather.WeatherToday;
 import com.africanbongo.clearskyes.model.weather.WeatherWind;
+import com.africanbongo.clearskyes.model.weatherapi.WeatherRequestQueue;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -226,5 +227,15 @@ public final class WeatherJsonUtil {
         } else {
             throw new JSONException(WEATHER_DAY_ERROR);
         }
+    }
+
+    /**
+     * Generate the url used to get data from the Weather API
+     * @param location {@link String} used to grab data for a specific location eg. Harare
+     * @return {@link String} url
+     */
+    public static String generateURL(String location, int days) {
+        return "https://api.weatherapi.com/v1/forecast.json?key=" +
+                WeatherRequestQueue.API_KEY +"&q=" + location + "&days=" + days;
     }
 }

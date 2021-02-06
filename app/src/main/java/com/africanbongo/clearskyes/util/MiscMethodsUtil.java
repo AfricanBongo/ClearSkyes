@@ -35,4 +35,13 @@ public final class MiscMethodsUtil {
 
         return "Low";
     }
+
+    /**
+     * Uses the unicode representation to retrieve the corresponding emoticon
+     * @param unicode The hexadecimal representation of the emoticon
+     * @return {@link String} representing the emotion
+     */
+    public static String getEmoticonByUnicode(int unicode) {
+        return new String(Character.toChars(unicode));
+    }
 }

@@ -57,8 +57,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/searchable_toolbar" />
 
-    <FrameLayout
-        android:id="@+id/new_frame"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/medium_gap"
@@ -66,27 +65,43 @@
         android:layout_marginEnd="@dimen/medium_gap"
         android:layout_marginBottom="@dimen/small_gap"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/primary_color_curved_background"
         app:layout_constraintStart_toStartOf="parent"
-        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_results_text">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/new_location_recycler_view"
+        <FrameLayout
+            android:id="@+id/new_frame"
             android:layout_width="match_parent"
-            android:paddingVertical="@dimen/small_gap"
-            android:paddingHorizontal="@dimen/small_gap"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical"
-            android:scrollbarStyle="insideOverlay"
-            android:fadeScrollbars="true"
-            android:visibility="gone"/>
+            android:layout_height="match_parent">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/new_location_recycler_view"
+                android:layout_width="match_parent"
+                android:background="@drawable/primary_color_curved_background"
+                android:paddingVertical="@dimen/small_gap"
+                android:paddingHorizontal="@dimen/small_gap"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                android:scrollbarStyle="insideOverlay"
+                android:visibility="gone"
+                android:fadeScrollbars="true" />
+
+            <include
+                android:id="@+id/new_loading"
+                layout="@layout/loading_layout"
+                android:visibility="gone"/>
+
+        </FrameLayout>
 
         <include
-            android:id="@+id/new_loading"
-            layout="@layout/loading_layout" />
+            android:id="@+id/new_warning_layout"
+            layout="@layout/error_page_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"/>
 
-    </FrameLayout>
+    </RelativeLayout>
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

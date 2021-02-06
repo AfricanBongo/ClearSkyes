@@ -23,7 +23,7 @@ import com.africanbongo.clearskyes.model.weather.WeatherTemp;
 import com.africanbongo.clearskyes.model.weather.WeatherToday;
 import com.africanbongo.clearskyes.model.weatherapi.ErrorPageListener;
 import com.africanbongo.clearskyes.model.weatherapi.WeatherRequestQueue;
-import com.africanbongo.clearskyes.util.AsyncUITaskUtil;
+import com.africanbongo.clearskyes.util.BackgroundTaskUtil;
 import com.africanbongo.clearskyes.util.LocationUtil;
 import com.africanbongo.clearskyes.util.WeatherJsonUtil;
 import com.android.volley.Request;
@@ -44,11 +44,8 @@ Fragment containing today's weather
 public class WeatherTodayFragment extends Fragment {
 
     private LoadingLayoutAnimation loadingLayoutAnimation;
-
     private CurrentWeatherViewUp viewUp;
     private AstroView astroView;
-
-    private static final String FRAGMENT_NAME = "WeatherTodayFragment";
 
     /**
      * Returns a new {@link WeatherTodayFragment}
@@ -78,7 +75,7 @@ public class WeatherTodayFragment extends Fragment {
         // Fetch loading page
         RelativeLayout loadingLayout = view.findViewById(R.id.loading_anim);
         loadingLayoutAnimation =
-                new LoadingLayoutAnimation(getActivity(), loadingLayout, layout);
+                new LoadingLayoutAnimation(loadingLayout, layout);
 
         viewUp = view.findViewById(R.id.now_weatherview_up);
         astroView = view.findViewById(R.id.now_weatherview_down);
@@ -95,32 +92,17 @@ public class WeatherTodayFragment extends Fragment {
         return view;
     }
 
-
-    /**
-     * Generate the url used to get data from the Weather API
-     * @param location Titled {@link String} used to grab data for a specific location eg. Harare
-     * @return {@link String} url
-     */
-    public String generateURL(String location) {
-        return "https://api.weatherapi.com/v1/forecast.json?key=" +
-                WeatherRequestQueue.API_KEY +"&q=" + location + "&days=1";
-    }
-
-    // Main Activity is used to display error page in the event of a failure
+    // Fetch the data needed from the api
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void requestData(WeatherTemp.Degree degreesType, String location) {
-        String url = generateURL(location);
-
+        String url = WeatherJsonUtil.generateURL(location, 1);
         WeatherRequestQueue requestQueue =
                 WeatherRequestQueue.getWeatherRequestQueue(getContext());
+        loadingLayoutAnimation.start();
 
         // Parse WeatherApi JSONObjects
         Response.Listener<JSONObject> currentListener = response -> {
             try {
-
-                // Only start this animation when data has been successfully received
-                // from the API
-                loadingLayoutAnimation.start();
 
                 JSONObject forecast = response
                         .getJSONObject("forecast")
@@ -132,13 +114,13 @@ public class WeatherTodayFragment extends Fragment {
                 Callable<WeatherHour[]> getWeatherHours = () -> WeatherJsonUtil.parseIntoWeatherHourArray(forecast);
 
                 // Callbacks to load the objects into the UI components
-                AsyncUITaskUtil.Callback<WeatherToday> consumeWeatherToday =
+                BackgroundTaskUtil.Callback<WeatherToday> consumeWeatherToday =
                         weatherDay -> viewUp.loadData(weatherDay, degreesType);
 
-                AsyncUITaskUtil.Callback<AstroElement> consumeAstroElement =
+                BackgroundTaskUtil.Callback<AstroElement> consumeAstroElement =
                         astroElement -> astroView.loadData(astroElement);
 
-                AsyncUITaskUtil.Callback<WeatherHour[]> consumeWeatherHours =
+                BackgroundTaskUtil.Callback<WeatherHour[]> consumeWeatherHours =
                         weatherHours -> {
                             getChildFragmentManager().beginTransaction()
                                     .replace(R.id.now_weather_hours, WeatherHoursFragment.newInstance(weatherHours, degreesType))
@@ -154,9 +136,9 @@ public class WeatherTodayFragment extends Fragment {
                         };
 
                 // Run the tasks on background threads and load the objects
-                AsyncUITaskUtil.runOnBackgroundThread(getWeatherToday, consumeWeatherToday);
-                AsyncUITaskUtil.runOnBackgroundThread(getAstroElement, consumeAstroElement);
-                AsyncUITaskUtil.runOnBackgroundThread(getWeatherHours, consumeWeatherHours);
+                BackgroundTaskUtil.runAndUpdateUI(getWeatherToday, consumeWeatherToday);
+                BackgroundTaskUtil.runAndUpdateUI(getAstroElement, consumeAstroElement);
+                BackgroundTaskUtil.runAndUpdateUI(getWeatherHours, consumeWeatherHours);
 
             } catch (JSONException e) {
                 Log.e("WeatherTodayFragment", "Failed to parse JSONObject");
@@ -164,12 +146,19 @@ public class WeatherTodayFragment extends Fragment {
             }
         };
 
+        // Shows error page if an error occurs whilst fetching data
+        ErrorPageListener errorListener =
+                new ErrorPageListener((MainActivity) getActivity(), loadingLayoutAnimation);
 
         // Create JSONObjectRequest
         JsonObjectRequest requestTodayWeather =
-                new JsonObjectRequest(Request.Method.GET,
-                        url, null, currentListener,
-                        new ErrorPageListener((MainActivity) getActivity()));
+                new JsonObjectRequest(
+                        Request.Method.GET,
+                        url,
+                        null,
+                        currentListener,
+                        errorListener
+                );
 
         // Add to request queue
         requestQueue.addRequest(requestTodayWeather);

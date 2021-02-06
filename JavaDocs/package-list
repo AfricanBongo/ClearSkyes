@@ -1,0 +1,10 @@
+com.africanbongo.clearskyes
+com.africanbongo.clearskyes.controller.activities
+com.africanbongo.clearskyes.controller.adapters
+com.africanbongo.clearskyes.controller.animations
+com.africanbongo.clearskyes.controller.customviews
+com.africanbongo.clearskyes.controller.fragments
+com.africanbongo.clearskyes.controller.notification
+com.africanbongo.clearskyes.model.weather
+com.africanbongo.clearskyes.model.weatherapi
+com.africanbongo.clearskyes.util

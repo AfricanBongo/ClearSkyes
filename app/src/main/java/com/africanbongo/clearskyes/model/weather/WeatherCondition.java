@@ -1,15 +1,26 @@
 package com.africanbongo.clearskyes.model.weather;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.util.WeatherAVDS;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
 Base class for holding base conditions and loading the weather icon into a ImageView
@@ -42,7 +53,38 @@ public class WeatherCondition {
         view.setTooltipText(conditionText);
         view.setContentDescription(conditionText);
 
-        // Load AnimatedVectorDrawable from resources, if it exists
+        int drawableId = getDrawableId();
+
+        if (drawableId != 0) {
+            // Load up the AVD
+            Drawable drawable = ResourcesCompat
+                    .getDrawable(view.getResources(), drawableId, null);
+
+            if (drawable != null) {
+                Glide
+                        .with(view)
+                        .load(drawable)
+                        .error(IMAGE_NOT_FOUND)
+                        .into(view);
+
+                // Start animation if the drawable is a AnimatedVectorDrawable object
+                if (drawable instanceof AnimatedVectorDrawable) {
+                    ((AnimatedVectorDrawable) drawable).start();
+                }
+            }
+
+            return;
+        }
+
+        // Else load up image from internet
+        Glide
+                .with(view.getContext())
+                .load(conditionIcon)
+                .error(IMAGE_NOT_FOUND)
+                .into(view);
+    }
+
+    public int getDrawableId() {
         for (WeatherAVDS avd : WeatherAVDS.values()) {
             if (conditionCode == avd.getAvdID()) {
                 int drawableId;
@@ -54,36 +96,23 @@ public class WeatherCondition {
                     drawableId = avd.getNightResourceId();
                 }
 
-                // Load up the AVD
-                Drawable drawable = ResourcesCompat
-                        .getDrawable(view.getResources(), drawableId, null);
-
-                if (drawable != null) {
-                    Glide
-                            .with(view)
-                            .load(drawable)
-                            .error(IMAGE_NOT_FOUND)
-                            .into(view);
-
-                    // Start animation if the drawable is a AnimatedVectorDrawable object
-                    if (drawable instanceof AnimatedVectorDrawable) {
-                        ((AnimatedVectorDrawable) drawable).start();
-                    }
-                }
-
-                return;
+                return drawableId;
             }
         }
 
-        // Else load up image from internet
-        Glide
-                .with(view.getContext())
-                .load(conditionIcon)
-                .error(IMAGE_NOT_FOUND)
-                .into(view);
+        return 0;
     }
 
+    public Bitmap getWeatherIcon() {
+        try {
+            URL url = new URL(conditionIcon);
+            return BitmapFactory.decodeStream(url.openConnection().getInputStream());
+        } catch (IOException e) {
+            Log.e(getClass().getSimpleName(), "Error fetching bitmap from web", e);
+        }
 
+        return null;
+    }
 
     public String getConditionText() {
         return conditionText;

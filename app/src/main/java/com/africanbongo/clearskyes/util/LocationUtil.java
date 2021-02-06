@@ -33,7 +33,6 @@ public final class LocationUtil {
     public static final String NOT_APPLICABLE = "N/A";
     public static final String NO_LOCATION_FOUND = "No location found";
     public static final String SEPARATOR = ", ";
-    public static final String PUSHPIN_EMOJI = "📍\t";
 
     // Used to separate info in a WeatherInfo String
     public static final String STRING_SEPARATOR = "\t";
@@ -42,7 +41,6 @@ public final class LocationUtil {
 
     // Shared Preferences variables
     public static final String SP_LOCATION_SET = "locationSet";
-    public static final String SP_LOCATIONS = "locations";
     public static final String SP_FAV_LOCATION = "favoriteLocation";
 
     // Search/Autocomplete JSON titles
@@ -193,5 +191,9 @@ public final class LocationUtil {
         }
 
         return NOT_APPLICABLE;
+    }
+
+    public static String getLocationEmoticon() {
+        return MiscMethodsUtil.getEmoticonByUnicode(0x1F4CD) + "\t";
     }
 }

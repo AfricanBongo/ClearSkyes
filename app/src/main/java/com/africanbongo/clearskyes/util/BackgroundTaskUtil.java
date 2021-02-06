@@ -22,9 +22,14 @@ import java.util.concurrent.Executors;
  *     Inspired by <a href="https://stackoverflow.com/a/58767934/13725690">EpicPandaForce</a>
  *</p>
  */
-public final class AsyncUITaskUtil {
+public final class BackgroundTaskUtil {
 
-    private AsyncUITaskUtil() {}
+    /**
+     * {@link ExecutorService} using CachedThreadPool in order to maximise on performance.
+     */
+    private static ExecutorService executorService = Executors.newCachedThreadPool();
+
+    private BackgroundTaskUtil() {}
     /**
      * An interface used to assimilate results of background processes
      * @param <R>
@@ -40,17 +45,30 @@ public final class AsyncUITaskUtil {
      *                     it is run on the application's main {@link Looper}.
      * @param <R> The {@link Object} type passed as a consumable object
      */
-    public static <R> void runOnBackgroundThread(Callable<R> backgroundTask, Callback<R> uiTask) {
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
+    public static <R> void runAndUpdateUI(Callable<R> backgroundTask, Callback<R> uiTask) {
         executorService.execute(() -> {
             try {
                 final R result = backgroundTask.call();
                 new Handler(Looper.getMainLooper()).post(() ->
                         uiTask.onComplete(result));
             } catch (Exception e) {
-                Log.e(AsyncUITaskUtil.class.getSimpleName(), "Error carrying out background task", e);
+                Log.e(BackgroundTaskUtil.class.getSimpleName(), "Error carrying out background task", e);
             }
         });
-        executorService.shutdown();
+    }
+
+    /**
+     * <p>
+     *     Executes a runnable task within an {@link ExecutorService} using a cached thread pool.
+     *     Do not run task that includes UI changes otherwise app crashes.
+     * </p>
+     *
+     * <p>
+     *     If the need arises to execute UI Tasks asynchronously use {@link #runAndUpdateUI(Callable, Callback)}
+     * </p>
+     * @param task
+     */
+    public static void runTask(Runnable task) {
+        executorService.submit(task);
     }
 }

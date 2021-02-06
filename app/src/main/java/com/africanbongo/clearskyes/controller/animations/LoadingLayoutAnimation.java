@@ -1,5 +1,6 @@
 package com.africanbongo.clearskyes.controller.animations;
 
+import android.content.Context;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,14 +17,12 @@ import com.africanbongo.clearskyes.R;
  */
 public class LoadingLayoutAnimation {
     private final SwitchFadeAnimation switchFadeAnimation;
-    private final FragmentActivity activity;
     private final View loadingLayout;
     private final View mainLayout;
     private boolean animationRan = false;
 
-    public LoadingLayoutAnimation(@NonNull FragmentActivity activity, @NonNull View loadingLayout, @NonNull View mainLayout) {
+    public LoadingLayoutAnimation(@NonNull View loadingLayout, @NonNull View mainLayout) {
         switchFadeAnimation = new SwitchFadeAnimation();
-        this.activity = activity;
         this.loadingLayout = loadingLayout;
         this.mainLayout = mainLayout;
     }
@@ -36,24 +35,27 @@ public class LoadingLayoutAnimation {
      *  in case they're being called from Non-UI threads
      */
     public void start() {
-        activity.runOnUiThread(() -> {
-            // Get image  view and start the animation
-            ImageView loadingImage = loadingLayout.findViewById(R.id.loading_image);
+        // Get image  view and start the animation
+        loadingLayout.setVisibility(View.VISIBLE);
+        ImageView loadingImage = loadingLayout.findViewById(R.id.loading_image);
 
-            AnimatedVectorDrawable vectorDrawable = (AnimatedVectorDrawable)
-                    ResourcesCompat.getDrawable(activity.getResources(), R.drawable.avd_loading_purple, null);
+        AnimatedVectorDrawable vectorDrawable =
+                (AnimatedVectorDrawable) ResourcesCompat.getDrawable(
+                        loadingLayout.getContext().getResources(),
+                        R.drawable.avd_loading_purple,
+                        null
+                );
 
-            if (vectorDrawable != null) {
-                loadingImage.setImageDrawable(vectorDrawable);
-                vectorDrawable.start();
-                animationRan = true;
-            }
-        });
+        if (vectorDrawable != null) {
+            loadingImage.setImageDrawable(vectorDrawable);
+            vectorDrawable.start();
+            animationRan = true;
+        }
     }
 
     /**
      * <p>
-     * Stops the loading animation
+     * Stops the loading animation and switches views
      * </p>
      * <p>
      *     However, if animation wasn't started, the stop method won't be run
@@ -62,22 +64,31 @@ public class LoadingLayoutAnimation {
      * in case they're being called from Non-UI threads
      */
     public void stop() {
-        activity.runOnUiThread(() -> {
-            if (animationRan) {
-                // Get image  view and start the animation
-                ImageView loadingImage = loadingLayout.findViewById(R.id.loading_image);
+        if (animationRan) {
+            stopNow();
+            // Switch the loading view with the normal weather view
+            switchFadeAnimation.switchViews(loadingLayout, mainLayout, SwitchFadeAnimation.LONG_DURATION);
+            animationRan = false;
+        }
 
-                AnimatedVectorDrawable vectorDrawable =
-                        (AnimatedVectorDrawable) loadingImage.getDrawable();
+    }
 
-                if (vectorDrawable != null) {vectorDrawable.stop();}
+    /**
+     * Stop the loading animation immediately without any switching of views
+     */
+    public void stopNow() {
+        if (animationRan) {
+            // Get image  view and start the animation
+            ImageView loadingImage = loadingLayout.findViewById(R.id.loading_image);
 
-                // Switch the loading view with the normal weather view
-                switchFadeAnimation.switchViews(loadingLayout, mainLayout, SwitchFadeAnimation.LONG_DURATION);
+            AnimatedVectorDrawable vectorDrawable =
+                    (AnimatedVectorDrawable) loadingImage.getDrawable();
 
-                animationRan = false;
-            }
-        });
+            if (vectorDrawable != null) {vectorDrawable.stop();}
+        }
+    }
 
+    public Context getContext() {
+        return loadingLayout.getContext();
     }
 }

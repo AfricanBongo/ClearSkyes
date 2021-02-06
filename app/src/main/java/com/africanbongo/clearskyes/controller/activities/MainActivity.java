@@ -1,5 +1,8 @@
 package com.africanbongo.clearskyes.controller.activities;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,9 +22,12 @@ import com.africanbongo.clearskyes.controller.animations.SwitchFadeAnimation;
 import com.africanbongo.clearskyes.controller.animations.ZoomOutPageTransformer;
 import com.africanbongo.clearskyes.controller.customviews.CustomNavigationView;
 import com.africanbongo.clearskyes.controller.customviews.LocationButton;
+import com.africanbongo.clearskyes.controller.notification.NotificationReceiver;
 import com.africanbongo.clearskyes.model.weather.WeatherLocation;
 import com.africanbongo.clearskyes.model.weather.WeatherTemp;
+import com.africanbongo.clearskyes.util.BackgroundTaskUtil;
 import com.africanbongo.clearskyes.util.LocationUtil;
+import com.africanbongo.clearskyes.util.NotificationUtil;
 import com.africanbongo.clearskyes.util.WeatherTimeUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButtonToggleGroup;
@@ -29,9 +35,12 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity
-        implements MaterialButtonToggleGroup.OnButtonCheckedListener {
+        implements MaterialButtonToggleGroup.OnButtonCheckedListener, Reloadable {
 
     // View holding the tab and view pager layout
     private LinearLayout tabAndViewPagerParent;
@@ -69,6 +78,56 @@ public class MainActivity extends AppCompatActivity
         navigationView = findViewById(R.id.nav_view);
         mainViewPager = findViewById(R.id.main_viewpager);
 
+        getSettings();
+        // Load location buttons and last location open onto the navigation drawer
+        initLocations();
+
+        mainViewPager.setPageTransformer(new ZoomOutPageTransformer());
+        errorPage = findViewById(R.id.warning_layout);
+    }
+
+    // Create a notification if enabled in settings
+    public void createNotification(boolean notificationsOn, String time) {
+        // Create intents to get notification broadcast receiver
+        Intent intent = new Intent(this, NotificationReceiver.class);
+        intent.setAction(NotificationUtil.NOTIFICATION_ACTION);
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(getApplicationContext(),
+                NotificationUtil.NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // Get the alarm manager
+        AlarmManager alarmManager = (AlarmManager)
+                getSystemService(ALARM_SERVICE);
+
+        // Fire the intent at the default or user specified time
+        if (notificationsOn) {
+            DateTimeFormatter normalFormatter =
+                    DateTimeFormatter.ofPattern(WeatherTimeUtil.TIME_FORMAT);
+            LocalTime notificationTime = LocalTime.parse(time, normalFormatter);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(System.currentTimeMillis());
+            calendar.set(Calendar.HOUR_OF_DAY, notificationTime.getHour());
+            calendar.set(Calendar.MINUTE, notificationTime.getMinute());
+            calendar.set(Calendar.SECOND, 0);
+            calendar.set(Calendar.MILLISECOND, 0);
+
+            if (Calendar.getInstance().after(calendar)) {
+                calendar.add(Calendar.DATE, 1);
+            }
+
+            alarmManager.cancel(alarmIntent);
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                    AlarmManager.INTERVAL_DAY, alarmIntent);
+
+        } else {
+            // Cancel notifications if they're existing
+            if (alarmIntent != null && alarmManager != null) {
+                alarmManager.cancel(alarmIntent);
+            }
+        }
+    }
+
+    public void getSettings() {
         // Get values from settings page
         SharedPreferences preferences
                 = PreferenceManager.getDefaultSharedPreferences(this);
@@ -79,11 +138,18 @@ public class MainActivity extends AppCompatActivity
         forecastDays = preferences.getInt(forecastDaysKey, forecastDefaultValue);
         degree = WeatherTemp.Degree.getDegree(tempType);
 
-        // Load location buttons and last location open onto the navigation drawer
-        initLocations();
+        // Check if notifications on
+        String notificationTimeKey = getString(R.string.notify_time_key);
+        String notificationKey = getString(R.string.notify_show_key);
+        String defaultTime = getString(R.string.notify_time_default);
+        String time = preferences.getString(notificationTimeKey, defaultTime);
+        boolean notificationsOn = preferences.getBoolean(notificationKey, true);
 
-        mainViewPager.setPageTransformer(new ZoomOutPageTransformer());
-        errorPage = findViewById(R.id.warning_layout);
+        // Create the notifications on a separate thread
+        BackgroundTaskUtil.runTask(
+                () -> createNotification(notificationsOn, time)
+        );
+
     }
 
     // Attach the tab layout to the view pager
@@ -100,10 +166,8 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    /**
-     * Hide the main view pager and show the error page
-     * @return The {@link View} containing the error page
-     */
+
+    @Override
     public View showError() {
         if (tabAndViewPagerParent != null || !this.isDestroyed()) {
             // Switch the view pager with the error page
@@ -115,10 +179,8 @@ public class MainActivity extends AppCompatActivity
         return null;
     }
 
-    /**
-     * Reload the view pager contents and hide error page
-     */
-    public void reloadViewPager() {
+    @Override
+    public void reload() {
         if (mainViewPager != null || !this.isDestroyed()) {
             // Refresh the view pager
             WeatherDayStateAdapter presentAdapter = (WeatherDayStateAdapter) mainViewPager.getAdapter();
@@ -170,7 +232,7 @@ public class MainActivity extends AppCompatActivity
         // Else load new adapter to view pager
         else {
             mainViewPager.setAdapter(new WeatherDayStateAdapter(this, location.getUrlLocation(), degree, forecastDays));
-            actionBarTitle = LocationUtil.PUSHPIN_EMOJI + location.getShortStringLocation();
+            actionBarTitle = LocationUtil.getLocationEmoticon() + location.getShortStringLocation();
             attachTabAndPager();
         }
 
@@ -200,7 +262,7 @@ public class MainActivity extends AppCompatActivity
                         // set adapter and close drawer
                         mainViewPager.setAdapter(new WeatherDayStateAdapter(this, buttonLocation, degree, forecastDays));
 
-                        String actionTitle = LocationUtil.PUSHPIN_EMOJI + checkedButton.getText();
+                        String actionTitle = LocationUtil.getLocationEmoticon() + checkedButton.getText();
                         getSupportActionBar().setTitle(actionTitle);
                     }
                 } else {
