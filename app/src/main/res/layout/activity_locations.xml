@@ -9,16 +9,12 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/locations_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/purple_dark"
+        style="@style/ClearskyesToolBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:menu="@menu/locations_menu"
-        app:title="@string/manage_locations"
-        app:titleTextAppearance="@style/TextAppearance.AppCompat.Headline"
-        app:titleTextColor="@color/white" />
+        app:title="@string/manage_locations" />
 
     <FrameLayout
         android:id="@+id/loc_frame"

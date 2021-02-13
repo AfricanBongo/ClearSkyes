@@ -12,7 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ClearSkyes">
-
+        <activity android:name=".controller.activities.WeatherDetailActivity"></activity>
+        <activity android:name=".controller.activities.FeedbackActivity" />
         <activity
             android:name=".controller.activities.SettingsActivity"
             android:configChanges="orientation|screenSize"
@@ -40,7 +41,9 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".controller.notification.NotificationReceiver"
+        <receiver
+            android:name=".controller.notification.NotificationReceiver"
             android:enabled="true" />
     </application>
+
 </manifest>

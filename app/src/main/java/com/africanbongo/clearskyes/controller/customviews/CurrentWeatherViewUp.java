@@ -1,6 +1,7 @@
 package com.africanbongo.clearskyes.controller.customviews;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -11,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.africanbongo.clearskyes.R;
+import com.africanbongo.clearskyes.controller.activities.WeatherDetailActivity;
 import com.africanbongo.clearskyes.model.weather.WeatherTemp;
 import com.africanbongo.clearskyes.model.weather.WeatherToday;
 
@@ -60,6 +62,12 @@ public class CurrentWeatherViewUp extends ConstraintLayout {
                 .from(context)
                 .inflate(R.layout.currentweather_view_up, this, true);
 
+        constraintLayout.setOnClickListener(l -> {
+            Intent intent = new Intent(getContext(), WeatherDetailActivity.class);
+
+            getContext().startActivity(intent);
+        });
+
         // Get the views within the view group
         nowTemp = constraintLayout.findViewById(R.id.now_temp);
         feelsLikeTemp = constraintLayout.findViewById(R.id.feels_like_temp);
@@ -89,13 +97,13 @@ public class CurrentWeatherViewUp extends ConstraintLayout {
         iconImageView.setContentDescription(conditionText);
     }
 
-    public void setNowTemp(double temperature) {
-        String temp = (int) Math.round(temperature) + "°";
+    public void setNowTemp(int temperature) {
+        String temp = temperature + "°";
         nowTemp.setText(temp);
     }
 
-    public void setFeelsLikeTemp(double temperature) {
-        String temp = "Feels like " + (int) Math.round(temperature) + "°";
+    public void setFeelsLikeTemp(int temperature) {
+        String temp = "Feels like " + temperature + "°";
         feelsLikeTemp.setText(temp);
     }
 

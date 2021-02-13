@@ -8,6 +8,7 @@
         android:id="@+id/day_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipChildren="false"
         tools:context=".controller.fragments.WeatherDayFragment">
         <com.africanbongo.clearskyes.controller.customviews.DayWeatherViewUp
             android:id="@+id/day_weatherview_up"

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -26,8 +27,8 @@ import com.africanbongo.clearskyes.controller.notification.NotificationReceiver;
 import com.africanbongo.clearskyes.model.weather.WeatherLocation;
 import com.africanbongo.clearskyes.model.weather.WeatherTemp;
 import com.africanbongo.clearskyes.util.BackgroundTaskUtil;
-import com.africanbongo.clearskyes.util.LocationUtil;
 import com.africanbongo.clearskyes.util.NotificationUtil;
+import com.africanbongo.clearskyes.util.WeatherLocationUtil;
 import com.africanbongo.clearskyes.util.WeatherTimeUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButtonToggleGroup;
@@ -87,12 +88,16 @@ public class MainActivity extends AppCompatActivity
     }
 
     // Create a notification if enabled in settings
-    public void createNotification(boolean notificationsOn, String time) {
+    public void createNotification(boolean notificationsOn, String time, WeatherTemp.Degree degree,
+                                   @Nullable String favouriteLocation) {
+
         // Create intents to get notification broadcast receiver
         Intent intent = new Intent(this, NotificationReceiver.class);
         intent.setAction(NotificationUtil.NOTIFICATION_ACTION);
+        intent.putExtra(NotificationUtil.NOTIFICATION_DEGREE, degree.getStringDegree());
+        intent.putExtra(NotificationUtil.NOTIFICATION_LOCATION, favouriteLocation);
         PendingIntent alarmIntent = PendingIntent.getBroadcast(getApplicationContext(),
-                NotificationUtil.NOTIFICATION_ID, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                NotificationUtil.NOTIFICATION_ID, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         // Get the alarm manager
         AlarmManager alarmManager = (AlarmManager)
@@ -142,12 +147,13 @@ public class MainActivity extends AppCompatActivity
         String notificationTimeKey = getString(R.string.notify_time_key);
         String notificationKey = getString(R.string.notify_show_key);
         String defaultTime = getString(R.string.notify_time_default);
+        String favouriteLocation = preferences.getString(WeatherLocationUtil.SP_FAV_LOCATION, null);
         String time = preferences.getString(notificationTimeKey, defaultTime);
         boolean notificationsOn = preferences.getBoolean(notificationKey, true);
 
         // Create the notifications on a separate thread
         BackgroundTaskUtil.runTask(
-                () -> createNotification(notificationsOn, time)
+                () -> createNotification(notificationsOn, time, degree, favouriteLocation)
         );
 
     }
@@ -226,13 +232,13 @@ public class MainActivity extends AppCompatActivity
         // Prompt the user to add new locations
         if (location == null) {
             navigationView.promptForLocations(drawerLayout, true);
-            actionBarTitle = LocationUtil.NO_LOCATION_FOUND;
+            actionBarTitle = WeatherLocationUtil.NO_LOCATION_FOUND;
         }
 
         // Else load new adapter to view pager
         else {
             mainViewPager.setAdapter(new WeatherDayStateAdapter(this, location.getUrlLocation(), degree, forecastDays));
-            actionBarTitle = LocationUtil.getLocationEmoticon() + location.getShortStringLocation();
+            actionBarTitle = WeatherLocationUtil.getLocationEmoticon() + location.getShortStringLocation();
             attachTabAndPager();
         }
 
@@ -247,7 +253,8 @@ public class MainActivity extends AppCompatActivity
         if (isChecked) {
 
             LocationButton checkedButton = navigationView.findViewById(checkedId);
-            String buttonLocation = checkedButton.getLocation().getUrlLocation();
+            WeatherLocation activeLocation = checkedButton.getLocation();
+            String buttonLocation = activeLocation.getUrlLocation();
 
             // If this button is checked create new viewpager adapter
             // Only if it doesn't already
@@ -262,13 +269,21 @@ public class MainActivity extends AppCompatActivity
                         // set adapter and close drawer
                         mainViewPager.setAdapter(new WeatherDayStateAdapter(this, buttonLocation, degree, forecastDays));
 
-                        String actionTitle = LocationUtil.getLocationEmoticon() + checkedButton.getText();
+                        String actionTitle = WeatherLocationUtil.getLocationEmoticon() + checkedButton.getText();
                         getSupportActionBar().setTitle(actionTitle);
                     }
                 } else {
                     mainViewPager.setAdapter(new WeatherDayStateAdapter(this, buttonLocation, degree, forecastDays));
                 }
 
+                // Save the location as the active location
+                SharedPreferences preferences =
+                        PreferenceManager.getDefaultSharedPreferences(this);
+
+                preferences
+                        .edit()
+                        .putString(WeatherLocationUtil.SP_ACTIVE_LOCATION, WeatherLocationUtil.serialize(activeLocation))
+                        .apply();
                 if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                     drawerLayout.closeDrawer(GravityCompat.START);
                 }

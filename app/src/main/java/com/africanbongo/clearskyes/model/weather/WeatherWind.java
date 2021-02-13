@@ -1,23 +1,12 @@
 package com.africanbongo.clearskyes.model.weather;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
 Contains wind properties of the weather
  */
-public class WeatherWind {
-    public enum Measurement {
-        M("Metric"),
-        F("Imperial");
-
-        private String type;
-        Measurement(String type) {
-            this.type = type;
-        }
-
-        public String getType() {
-            return type;
-        }
-    }
-
+public class WeatherWind implements Parcelable {
     private final double windSpeedMPH;
     private final double windSpeedKPH;
     private final String windDirection;
@@ -28,12 +17,42 @@ public class WeatherWind {
         this.windDirection = windDirection;
     }
 
-    public double getWindSpeedMPH() {
-        return windSpeedMPH;
+    protected WeatherWind(Parcel in) {
+        windSpeedMPH = in.readDouble();
+        windSpeedKPH = in.readDouble();
+        windDirection = in.readString();
     }
 
-    public double getWindSpeedKPH() {
-        return windSpeedKPH;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeDouble(windSpeedMPH);
+        dest.writeDouble(windSpeedKPH);
+        dest.writeString(windDirection);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<WeatherWind> CREATOR = new Creator<WeatherWind>() {
+        @Override
+        public WeatherWind createFromParcel(Parcel in) {
+            return new WeatherWind(in);
+        }
+
+        @Override
+        public WeatherWind[] newArray(int size) {
+            return new WeatherWind[size];
+        }
+    };
+
+    public double getWindSpeed(WeatherMisc.Measurement measurement) {
+        if (measurement == WeatherMisc.Measurement.METRIC) {
+            return windSpeedKPH;
+        }
+
+        return windSpeedMPH;
     }
 
     public String getWindDirection() {

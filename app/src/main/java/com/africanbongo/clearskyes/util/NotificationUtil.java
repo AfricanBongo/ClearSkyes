@@ -6,15 +6,19 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.preference.PreferenceManager;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.controller.activities.MainActivity;
 import com.africanbongo.clearskyes.model.weather.WeatherCondition;
+import com.africanbongo.clearskyes.model.weather.WeatherDay;
+import com.africanbongo.clearskyes.model.weather.WeatherLocation;
 import com.africanbongo.clearskyes.model.weather.WeatherObject;
 import com.africanbongo.clearskyes.model.weather.WeatherTemp;
 import com.africanbongo.clearskyes.model.weather.WeatherToday;
@@ -28,7 +32,8 @@ public final class NotificationUtil {
     public static final String NOTIFICATION_ACTION = "Notification";
     public static final String NOTIFICATION_NAME = "Weather Update Notification";
     public static final String NOTIFICATION_CHANNEL_ID = "clearskyes_notification_channel";
-    public static final String NOTIFICATION_TIME = "notification_time";
+    public static final String NOTIFICATION_DEGREE = "degree";
+    public static final String NOTIFICATION_LOCATION = "location";
     public static final int JOB_ID = 1001;
 
     private NotificationUtil() {}
@@ -60,8 +65,10 @@ public final class NotificationUtil {
         return notificationManager;
     }
 
-    public static NotificationCompat.Builder getNotificationBuilder(@NonNull WeatherToday weatherToday,
-                                                                    Context context) {
+    public static NotificationCompat.Builder getNotificationBuilder(Context context,
+                                                                    @NonNull WeatherDay weatherToday,
+                                                                    @NonNull WeatherLocation weatherLocation,
+                                                                    @NonNull WeatherTemp.Degree degree) {
         NotificationCompat.Builder builder =
                 new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID);
         Intent notificationIntent = new Intent(context, MainActivity.class);
@@ -69,42 +76,43 @@ public final class NotificationUtil {
                 context, NOTIFICATION_ID, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT
         );
 
-        WeatherObject weatherObject = weatherToday.getNowWeather();
-        WeatherCondition weatherCondition = weatherObject.getConditions();
+        // Get the weather info
+        WeatherCondition weatherCondition = weatherToday.getConditions();
+        WeatherTemp avgWeatherTemp = weatherToday.getAvgTemp();
+        WeatherTemp maxWeatherTemp = weatherToday.getMaxTemp();
+        WeatherTemp minWeatherTemp = weatherToday.getMinTemp();
+        int avgTemp = avgWeatherTemp.getTemp(degree);
+        int maxTemp = maxWeatherTemp.getTemp(degree);
+        int minTemp = minWeatherTemp.getTemp(degree);
 
-        // Fetch bitmap and load as large icon
-        BackgroundTaskUtil.runAndUpdateUI(
-                weatherCondition::getWeatherIcon,
-                (BackgroundTaskUtil.Callback<Bitmap>) result -> {
-                    synchronized (builder) {
-                        builder.setLargeIcon(result);
-                    }
-                });
+        NotificationCompat.BigTextStyle moreWeatherInfoStyle =
+                new NotificationCompat.BigTextStyle();
 
-        WeatherTemp weatherTemp = weatherObject.getActualTemp();
-        int tempC = (int) Math.round(weatherTemp.getTemp(WeatherTemp.Degree.C));
-        int tempF = (int) Math.round(weatherTemp.getTemp(WeatherTemp.Degree.F));
+        String summaryText = "Today's weather";
+        String contextTitle = "Today, " + weatherLocation.getCity() + "'s weather is like: ";
+        StringBuilder bigText = new StringBuilder();
+        String contentText = weatherCondition.getConditionText();
+        bigText.append("Average temperature: ").append(avgTemp).append(degree.getSymbol()).append("\n");
+        bigText.append("Condition: ").append(weatherCondition.getConditionText()).append("\n");
+        bigText.append("Max: ").append(maxTemp).append(degree.getSymbol()).append("\t|\t");
+        bigText.append("Min: ").append(minTemp).append(degree.getSymbol()).append("\n");
+        bigText.append("UV: ").append(weatherToday.getUvLevel());
 
-        String contextTitle = "Today's weather is like: ";
-        StringBuilder contextText = new StringBuilder();
-        contextText.append(tempC).append("°C").append("\t\\\t")
-                .append(tempF).append("°F").append("\t\t\t\t\t");
-        contextText.append(weatherCondition.getConditionText());
+        moreWeatherInfoStyle
+                .setSummaryText(summaryText)
+                .bigText(bigText);
 
         builder
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(contextTitle)
-                .setContentText(contextText)
+                .setContentText(contentText)
                 .setContentIntent(openAppIntent)
+                .setStyle(moreWeatherInfoStyle)
                 .setAutoCancel(true)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setDefaults(NotificationCompat.DEFAULT_ALL);
 
         return builder;
-    }
-
-    public static void sendNotification(NotificationManager manager, NotificationCompat.Builder builder) {
-        manager.notify(NOTIFICATION_ID, builder.build());
     }
 
     public static void cancelNotification(NotificationManager manager) {

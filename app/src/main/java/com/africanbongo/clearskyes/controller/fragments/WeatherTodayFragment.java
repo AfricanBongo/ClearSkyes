@@ -24,7 +24,7 @@ import com.africanbongo.clearskyes.model.weather.WeatherToday;
 import com.africanbongo.clearskyes.model.weatherapi.ErrorPageListener;
 import com.africanbongo.clearskyes.model.weatherapi.WeatherRequestQueue;
 import com.africanbongo.clearskyes.util.BackgroundTaskUtil;
-import com.africanbongo.clearskyes.util.LocationUtil;
+import com.africanbongo.clearskyes.util.WeatherLocationUtil;
 import com.africanbongo.clearskyes.util.WeatherJsonUtil;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -56,7 +56,7 @@ public class WeatherTodayFragment extends Fragment {
     public static WeatherTodayFragment newInstance(String location, WeatherTemp.Degree degree) {
         Bundle bundle = new Bundle();
         bundle.putString(WeatherTemp.Degree.class.getSimpleName(), degree.getStringDegree());
-        bundle.putString(LocationUtil.class.getSimpleName(), location);
+        bundle.putString(WeatherLocationUtil.class.getSimpleName(), location);
         WeatherTodayFragment f = new WeatherTodayFragment();
         f.setArguments(bundle);
         return f;
@@ -78,13 +78,16 @@ public class WeatherTodayFragment extends Fragment {
                 new LoadingLayoutAnimation(loadingLayout, layout);
 
         viewUp = view.findViewById(R.id.now_weatherview_up);
+        viewUp.bringToFront();
         astroView = view.findViewById(R.id.now_weatherview_down);
+        astroView.bringToFront();
+        layout.bringToFront();
 
         Bundle bundle = getArguments();
 
         if (bundle != null) {
             // Get from the settings which types of values to load up
-            String location = bundle.getString(LocationUtil.class.getSimpleName());
+            String location = bundle.getString(WeatherLocationUtil.class.getSimpleName());
             String degreesType = bundle.getString(WeatherTemp.Degree.class.getSimpleName());
             WeatherTemp.Degree degree = WeatherTemp.Degree.getDegree(degreesType);
             requestData(degree, location);

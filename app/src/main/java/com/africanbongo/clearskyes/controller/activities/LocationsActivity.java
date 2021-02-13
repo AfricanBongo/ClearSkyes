@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.controller.adapters.LocationsRecyclerViewAdapter;
 import com.africanbongo.clearskyes.model.weather.WeatherLocation;
-import com.africanbongo.clearskyes.util.LocationUtil;
+import com.africanbongo.clearskyes.util.WeatherLocationUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 
 import java.util.ArrayList;
@@ -54,11 +54,11 @@ public class LocationsActivity extends AppCompatActivity {
         // Load locations into recyclerview
         if (locationPreferences != null) {
             Set<String> locations =
-                    locationPreferences.getStringSet(LocationUtil.SP_LOCATION_SET, null);
+                    locationPreferences.getStringSet(WeatherLocationUtil.SP_LOCATION_SET, null);
 
             if (locations != null) {
                 List<WeatherLocation> weatherLocations =
-                        new ArrayList<>(LocationUtil.deserializeAll(locations));
+                        new ArrayList<>(WeatherLocationUtil.deserializeAll(locations));
 
                 if (!weatherLocations.isEmpty()) {
                     recyclerView.setAdapter(new LocationsRecyclerViewAdapter(weatherLocations, recyclerView));

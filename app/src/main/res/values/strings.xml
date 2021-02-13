@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">ClearSkyes</string>
     <string name="weather_now">Now</string>
-    <string name="summary">Summary</string>
+    <string name="summary">Overview</string>
     <string name="uvLevel">UV Level</string>
     <string name="avg_temp">Average temperature</string>
     <string name="condition">Weather condition</string>
@@ -55,4 +55,10 @@
         <item>Metric</item>
         <item>Imperial</item>
     </string-array>
+
+    <!-- Feedback -->
+    <string name="feedback_submit">Submit</string>
+    <string name="feedback_title">Feedback subject</string>
+    <string name="feedback_content">Your feedback in detail</string>
+    <string name="feedback_from">From (Optional)</string>
 </resources>

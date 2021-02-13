@@ -9,7 +9,10 @@
     <dimen name="small_gap">8dp</dimen>
     <dimen name="smaller_gap">4dp</dimen>
     <dimen name="smallest_gap">2dp</dimen>
-    <dimen name="fall_over">-2dp</dimen>
+    <dimen name="negative_small_gap">-8dp</dimen>
+    <dimen name="negative_smaller_gap">-4dp</dimen>
+    <dimen name="negative_smallest_gap">-2dp</dimen>
+
 
     <!--    Uniform font sizes-->
     <dimen name="large_font_size">50sp</dimen>
@@ -20,12 +23,21 @@
     <!--    Common points on a vector asset-->
     <dimen name="common_zero_point">0dp</dimen>
 
-    <!--    Other, i.e. self-explainable -->
-    <dimen name="currentweather_view_height">150dp</dimen>
-    <dimen name="weather_icon">128dp</dimen>
-    <dimen name="weather_medium_icon">48dp</dimen>
-    <dimen name="border_radius">5dp</dimen>
+    <!-- WeatherDetail-->
+    <dimen name="appbarlayout_height">208dp</dimen>
+
+    <!-- General icon size-->
+    <dimen name="default_drawable_size">128dp</dimen>
     <dimen name="weather_small_icon">34dp</dimen>
     <dimen name="weather_anim_icon">32dp</dimen>
+    <dimen name="weather_icon">104dp</dimen>
+    <dimen name="weather_large_icon">88dp</dimen>
+    <dimen name="weather_medium_icon">48dp</dimen>
+
+    <!--    Other, i.e. self-explainable -->
+    <dimen name="currentweather_view_height">150dp</dimen>
+
+    <dimen name="border_radius">5dp</dimen>
+
     <dimen name="custom_nav_item_height">40dp</dimen>
 </resources>

@@ -1,6 +1,6 @@
 package com.africanbongo.clearskyes.model.weather;
 
-import com.africanbongo.clearskyes.util.LocationUtil;
+import com.africanbongo.clearskyes.util.WeatherLocationUtil;
 
 import java.util.Objects;
 
@@ -56,7 +56,7 @@ public class WeatherLocation {
      * @return {@link String} representing the information about location in short, e.g. Harare, ZW.
      */
     public String getShortStringLocation() {
-        return getCity() + LocationUtil.SEPARATOR + getCountryCode();
+        return getCity() + WeatherLocationUtil.SEPARATOR + getCountryCode();
     }
 
     /**
@@ -72,11 +72,11 @@ public class WeatherLocation {
      * @return {@link String} representing the information about location in full.
      */
     public String getLongStringLocation() {
-        if (region.equals(LocationUtil.NOT_APPLICABLE)) {
-            return city + LocationUtil.SEPARATOR + country;
+        if (region.equals(WeatherLocationUtil.NOT_APPLICABLE)) {
+            return city + WeatherLocationUtil.SEPARATOR + country;
         }
 
-        return city + LocationUtil.SEPARATOR + region + LocationUtil.SEPARATOR + country;
+        return city + WeatherLocationUtil.SEPARATOR + region + WeatherLocationUtil.SEPARATOR + country;
     }
 
     /**
@@ -92,11 +92,11 @@ public class WeatherLocation {
      * @return {@link String} representing the information about location in standard form.
      */
     public String getStandardStringLocation() {
-        if (region.equals(LocationUtil.NOT_APPLICABLE)) {
+        if (region.equals(WeatherLocationUtil.NOT_APPLICABLE)) {
             return country;
         }
 
-        return region + LocationUtil.SEPARATOR + country;
+        return region + WeatherLocationUtil.SEPARATOR + country;
     }
 
     @Override

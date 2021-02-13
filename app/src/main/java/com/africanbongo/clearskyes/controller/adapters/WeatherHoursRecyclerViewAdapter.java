@@ -48,7 +48,7 @@ public class WeatherHoursRecyclerViewAdapter extends RecyclerView.Adapter<Weathe
         holder.hourTime.setText(hour.getTime());
 
         String chanceOfRain = hour.getChanceOfRain() + "%";
-        String temp = (int) Math.round(hour.getActualTemp().getTemp(degreesType)) + "°";
+        String temp = hour.getActualTemp().getTemp(degreesType) + "°";
 
         holder.hourTemp.setText(temp);
         holder.hourChanceOfRain.setText(chanceOfRain);

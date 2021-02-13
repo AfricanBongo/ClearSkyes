@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.model.weather.WeatherLocation;
-import com.africanbongo.clearskyes.util.LocationUtil;
+import com.africanbongo.clearskyes.util.WeatherLocationUtil;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -87,25 +87,25 @@ public class SearchableRecyclerViewAdapter extends RecyclerView.Adapter<Searchab
                 SharedPreferences preferences =
                         PreferenceManager.getDefaultSharedPreferences(itemView.getContext());
 
-                Set<String> locationSet = preferences.getStringSet(LocationUtil.SP_LOCATION_SET, null);
+                Set<String> locationSet = preferences.getStringSet(WeatherLocationUtil.SP_LOCATION_SET, null);
 
                 if (locationSet != null) {
 
-                    String locationString = LocationUtil.serialize(location);
+                    String locationString = WeatherLocationUtil.serialize(location);
                     Set<String> newLocationSet = new LinkedHashSet<>(locationSet);
                     newLocationSet.add(locationString);
 
                     boolean written = preferences
                             .edit()
-                            .putStringSet(LocationUtil.SP_LOCATION_SET, newLocationSet)
+                            .putStringSet(WeatherLocationUtil.SP_LOCATION_SET, newLocationSet)
                             .commit();
 
                     // Close activity if the location is saved successfully
                     if (written) {
-                        Toast.makeText(activity, LocationUtil.SAVED_SUCCESS, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, WeatherLocationUtil.SAVED_SUCCESS, Toast.LENGTH_SHORT).show();
                         NavUtils.navigateUpFromSameTask(activity);
                     } else {
-                        Toast.makeText(activity, LocationUtil.SAVED_FAILURE, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(activity, WeatherLocationUtil.SAVED_FAILURE, Toast.LENGTH_SHORT).show();
                     }
                 }
             });

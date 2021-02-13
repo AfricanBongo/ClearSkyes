@@ -5,8 +5,8 @@
 
     <ImageView
         android:id="@+id/error_message_image"
-        android:layout_width="@dimen/weather_icon"
-        android:layout_height="@dimen/weather_icon"
+        android:layout_width="@dimen/default_drawable_size"
+        android:layout_height="@dimen/default_drawable_size"
         android:layout_marginBottom="@dimen/small_gap"
         android:layout_centerInParent="true"/>
     <TextView
@@ -20,7 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/error_message"
-        android:background="@drawable/white_purple_trim_background"
+        android:background="@drawable/on_secondary_color_trim_background"
         android:layout_centerHorizontal="true"
         android:text="@string/reload"
         android:textColor="@color/purple_dark"

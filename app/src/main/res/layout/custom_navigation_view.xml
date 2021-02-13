@@ -24,8 +24,8 @@
                     android:id="@+id/nav_header"
                     layout="@layout/nav_drawer_header"
                     android:layout_marginTop="@dimen/medium_gap"
-                    android:layout_marginStart="@dimen/fall_over"
-                    android:layout_marginEnd="@dimen/fall_over"
+                    android:layout_marginStart="@dimen/negative_smallest_gap"
+                    android:layout_marginEnd="@dimen/negative_smallest_gap"
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"/>
 
@@ -37,7 +37,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     style="@style/CustomTextView.SmallWhiteText"
-                    android:textStyle="bold"
                     android:text="@string/nav_locations"
                     android:layout_marginTop="@dimen/small_gap"
                     android:layout_marginStart="@dimen/small_gap"
@@ -77,15 +76,15 @@
                     android:layout_marginTop="@dimen/small_gap"
                     android:layout_marginEnd="@dimen/small_gap"
                     android:text="@string/settings"
-                    style="@style/CustomNavItem"/>
+                    style="@style/ClearSkyesNavItem"/>
 
-                <com.google.android.material.textview.MaterialTextView
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/feedback_button"
                     android:layout_marginStart="@dimen/small_gap"
                     android:layout_marginEnd="@dimen/small_gap"
                     android:layout_marginBottom="@dimen/medium_gap"
                     android:text="@string/nav_feedback"
-                    style="@style/CustomNavItem"/>
+                    style="@style/ClearSkyesNavItem"/>
 
             </LinearLayout>
         </ScrollView>
@@ -94,8 +93,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/small_gap"
-            android:layout_marginStart="@dimen/fall_over"
-            android:layout_marginEnd="@dimen/fall_over"
+            android:layout_marginStart="@dimen/negative_smallest_gap"
+            android:layout_marginEnd="@dimen/negative_smallest_gap"
             android:layout_alignParentBottom="true"
             android:layout_alignParentStart="true"
             layout="@layout/nav_footer"

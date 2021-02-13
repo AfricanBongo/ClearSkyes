@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Yellow color text-->
     <style name="YellowText" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/yellow_light</item>
     </style>
@@ -12,29 +14,48 @@
     <style name="YellowText.MediumMedium">
         <item name="android:textSize">@dimen/medium_medium_font_size</item>
     </style>
-    <style name="PurpleText" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@color/purple_dark</item>
+
+    <!-- Secondary color text-->
+    <style name="SecondaryColorText" parent="TextAppearance.AppCompat">
+        <item name="android:textColor">?attr/colorSecondary</item>
     </style>
-    <style name="PurpleText.Small">
+    <style name="SecondaryColorText.Small">
         <item name="android:textSize">@dimen/small_font_size</item>
     </style>
-    <style name="PurpleText.Medium">
+    <style name="SecondaryColorText.Medium">
         <item name="android:textSize">@dimen/medium_font_size</item>
     </style>
+    <style name="SecondaryColorText.MediumMedium">
+        <item name="android:textSize">@dimen/medium_medium_font_size</item>
+    </style>
+    <style name="SecondaryColorText.Large">
+        <item name="android:textSize">@dimen/large_font_size</item>
+    </style>
+
     <style name="GreyText">
         <item name="android:textColor">@color/grey_like</item>
     </style>
     <style name="GreyText.Small">
         <item name="android:textSize">@dimen/small_font_size</item>
     </style>
-    <style name="WhiteText" parent="TextAppearance.AppCompat">
+    <style name="OnSecondaryColorText" parent="TextAppearance.AppCompat">
         <item name="android:textColor">@color/white</item>
     </style>
-    <style name="WhiteText.Small">
+    <style name="OnSecondaryColorText.Small">
         <item name="android:textSize">@dimen/small_font_size</item>
     </style>
-    <style name="WhiteText.Medium">
+    <style name="OnSecondaryColorText.Medium">
         <item name="android:textSize">@dimen/medium_font_size</item>
+    </style>
+
+    <!-- Elevations-->
+    <style name="RaisedElevation">
+        <item name="android:translationZ">@dimen/small_gap</item>
+        <item name="android:elevation">@dimen/small_gap</item>
+    </style>
+    <style name="SunkElevation">
+        <item name="android:translationZ">@dimen/negative_small_gap</item>
+        <item name="android:elevation">@dimen/negative_small_gap</item>
     </style>
 
     <!-- CustomTextView style-->
@@ -44,35 +65,37 @@
         <item name="android:padding">@dimen/smallest_gap</item>
     </style>
     <style name="CustomTextView.SmallWhiteText">
-        <item name="android:textAppearance">@style/WhiteText.Small</item>
+        <item name="android:textAppearance">@style/OnSecondaryColorText.Small</item>
     </style>
     <style name="CustomTextView.MediumWhiteText">
-        <item name="android:textAppearance">@style/WhiteText.Medium</item>
+        <item name="android:textAppearance">@style/OnSecondaryColorText.Medium</item>
+    </style>
+    <style name="CustomTextView.MediumMediumSecondaryColor">
+        <item name="android:textAppearance">@style/SecondaryColorText.MediumMedium</item>
     </style>
     <style name="CustomTextView.SmallGreyText">
         <item name="android:textAppearance">@style/GreyText.Small</item>
     </style>
     <style name="CustomTextView.SmallPurpleText">
-        <item name="android:textAppearance">@style/PurpleText.Small</item>
+        <item name="android:textAppearance">@style/SecondaryColorText.Small</item>
 
     </style>
-    <style name="CustomTextView.MediumPurpleText">
-        <item name="android:textAppearance">@style/PurpleText.Medium</item>
+    <style name="CustomTextView.MediumSecondaryColorText">
+        <item name="android:textAppearance">@style/SecondaryColorText.Medium</item>
     </style>
-
     <style name="CustomTextView.SmallWhiteText.PurpleBackground">
         <item name="android:background">@drawable/primary_color_curved_background</item>
     </style>
 
+    <!-- Other-->
     <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
         <item name="android:paddingStart">-48dp</item>
         <item name="android:paddingEnd">-8dp</item>
         <item name="queryBackground">@drawable/on_secondary_color_curved_background</item>
         <item name="iconifiedByDefault">false</item>
         <item name="background">@drawable/primary_color_curved_background</item>
-        <item name="elevation">50dp</item>
     </style>
-    <style name="CustomNavItem" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+    <style name="ClearSkyesNavItem" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">@dimen/custom_nav_item_height</item>
         <item name="android:paddingStart">@dimen/smaller_gap</item>
@@ -89,5 +112,12 @@
     </style>
     <style name="PreferenceTextColor">
         <item name="android:titleTextColor">@color/purple_dark</item>
+    </style>
+    <style name="ClearskyesToolBar" parent="Widget.MaterialComponents.Toolbar">
+        <item name="titleTextColor">?attr/colorOnSecondary</item>
+        <item name="titleTextAppearance">@style/TextAppearance.AppCompat.Headline</item>
+        <item name="android:background">?attr/colorSecondary</item>
+        <item name="android:layout_height">?actionBarSize</item>
+        <item name="android:layout_width">match_parent</item>
     </style>
 </resources>

@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple_light"
+    android:background="?attr/colorPrimary"
     tools:context=".controller.fragments.WeatherTodayFragment">
 
     <RelativeLayout
         android:id="@+id/today_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/small_gap"
+        android:clipChildren="false"
         android:orientation="vertical">
 
         <com.africanbongo.clearskyes.controller.customviews.CurrentWeatherViewUp
@@ -20,8 +20,7 @@
             android:layout_marginStart="@dimen/smaller_gap"
             android:layout_marginEnd="@dimen/smaller_gap"
             android:layout_marginTop="@dimen/small_gap"
-            android:layout_alignParentTop="true"
-            android:elevation="@dimen/large_gap" />
+            android:layout_alignParentTop="true" />
 
         <FrameLayout
             android:id="@+id/now_weather_hours"
@@ -29,26 +28,26 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/medium_gap"
             android:layout_marginEnd="@dimen/medium_gap"
-            android:elevation="-25dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_above="@id/now_weatherview_down"
             android:layout_below="@id/now_weatherview_up"/>
 
         <com.africanbongo.clearskyes.controller.customviews.AstroView
+            android:clipChildren="false"
             android:id="@+id/now_weatherview_down"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="@dimen/smaller_gap"
             android:layout_marginEnd="@dimen/smaller_gap"
-            android:layout_marginBottom="@dimen/smaller_gap"
-            android:elevation="@dimen/large_gap" />
+            android:layout_marginBottom="@dimen/smaller_gap" />
     </RelativeLayout>
 
     <include
         android:id="@+id/loading_anim"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        layout="@layout/loading_layout" />
+        layout="@layout/loading_layout"
+        android:visibility="gone"/>
 </FrameLayout>

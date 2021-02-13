@@ -21,10 +21,11 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.preference.PreferenceManager;
 
 import com.africanbongo.clearskyes.R;
+import com.africanbongo.clearskyes.controller.activities.FeedbackActivity;
 import com.africanbongo.clearskyes.controller.activities.LocationsActivity;
 import com.africanbongo.clearskyes.controller.activities.SettingsActivity;
 import com.africanbongo.clearskyes.model.weather.WeatherLocation;
-import com.africanbongo.clearskyes.util.LocationUtil;
+import com.africanbongo.clearskyes.util.WeatherLocationUtil;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.navigation.NavigationView;
@@ -74,9 +75,10 @@ public class CustomNavigationView extends NavigationView
                         .findViewById(R.id.poweredby_view)
                         .findViewById(R.id.credit_image);
 
-        // Open settings activity when click
-        MaterialButton settingsButton = navigationView.findViewById(R.id.settings_button);
-        settingsButton.setOnClickListener(this);
+        // Open settings activity when settings menu item clicked
+        navigationView.findViewById(R.id.settings_button).setOnClickListener(this);
+        // Open feedback activity when feedback menu item clicked
+        navigationView.findViewById(R.id.feedback_button).setOnClickListener(this);
         // If the manageLocationsButton is clicked open LocationsActivity
         manageLocationsButton.setOnClickListener(this);
         // Rotate sun and open github page when the drawer header is clicked
@@ -98,22 +100,22 @@ public class CustomNavigationView extends NavigationView
 
         if (locationPreferences != null) {
             Set<String> locations =
-                    locationPreferences.getStringSet(LocationUtil.SP_LOCATION_SET, null);
+                    locationPreferences.getStringSet(WeatherLocationUtil.SP_LOCATION_SET, null);
 
             if (locations != null) {
                 if (!locations.isEmpty()) {
                     ArrayList<WeatherLocation> weatherLocations =
-                            new ArrayList<>(LocationUtil.deserializeAll(locations));
+                            new ArrayList<>(WeatherLocationUtil.deserializeAll(locations));
 
                     // Loop through the set add a button to the toggle group
                     weatherLocations.forEach(this::addLocationButton);
 
                     String preferredLocation =
-                            locationPreferences.getString(LocationUtil.SP_FAV_LOCATION, null);
+                            locationPreferences.getString(WeatherLocationUtil.SP_FAV_LOCATION, null);
                     LocationButton locationButton = null;
 
                     if (preferredLocation != null) {
-                        WeatherLocation location = LocationUtil.deserialize(preferredLocation);
+                        WeatherLocation location = WeatherLocationUtil.deserialize(preferredLocation);
 
                         // Load in location and show the weather info for the location
                         for (int i = 0; i < locationsGroup.getChildCount(); i++) {
@@ -128,12 +130,20 @@ public class CustomNavigationView extends NavigationView
 
                         locationPreferences
                                 .edit()
-                                .putString(LocationUtil.SP_FAV_LOCATION, LocationUtil.serialize(locationButton.getLocation()))
+                                .putString(WeatherLocationUtil.SP_FAV_LOCATION, WeatherLocationUtil.serialize(locationButton.getLocation()))
                                 .apply();
                     }
 
+                    WeatherLocation activeLocation = locationButton.getLocation();
+
+                    // Save as the active location
+                    locationPreferences
+                            .edit()
+                            .putString(WeatherLocationUtil.SP_ACTIVE_LOCATION, WeatherLocationUtil.serialize(activeLocation))
+                            .apply();
+                    
                     locationButton.setChecked(true);
-                    return locationButton.getLocation();
+                    return activeLocation;
                 }
             }
 
@@ -142,7 +152,7 @@ public class CustomNavigationView extends NavigationView
         // Initialize the string set
         locationPreferences
                 .edit()
-                .putStringSet(LocationUtil.SP_LOCATION_SET, new LinkedHashSet<>())
+                .putStringSet(WeatherLocationUtil.SP_LOCATION_SET, new LinkedHashSet<>())
                 .apply();
 
         return null;
@@ -187,7 +197,7 @@ public class CustomNavigationView extends NavigationView
                         PreferenceManager.getDefaultSharedPreferences(getContext());
 
                 Set<String> locations =
-                        sharedPreferences.getStringSet(LocationUtil.SP_LOCATION_SET, null);
+                        sharedPreferences.getStringSet(WeatherLocationUtil.SP_LOCATION_SET, null);
 
                 if (locations.isEmpty()) {
                     new Handler().postDelayed(this, blinkDuration * 2);
@@ -227,11 +237,12 @@ public class CustomNavigationView extends NavigationView
     @Override
     public void onClick(View v) {
 
+        Intent intent = null;
+
         switch (v.getId()) {
             // If the manageLocationsButton is clicked open LocationsActivity
             case R.id.manage_locations_button: {
-                Intent intent = new Intent(getContext(), LocationsActivity.class);
-                getContext().startActivity(intent);
+                intent = new Intent(getContext(), LocationsActivity.class);
                 break;
             }
 
@@ -246,8 +257,8 @@ public class CustomNavigationView extends NavigationView
                     // Stop animation and open github page
                     new Handler().postDelayed(() -> {
                         String githubPage = "https://github.com/AfricanBongo/ClearSkyes";
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(githubPage));
-                        getContext().startActivity(intent);
+                        Intent gitIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(githubPage));
+                        getContext().startActivity(gitIntent);
 
                         ((AnimatedVectorDrawable) drawable).stop();
 
@@ -259,17 +270,25 @@ public class CustomNavigationView extends NavigationView
             // Open site upon clicking image
             case R.id.credit_image: {
                 String websiteURL = "https://www.weatherapi.com";
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(websiteURL));
-                getContext().startActivity(intent);
+                intent = new Intent(Intent.ACTION_VIEW, Uri.parse(websiteURL));
                 break;
             }
 
             // Open settings activity when clicked
             case R.id.settings_button: {
-                Intent intent = new Intent(getContext(), SettingsActivity.class);
-                getContext().startActivity(intent);
+                intent = new Intent(getContext(), SettingsActivity.class);
                 break;
             }
+
+            // Open feedback activity when clicked
+            case R.id.feedback_button: {
+                intent = new Intent(getContext(), FeedbackActivity.class);
+                break;
+            }
+        }
+
+        if (intent != null) {
+            getContext().startActivity(intent);
         }
     }
 }

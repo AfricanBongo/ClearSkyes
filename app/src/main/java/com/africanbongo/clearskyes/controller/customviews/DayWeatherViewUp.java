@@ -74,13 +74,13 @@ public class DayWeatherViewUp extends ConstraintLayout {
         day.getConditions().loadConditionImage(dayWeatherIcon);
     }
 
-    private void setAvgTemp(double temp) {
-        String temperature = (int) Math.round(temp) + "°";
+    private void setAvgTemp(int temp) {
+        String temperature = temp + "°";
         dayAvgTempView.setText(temperature);
     }
 
-    private void setMaxAndMinTemp(double maxTemp, double minTemp) {
-        String temps = (int) Math.round(maxTemp) + "°" + " / " + (int) Math.round(minTemp) + "°";
+    private void setMaxAndMinTemp(int maxTemp, int minTemp) {
+        String temps = maxTemp + "°" + " / " + minTemp + "°";
         dayMaxMinTemp.setText(temps);
     }
 

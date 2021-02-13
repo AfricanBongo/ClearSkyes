@@ -3,11 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/white_purple_trim_background"
+    style="@style/RaisedElevation"
+    android:background="@drawable/on_secondary_color_curved_background"
     android:padding="@dimen/small_gap">
     <TextView
         android:id="@+id/day_text"
-        style="@style/CustomTextView.MediumPurpleText"
+        style="@style/CustomTextView.MediumSecondaryColorText"
         android:text="@string/summary"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"

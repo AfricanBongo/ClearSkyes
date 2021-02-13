@@ -21,7 +21,7 @@ import com.africanbongo.clearskyes.controller.animations.SwitchFadeAnimation;
 import com.africanbongo.clearskyes.model.weather.WeatherLocation;
 import com.africanbongo.clearskyes.model.weatherapi.ErrorPageListener;
 import com.africanbongo.clearskyes.model.weatherapi.WeatherRequestQueue;
-import com.africanbongo.clearskyes.util.LocationUtil;
+import com.africanbongo.clearskyes.util.WeatherLocationUtil;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonArrayRequest;
@@ -96,7 +96,7 @@ public class SearchableActivity extends AppCompatActivity
             Response.Listener<JSONArray> locationListener = (JSONArray response) ->
                     service.submit(() -> {
                         try {
-                            loadSearches(LocationUtil.parseIntoWeatherLocations(response), query);
+                            loadSearches(WeatherLocationUtil.parseIntoWeatherLocations(response), query);
                         } catch (JSONException e) {
                             Log.e(this.getClass().getSimpleName(), e.getMessage(), e);
                         }
@@ -106,7 +106,7 @@ public class SearchableActivity extends AppCompatActivity
                     new ErrorPageListener(this, loadingLayoutAnimation);
 
 
-            String requestURL = LocationUtil.SEARCH_URL + query;
+            String requestURL = WeatherLocationUtil.SEARCH_URL + query;
 
             JsonArrayRequest locationRequest = new JsonArrayRequest(
                     Request.Method.GET,
@@ -164,6 +164,7 @@ public class SearchableActivity extends AppCompatActivity
 
     @Override
     public boolean onQueryTextChange(String newText) {
+        // Do nothing
         return false;
     }
 

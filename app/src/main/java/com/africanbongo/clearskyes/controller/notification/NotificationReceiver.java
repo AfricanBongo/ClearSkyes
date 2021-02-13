@@ -5,17 +5,16 @@ import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.PowerManager;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
-import androidx.preference.PreferenceManager;
 
+import com.africanbongo.clearskyes.model.weather.WeatherDay;
 import com.africanbongo.clearskyes.model.weather.WeatherLocation;
-import com.africanbongo.clearskyes.model.weather.WeatherToday;
+import com.africanbongo.clearskyes.model.weather.WeatherTemp;
 import com.africanbongo.clearskyes.model.weatherapi.WeatherRequestQueue;
-import com.africanbongo.clearskyes.util.LocationUtil;
+import com.africanbongo.clearskyes.util.BackgroundTaskUtil;
+import com.africanbongo.clearskyes.util.WeatherLocationUtil;
 import com.africanbongo.clearskyes.util.NotificationUtil;
 import com.africanbongo.clearskyes.util.WeatherJsonUtil;
 import com.android.volley.Request;
@@ -25,34 +24,32 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 public class NotificationReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent != null) {
-            String action = intent.getAction();
+        BackgroundTaskUtil.runTask(() -> {
+            if (intent != null) {
+                String action = intent.getAction();
 
-            if (action != null) {
-                // Get the location from the SharedPreferences
+                if (action != null) {
+                    if (intent.getAction().equals(NotificationUtil.NOTIFICATION_ACTION)) {
+                        // Get the location from the intent
+                        String favouriteLocation = intent.getStringExtra(NotificationUtil.NOTIFICATION_LOCATION);
 
-                Log.e("Service", "STARTED SERVICE");
-                if (intent.getAction().equals(NotificationUtil.NOTIFICATION_ACTION)) {
-                    SharedPreferences preferences =
-                            PreferenceManager.getDefaultSharedPreferences(context);
+                        // If location doesn't exist do not do anything
+                        if (favouriteLocation != null) {
 
-                    String favouriteLocation = preferences.getString(LocationUtil.SP_FAV_LOCATION, null);
-                    NotificationManager manager = NotificationUtil.assembleManager(context);
-                    ExecutorService executorService = Executors.newSingleThreadExecutor();
+                            NotificationManager manager = NotificationUtil.assembleManager(context);
+                            WeatherLocation weatherLocation = WeatherLocationUtil.deserialize(favouriteLocation);
+                            String degreeString = intent.getStringExtra(NotificationUtil.NOTIFICATION_DEGREE);
+                            final WeatherTemp.Degree degree;
 
-                    // If location doesn't exist do not do anything
-                    if (favouriteLocation != null) {
-
-                        executorService.execute(() -> {
-                            WeatherLocation weatherLocation = LocationUtil.deserialize(favouriteLocation);
-
+                            if (degreeString == null) {
+                                degree = WeatherTemp.Degree.C;
+                            } else {
+                                degree = WeatherTemp.Degree.getDegree(degreeString);
+                            }
                             // Continue if the network is available
                             if (WeatherRequestQueue
                                     .getWeatherRequestQueue(context)
@@ -61,19 +58,22 @@ public class NotificationReceiver extends BroadcastReceiver {
 
                                 Response.Listener<JSONObject> weatherListener = response -> {
 
-                                    executorService.submit(() -> {
+                                    BackgroundTaskUtil.runTask(() -> {
                                         try {
+
+                                            JSONObject json = response
+                                                    .getJSONObject("forecast")
+                                                    .getJSONArray("forecastday")
+                                                    .getJSONObject(0);
+
                                             // Parse the weather data
-                                            WeatherToday today = WeatherJsonUtil.parseIntoWeatherToday(response);
+                                            WeatherDay today = WeatherJsonUtil.parseIntoWeatherDay(json);
 
                                             // Get builder and send the notification
-                                            NotificationCompat.Builder builder =
-                                                    NotificationUtil.getNotificationBuilder(today, context);
+                                            NotificationCompat.Builder builder = NotificationUtil
+                                                    .getNotificationBuilder(context, today, weatherLocation, degree);
                                             Notification notification = builder.build();
                                             manager.notify(NotificationUtil.NOTIFICATION_ID, notification);
-
-                                            // Shutdown the executor service
-                                            executorService.shutdown();
                                         } catch (JSONException e) {
                                             Log.e(getClass().getSimpleName(), "Error parsing weather data for notifications", e);
                                         }
@@ -104,11 +104,11 @@ public class NotificationReceiver extends BroadcastReceiver {
                             } else {
                                 NotificationUtil.cancelNotification(manager);
                             }
-                        });
-
+                        }
                     }
                 }
             }
-        }
+        });
     }
+
 }

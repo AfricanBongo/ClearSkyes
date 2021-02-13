@@ -26,7 +26,7 @@ import java.util.Set;
  *    </ul>
  * </p>
  */
-public final class LocationUtil {
+public final class WeatherLocationUtil {
 
     public static final String SAVED_SUCCESS = "New location saved successfully";
     public static final String SAVED_FAILURE = "Location save failure\nTry again";
@@ -37,11 +37,13 @@ public final class LocationUtil {
     // Used to separate info in a WeatherInfo String
     public static final String STRING_SEPARATOR = "\t";
     // Used to identify a set contains WeatherLocation data
-    public static final String WEATHER_LOCATION_IDENTIFIER = "wEATher";
+    public static final String WEATHER_LOCATION_IDENTIFIER = "is_weather";
 
-    // Shared Preferences variables
-    public static final String SP_LOCATION_SET = "locationSet";
-    public static final String SP_FAV_LOCATION = "favoriteLocation";
+    // Shared Preferences and Intent variables
+    public static final String SP_LOCATION_SET = "location_set";
+    public static final String SP_FAV_LOCATION = "favorite_location";
+    public static final String SP_ACTIVE_LOCATION = "active_location";
+    public static final String LOCATION_EXTRA_KEY = "weather_location";
 
     // Search/Autocomplete JSON titles
     public static final String SEARCH_URL =
@@ -52,7 +54,7 @@ public final class LocationUtil {
     private static final String COUNTRY = "country";
     private static final String URL = "url";
 
-    private LocationUtil() {}
+    private WeatherLocationUtil() {}
 
     /**
      * <p>

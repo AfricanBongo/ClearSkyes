@@ -153,11 +153,14 @@ public final class WeatherJsonUtil {
             WeatherWind wind = new WeatherWind(wind_mph, wind_kph, wind_dir);
 
             // WeatherMisc object
+            double pressure_in = json.getDouble("pressure_in");
             double pressure_mb = json.getDouble("pressure_mb");
+            double precip_in = json.getDouble("precip_in");
             double precip_mm = json.getDouble("precip_mm");
             int humidity = json.getInt("humidity");
 
-            WeatherMisc misc = new WeatherMisc(pressure_mb, precip_mm, humidity);
+            WeatherMisc misc =
+                    new WeatherMisc(pressure_in, pressure_mb, precip_in, precip_mm, humidity);
 
             // WeatherCondition object
             JSONObject condition = json.getJSONObject("condition");
@@ -202,12 +205,14 @@ public final class WeatherJsonUtil {
                 // Get miscellaneous details
                 int avghumidity = dayJSON.getInt("avghumidity");
                 int uvIndex = dayJSON.getInt("uv");
-                double totalprecip_mm = dayJSON.getInt("totalprecip_mm");
+                double totalprecip_in = dayJSON.getDouble("totalprecip_in");
+                double totalprecip_mm = dayJSON.getDouble("totalprecip_mm");
                 double maxwind_kph = dayJSON.getDouble("maxwind_kph");
                 double maxwind_mph = dayJSON.getDouble("maxwind_mph");
 
 
-                WeatherMisc misc = new WeatherMisc(0, totalprecip_mm, avghumidity);
+                WeatherMisc misc =
+                        new WeatherMisc(-1, -1, totalprecip_in, totalprecip_mm, avghumidity);
 
                 // Get weather conditions
                 JSONObject conditionJSON = dayJSON.getJSONObject("condition");

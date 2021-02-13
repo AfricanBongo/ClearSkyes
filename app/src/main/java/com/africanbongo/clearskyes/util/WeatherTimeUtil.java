@@ -24,6 +24,8 @@ public final class WeatherTimeUtil {
     public static final String LONG_DATE_FORMAT = " dd MMMM yyyy";
     public static final String DATE_TIME_FORMAT = DATE_FORMAT + " " + TIME_FORMAT;
 
+    // Intent variables
+    public static final String TIME_EXTRA = "weather_time";
 
     private WeatherTimeUtil() {
 

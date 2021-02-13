@@ -9,12 +9,8 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/settings_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:background="@color/purple_dark"
+        style="@style/ClearskyesToolBar"
         app:title="@string/settings"
-        app:titleTextColor="@color/white"
-        app:titleTextAppearance="@style/TextAppearance.AppCompat.Headline"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

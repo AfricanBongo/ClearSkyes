@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:scrollIndicators="bottom"
         app:layoutManager="LinearLayoutManager"
-        android:background="@color/white"
+        android:background="?attr/colorOnSecondary"
         tools:listitem="@layout/weather_hour_view"
         tools:context=".controller.fragments.WeatherHoursFragment" />
 </FrameLayout>

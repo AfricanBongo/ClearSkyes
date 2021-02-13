@@ -22,7 +22,7 @@ import com.africanbongo.clearskyes.model.weather.WeatherTemp;
 import com.africanbongo.clearskyes.model.weatherapi.ErrorPageListener;
 import com.africanbongo.clearskyes.model.weatherapi.WeatherRequestQueue;
 import com.africanbongo.clearskyes.util.BackgroundTaskUtil;
-import com.africanbongo.clearskyes.util.LocationUtil;
+import com.africanbongo.clearskyes.util.WeatherLocationUtil;
 import com.africanbongo.clearskyes.util.WeatherJsonUtil;
 import com.africanbongo.clearskyes.util.WeatherTimeUtil;
 import com.android.volley.Request;
@@ -54,7 +54,7 @@ public class WeatherDayFragment extends Fragment {
         Bundle args = new Bundle();
         args.putInt("daysOffset", daysOffset);
         args.putString(WeatherTemp.Degree.class.getSimpleName(), degree.getStringDegree());
-        args.putString(LocationUtil.class.getSimpleName(), location);
+        args.putString(WeatherLocationUtil.class.getSimpleName(), location);
 
         WeatherDayFragment fragment = new WeatherDayFragment();
         fragment.setArguments(args);
@@ -86,7 +86,7 @@ public class WeatherDayFragment extends Fragment {
 
             int daysOffset = bundle.getInt("daysOffset");
             String degreesType = bundle.getString(WeatherTemp.Degree.class.getSimpleName());
-            String location = bundle.getString(LocationUtil.class.getSimpleName());
+            String location = bundle.getString(WeatherLocationUtil.class.getSimpleName());
 
             // Get date string formatted so as to fetch JSON data
             DateTimeFormatter dateTimeFormatter =

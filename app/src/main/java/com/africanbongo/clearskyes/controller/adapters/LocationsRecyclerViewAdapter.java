@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.model.weather.WeatherLocation;
-import com.africanbongo.clearskyes.util.LocationUtil;
+import com.africanbongo.clearskyes.util.WeatherLocationUtil;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -61,7 +61,7 @@ public class LocationsRecyclerViewAdapter extends RecyclerView.Adapter<Locations
 
         // Allow to delete location
         holder.deleteButton.setOnClickListener(e -> {
-            String serializedLocation = LocationUtil.serialize(location);
+            String serializedLocation = WeatherLocationUtil.serialize(location);
             int adapterPosition = holder.getAdapterPosition();
 
             View parent = (View) attachedRecyclerView.getParent();
@@ -78,16 +78,16 @@ public class LocationsRecyclerViewAdapter extends RecyclerView.Adapter<Locations
             weatherLocations.remove(position);
             SharedPreferences preferences =
                     PreferenceManager.getDefaultSharedPreferences(holder.rootLayout.getContext());
-            Set<String> locations = preferences.getStringSet(LocationUtil.SP_LOCATION_SET, null);
-            String preferredLocation = preferences.getString(LocationUtil.SP_FAV_LOCATION, null);
+            Set<String> locations = preferences.getStringSet(WeatherLocationUtil.SP_LOCATION_SET, null);
+            String preferredLocation = preferences.getString(WeatherLocationUtil.SP_FAV_LOCATION, null);
             locations.remove(serializedLocation);
 
             SharedPreferences.Editor editor = preferences.edit();
 
             if (preferredLocation != null) {
                 // if it was a favourite location remove from SharedPreferences too
-                if (location.equals(LocationUtil.deserialize(preferredLocation))) {
-                    editor.remove(LocationUtil.SP_FAV_LOCATION);
+                if (location.equals(WeatherLocationUtil.deserialize(preferredLocation))) {
+                    editor.remove(WeatherLocationUtil.SP_FAV_LOCATION);
 
                     // Discolor in the case it is added back into the app
                     colorHolder(holder, false);
@@ -96,7 +96,7 @@ public class LocationsRecyclerViewAdapter extends RecyclerView.Adapter<Locations
 
             // Apply the changes
             editor
-                    .putStringSet(LocationUtil.SP_LOCATION_SET, locations)
+                    .putStringSet(WeatherLocationUtil.SP_LOCATION_SET, locations)
                     .apply();
 
             notifyItemRemoved(adapterPosition);
@@ -107,7 +107,7 @@ public class LocationsRecyclerViewAdapter extends RecyclerView.Adapter<Locations
                 locations.add(serializedLocation);
                 preferences
                         .edit()
-                        .putStringSet(LocationUtil.SP_LOCATION_SET, locations)
+                        .putStringSet(WeatherLocationUtil.SP_LOCATION_SET, locations)
                         .apply();
 
                 notifyItemInserted(adapterPosition);
@@ -124,7 +124,7 @@ public class LocationsRecyclerViewAdapter extends RecyclerView.Adapter<Locations
                     = PreferenceManager.getDefaultSharedPreferences(attachedRecyclerView.getContext());
             preferences
                     .edit()
-                    .putString(LocationUtil.SP_FAV_LOCATION, LocationUtil.serialize(location))
+                    .putString(WeatherLocationUtil.SP_FAV_LOCATION, WeatherLocationUtil.serialize(location))
                     .apply();
 
             // Discolor any other toggled view
@@ -165,10 +165,10 @@ public class LocationsRecyclerViewAdapter extends RecyclerView.Adapter<Locations
                 PreferenceManager.getDefaultSharedPreferences(attachedRecyclerView.getContext());
 
         String favouriteLocation =
-                preferences.getString(LocationUtil.SP_FAV_LOCATION, null);
+                preferences.getString(WeatherLocationUtil.SP_FAV_LOCATION, null);
 
         if (favouriteLocation != null) {
-            if (holderLocation.equals(LocationUtil.deserialize(favouriteLocation))) {
+            if (holderLocation.equals(WeatherLocationUtil.deserialize(favouriteLocation))) {
                 colorHolder(holder, true);
             }
         }

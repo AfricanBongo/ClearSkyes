@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/on_secondary_color_curved_background"
+    tools:context=".controller.activities.FeedbackActivity">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/feedback_toolbar"
+        style="@style/ClearskyesToolBar"
+        app:title="@string/nav_feedback"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/feedback_from" />
+
+    <EditText
+        android:id="@+id/feedback_from"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/on_secondary_color_curved_background"
+        style="@style/RaisedElevation"
+        app:layout_constraintBottom_toTopOf="@+id/feedback_title"
+        app:layout_constraintTop_toBottomOf="@+id/feedback_toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="@dimen/small_gap"
+        android:layout_marginTop="@dimen/medium_gap"
+        android:paddingHorizontal="@dimen/small_gap"
+        android:textSize="@dimen/medium_font_size"
+        android:hint="@string/feedback_from"
+        android:maxLines="2"
+        android:inputType="textPersonName|textEmailAddress"
+        />
+
+
+    <EditText
+        android:id="@+id/feedback_title"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/feedback_from"
+        app:layout_constraintBottom_toTopOf="@id/feedback_content"
+        android:layout_margin="@dimen/small_gap"
+        android:paddingHorizontal="@dimen/small_gap"
+        android:textSize="@dimen/medium_font_size"
+        style="@style/RaisedElevation"
+        android:inputType="text"
+        android:hint="@string/feedback_title"
+        android:maxLines="3"
+        android:background="@drawable/on_secondary_color_curved_background"/>
+
+    <EditText
+        android:id="@+id/feedback_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        style="@style/RaisedElevation"
+        android:hint="@string/feedback_content"
+        android:padding="@dimen/small_gap"
+        android:gravity="top|start"
+        android:layout_marginBottom="@dimen/small_gap"
+        android:layout_marginHorizontal="@dimen/small_gap"
+        android:background="@drawable/on_secondary_color_curved_background"
+        app:layout_constraintBottom_toTopOf="@id/feedback_submit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/feedback_title" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/feedback_submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/feedback_submit_button"
+        app:layout_constraintHorizontal_bias="1"
+        android:layout_marginEnd="@dimen/small_gap"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:enabled="false"
+        android:text="@string/feedback_submit"
+        android:textColor="?attr/colorOnSecondary"
+        style="@style/RaisedElevation"
+        app:layout_constraintTop_toBottomOf="@+id/feedback_content" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,7 +13,7 @@
         android:text="@string/powered"
         android:layout_margin="@dimen/smallest_gap"
         android:layout_gravity="center"
-        style="@style/PurpleText.Medium"
+        style="@style/SecondaryColorText.Medium"
         android:textStyle="bold"/>
 
     <ImageView

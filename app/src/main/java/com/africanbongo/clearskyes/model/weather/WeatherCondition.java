@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -25,9 +27,9 @@ import java.net.URL;
 /**
 Base class for holding base conditions and loading the weather icon into a ImageView
  */
-public class WeatherCondition {
+public class WeatherCondition implements Parcelable {
 
-    private final String protocol = "https:";
+    private String protocol = "https:";
     private final String conditionText;
     private final String conditionIcon;
     private final int conditionCode;
@@ -42,6 +44,38 @@ public class WeatherCondition {
         this.conditionCode = conditionCode;
         this.day = day;
     }
+
+    protected WeatherCondition(Parcel in) {
+        conditionText = in.readString();
+        conditionIcon = in.readString();
+        conditionCode = in.readInt();
+        day = in.readByte() != 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(conditionText);
+        dest.writeString(conditionIcon);
+        dest.writeInt(conditionCode);
+        dest.writeByte((byte) (day ? 1 : 0));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<WeatherCondition> CREATOR = new Creator<WeatherCondition>() {
+        @Override
+        public WeatherCondition createFromParcel(Parcel in) {
+            return new WeatherCondition(in);
+        }
+
+        @Override
+        public WeatherCondition[] newArray(int size) {
+            return new WeatherCondition[size];
+        }
+    };
 
     /**
      * Loads an image or drawable into the ImageView object given depending availability of either resource

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="?attr/colorOnSecondary"
+    android:clipChildren="true"
+    tools:context=".controller.activities.WeatherDetailActivity">
+
+    <!-- Content after app bar layout-->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="-24dp"
+        android:paddingTop="-24dp"
+        android:background="@drawable/weather_detail_background"
+        app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <include
+                layout="@layout/weather_hour_view" />
+            <include
+                layout="@layout/weather_hour_view" />
+            <include
+                layout="@layout/weather_hour_view" />
+            <include
+                layout="@layout/weather_hour_view" />
+            <include
+                layout="@layout/weather_hour_view" />
+            <include
+                layout="@layout/weather_hour_view" />
+            <include
+                layout="@layout/weather_hour_view" />
+            <include
+                layout="@layout/weather_hour_view" />
+            <include
+                layout="@layout/weather_hour_view" />
+            <include
+                layout="@layout/weather_hour_view" />
+            <include
+                layout="@layout/weather_hour_view" />
+            <include
+                layout="@layout/weather_hour_view" />
+            <include
+                layout="@layout/weather_hour_view" />
+            <include
+                layout="@layout/weather_hour_view" />
+            <include
+                layout="@layout/weather_hour_view" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Top view-->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@android:color/transparent">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/detail_collapsing_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/appbarlayout_height"
+            app:contentScrim="?attr/colorSecondary"
+            app:statusBarScrim="?attr/colorOnSecondary"
+            app:collapsedTitleTextAppearance="@style/OnSecondaryColorText.Medium"
+            app:expandedTitleTextAppearance="@style/SecondaryColorText.MediumMedium"
+            app:expandedTitleGravity="bottom|center"
+            app:expandedTitleMarginTop="@dimen/large_gap"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed" >
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_collapseMode="parallax">
+
+                <ImageView
+                    android:id="@+id/detail_weather_icon"
+                    android:layout_width="@dimen/weather_icon"
+                    android:layout_height="@dimen/weather_icon"
+                    android:layout_marginTop="@dimen/large_gap"
+                    android:layout_centerHorizontal="true"
+                    app:srcCompat="@drawable/avd_sunny"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignTop="@id/detail_weather_icon"
+                    android:layout_marginHorizontal="@dimen/large_gap"
+                    android:layout_toStartOf="@+id/detail_weather_icon"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/detail_weather_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Now"
+                        style="@style/SecondaryColorText.MediumMedium"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/detail_weather_location"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="2"
+                        android:text="In Maputo"
+                        style="@style/SecondaryColorText.Medium"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/large_font_size"
+                    android:text="24*"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:layout_marginHorizontal="@dimen/large_gap"
+                    android:layout_toEndOf="@id/detail_weather_icon"
+                    android:gravity="center"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@id/detail_weather_icon"/>
+            </RelativeLayout>
+            <com.google.android.material.appbar.MaterialToolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:title="Sunny weather"
+                app:titleTextColor="?attr/colorOnSecondary"
+                android:gravity="start"
+                app:layout_collapseMode="pin"/>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
