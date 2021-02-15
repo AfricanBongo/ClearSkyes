@@ -61,6 +61,6 @@
             android:entryValues="@array/update_data_values_list"
             app:defaultValue="@string/update_data_default_value"
             app:useSimpleSummaryProvider="true"
-            app:dialogMessage="@string/update_data_summary"/>
+            app:dialogTitle="@string/update_data_summary"/>
     </PreferenceCategory>
 </PreferenceScreen>
