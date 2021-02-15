@@ -8,7 +8,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 /**
- {@link RequestQueue} for making requests for JSON to WeatherApi
+ {@link RequestQueue} for making requests for JSON to <a href="https://www.weatherapi.com/">WeatherApi</a>
  */
 public class WeatherRequestQueue {
     private static WeatherRequestQueue weatherRequestQueue;
@@ -16,7 +16,8 @@ public class WeatherRequestQueue {
     private final Context context;
 
     // Used for making API requests
-    public static final String API_KEY = "1092f3e10c9a4146890112852202212";
+    // Register for your own API Key from https://www.weatherapi.com/
+    public static final String API_KEY = "*****************************";
 
 
     private WeatherRequestQueue(Context context) {
