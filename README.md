@@ -17,7 +17,7 @@
 - Receive daily weather [notifications](#daily-notifications) (for the favourite location),
 - Send [feedback](#sending-feedback),
 - Apply preferences through [settings](#settings).
-- Error handling in case of [server error](#server-error) or [network loss](#network-loss-failure)
+- Error handling in case of [server error](#server-error) or [network loss](#network-lossfailure)
 
 <br/>
 <br/>
