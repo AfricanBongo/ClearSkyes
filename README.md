@@ -8,7 +8,6 @@
   <img src="https://github.com/AfricanBongo/ClearSkyes/blob/master/github-markdown/drawer_open.png" width="360" height="680"/>
 </p>
 
-
 ## Feature Overview 
 - Intuitive and neatly stacked UI, implementing some ```Material Design``` guidelines
 - [View current weather conditions](#viewing-current-weather),
@@ -115,6 +114,7 @@ In the event of a network failure a custom extension of the Volley library's ```
 If the request to the server returns an error code, the error screen is shown and the reload button is clicked as the day is set back to the current one and an attempt to fetch the data is made again.
 
 <br/>
+
 ## New things learnt
 - Animations
 - Creating custom asynchoronous classes
