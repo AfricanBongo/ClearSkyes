@@ -1,8 +1,13 @@
-# ClearSkyes
-An Android Weather App for viewing the current weather conditions and forecast. Using very neat and elegant UI features.
+# :sunny: ClearSkyes
+## An UI-rich Android weather app
+
+<p align="center">
+  <img src="https://github.com/AfricanBongo/ClearSkyes/blob/master/github-markdown/drawer_open.png" width="360" height="680" />
+</p>
 
 ## Feature Overview 
 - View current weather conditions,
+
 - Weather forecasts up to 10 days,
 - Search, add and delete a location to view its weather details, and also cast it as the favourite location,
 - Receive daily weather notifications (for the favourite location),
