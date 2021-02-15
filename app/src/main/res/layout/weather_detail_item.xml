@@ -16,6 +16,7 @@
         style="@style/WeatherDetailTextView" />
 
     <TextView
+        android:id="@+id/detail_separator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/weather_detail_separator"
@@ -28,7 +29,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/WeatherDetailTextView"
+        android:layout_alignEnd="@id/detail_separator"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="@dimen/medium_gap"
-        android:layout_alignBaseline="@id/detail_title" />
+        android:layout_alignBaseline="@id/detail_title"
+        android:maxLines="2"/>
 </RelativeLayout>
