@@ -27,10 +27,10 @@ public class WeatherMisc implements Parcelable {
 
         public static Measurement getMeasurement(@NonNull String measurementString) {
             if (measurementString.toLowerCase().equals("imperial")) {
-                return METRIC;
+                return IMPERIAL;
             }
 
-            return IMPERIAL;
+            return METRIC;
         }
 
 
