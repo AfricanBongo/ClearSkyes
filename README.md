@@ -7,7 +7,6 @@
 
 ## Feature Overview 
 - View current weather conditions,
-
 - Weather forecasts up to 10 days,
 - Search, add and delete a location to view its weather details, and also cast it as the favourite location,
 - Receive daily weather notifications (for the favourite location),
