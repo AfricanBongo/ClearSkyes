@@ -1,7 +1,6 @@
 package com.africanbongo.clearskyes.controller.customviews;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.ImageView;
@@ -12,63 +11,56 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.africanbongo.clearskyes.R;
-import com.africanbongo.clearskyes.controller.activities.WeatherDetailActivity;
-import com.africanbongo.clearskyes.model.weather.WeatherTemp;
-import com.africanbongo.clearskyes.model.weather.WeatherToday;
+import com.africanbongo.clearskyes.model.WeatherTemp;
+import com.africanbongo.clearskyes.model.WeatherToday;
 
-/*
-Custom view that shows the current hour weather details
+/**
+Custom view that shows the current hour weather details.
+ Holds a {@link WeatherToday} object.
 Credit to: https://stackoverflow.com/questions/39961044/custom-view-with-two-textviews
  */
 public class CurrentWeatherViewUp extends ConstraintLayout {
 
+    private WeatherToday today = null;
+
+    private TextView nowTextView;
     private TextView nowTemp;
     private TextView feelsLikeTemp;
     private TextView uvIndex;
     private TextView conditionText;
     private TextView chanceOfRain;
-    private final Context context;
 
     // Where the current weather icon is to be contained
     private ImageView iconImageView;
 
     public CurrentWeatherViewUp(@NonNull Context context) {
         super(context);
-        this.context = context;
         init();
     }
 
     public CurrentWeatherViewUp(@NonNull Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
-        this.context = context;
         init();
     }
 
     public CurrentWeatherViewUp(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        this.context = context;
         init();
     }
 
     public CurrentWeatherViewUp(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes, Context context1) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        this.context = context1;
         init();
     }
 
     private void init() {
         // Inflate the xml and attach to this class
         ConstraintLayout constraintLayout = (ConstraintLayout) LayoutInflater
-                .from(context)
+                .from(getContext())
                 .inflate(R.layout.currentweather_view_up, this, true);
 
-        constraintLayout.setOnClickListener(l -> {
-            Intent intent = new Intent(getContext(), WeatherDetailActivity.class);
-
-            getContext().startActivity(intent);
-        });
-
         // Get the views within the view group
+        nowTextView = constraintLayout.findViewById(R.id.now_text);
         nowTemp = constraintLayout.findViewById(R.id.now_temp);
         feelsLikeTemp = constraintLayout.findViewById(R.id.feels_like_temp);
         uvIndex = constraintLayout.findViewById(R.id.now_uv_index);
@@ -84,6 +76,7 @@ public class CurrentWeatherViewUp extends ConstraintLayout {
      */
     public void loadData(WeatherToday today, WeatherTemp.Degree degree) {
         // Load ViewUp elements
+        this.today = today;
         setUvIndex(today.getUvLevel());
         setFeelsLikeTemp(today.getNowWeather().getFeelsLikeTemp().getTemp(degree));
         setNowTemp(today.getNowWeather().getActualTemp().getTemp(degree));
@@ -118,5 +111,17 @@ public class CurrentWeatherViewUp extends ConstraintLayout {
     public void setChanceOfRain(int rainPercentageChance) {
         String rain = rainPercentageChance + "%";
         chanceOfRain.setText(rain);
+    }
+
+    public ImageView getWeatherImageView() {
+        return iconImageView;
+    }
+
+    public TextView getNowTempTextView() {
+        return nowTemp;
+    }
+
+    public TextView getNowTextView() {
+        return nowTextView;
     }
 }

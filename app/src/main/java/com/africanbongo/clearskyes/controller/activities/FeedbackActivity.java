@@ -1,15 +1,15 @@
 package com.africanbongo.clearskyes.controller.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.util.FeedbackUtil;

@@ -28,15 +28,19 @@
 
     <!-- Settings fragment and preferences-->
     <string name="settings">Settings</string>
-    <string name="prefences_key">weather_preferences</string>
+    <string name="preferences_key">weather_preferences</string>
     <string name="notifications_key">notifications</string>
     <string name="notify_show_key">notify_show</string>
     <string name="notify_time_key">notify_time</string>
     <string name="measurements_key">measurements</string>
     <string name="forecast_key">forecasts</string>
+    <string name="update_data_key">update_data</string>
     <string name="forecast">Forecast</string>
     <string name="forecast_summary">Number of forecast days</string>
     <string name="degrees_key">degree</string>
+    <string name="update_data">Refresh data cache after:</string>
+    <string name="update_data_default_value">60</string>
+    <string name="update_data_summary">NB: A more frequent update time increases battery usage</string>
     <string name="degrees">Degree</string>
     <string name="degrees_default">Celsius</string>
     <string name="measurements">Measurements</string>
@@ -46,7 +50,7 @@
     <string name="notify_time">Notification time</string>
     <string name="notify_time_default">07:00</string>
     <string name="notifications">Notifications</string>
-    <string name="preferences">Weather Preferences</string>
+    <string name="preferences">Weather Data Preferences</string>
     <string-array name="degrees_list">
         <item>Celsius</item>
         <item>Fahrenheit</item>
@@ -55,10 +59,30 @@
         <item>Metric</item>
         <item>Imperial</item>
     </string-array>
+    <string-array name="update_data_entry_list">
+        <item>5 minutes</item>
+        <item>10 minutes</item>
+        <item>15 minutes</item>
+        <item>30 minutes</item>
+        <item>1 hour</item>
+    </string-array>
+    <string-array name="update_data_values_list">
+        <item>5</item>
+        <item>10</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+    </string-array>
 
     <!-- Feedback -->
     <string name="feedback_submit">Submit</string>
     <string name="feedback_title">Feedback subject</string>
     <string name="feedback_content">Your feedback in detail</string>
     <string name="feedback_from">From (Optional)</string>
+
+    <!-- Weather Detail -->
+    <string name="weather_detail_image_transition">image transition</string>
+    <string name="temp_text_transition">temp transition</string>
+    <string name="time_text_transition">time transition</string>
+    <string name="weather_detail_separator">:</string>
 </resources>

@@ -15,7 +15,7 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.africanbongo.clearskyes.R;
-import com.africanbongo.clearskyes.model.weather.WeatherLocation;
+import com.africanbongo.clearskyes.model.WeatherLocation;
 import com.africanbongo.clearskyes.util.WeatherLocationUtil;
 
 import java.util.LinkedHashSet;

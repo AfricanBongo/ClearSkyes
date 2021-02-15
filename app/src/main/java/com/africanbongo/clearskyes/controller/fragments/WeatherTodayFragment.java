@@ -1,5 +1,7 @@
 package com.africanbongo.clearskyes.controller.fragments;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,23 +11,30 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceManager;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.controller.activities.MainActivity;
+import com.africanbongo.clearskyes.controller.activities.WeatherDetailActivity;
 import com.africanbongo.clearskyes.controller.animations.LoadingLayoutAnimation;
 import com.africanbongo.clearskyes.controller.customviews.AstroView;
 import com.africanbongo.clearskyes.controller.customviews.CurrentWeatherViewUp;
-import com.africanbongo.clearskyes.model.weather.AstroElement;
-import com.africanbongo.clearskyes.model.weather.WeatherHour;
-import com.africanbongo.clearskyes.model.weather.WeatherTemp;
-import com.africanbongo.clearskyes.model.weather.WeatherToday;
-import com.africanbongo.clearskyes.model.weatherapi.ErrorPageListener;
-import com.africanbongo.clearskyes.model.weatherapi.WeatherRequestQueue;
+import com.africanbongo.clearskyes.model.AstroElement;
+import com.africanbongo.clearskyes.model.WeatherHour;
+import com.africanbongo.clearskyes.model.WeatherTemp;
+import com.africanbongo.clearskyes.model.WeatherToday;
+import com.africanbongo.clearskyes.weatherapi.ErrorPageListener;
+import com.africanbongo.clearskyes.weatherapi.RefreshDataBroadcastReceiver;
+import com.africanbongo.clearskyes.weatherapi.WeatherRequestQueue;
 import com.africanbongo.clearskyes.util.BackgroundTaskUtil;
-import com.africanbongo.clearskyes.util.WeatherLocationUtil;
 import com.africanbongo.clearskyes.util.WeatherJsonUtil;
+import com.africanbongo.clearskyes.util.WeatherLocationUtil;
+import com.africanbongo.clearskyes.util.WeatherTimeUtil;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -50,7 +59,7 @@ public class WeatherTodayFragment extends Fragment {
     /**
      * Returns a new {@link WeatherTodayFragment}
      * @param location {@link String} URL location used in fetching data
-     * @param degree {@link com.africanbongo.clearskyes.model.weather.WeatherTemp.Degree} to be used, eg. Celsius
+     * @param degree {@link com.africanbongo.clearskyes.model.WeatherTemp.Degree} to be used, eg. Celsius
      * @return
      */
     public static WeatherTodayFragment newInstance(String location, WeatherTemp.Degree degree) {
@@ -80,8 +89,6 @@ public class WeatherTodayFragment extends Fragment {
         viewUp = view.findViewById(R.id.now_weatherview_up);
         viewUp.bringToFront();
         astroView = view.findViewById(R.id.now_weatherview_down);
-        astroView.bringToFront();
-        layout.bringToFront();
 
         Bundle bundle = getArguments();
 
@@ -95,6 +102,18 @@ public class WeatherTodayFragment extends Fragment {
         return view;
     }
 
+    public void scheduleRefreshCache(String url) {
+        SharedPreferences preferences
+                = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        // Set auto-refresh data cache process
+        String refreshDataCacheKey = getString(R.string.update_data_key);
+        String refreshDataDefaultTime = getString(R.string.update_data_default_value);
+        int refreshTime = Integer.parseInt(preferences.getString(refreshDataCacheKey, refreshDataDefaultTime));
+
+        RefreshDataBroadcastReceiver.scheduleCacheRefresh(getContext(), url, refreshTime);
+    }
+
     // Fetch the data needed from the api
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void requestData(WeatherTemp.Degree degreesType, String location) {
@@ -103,6 +122,7 @@ public class WeatherTodayFragment extends Fragment {
                 WeatherRequestQueue.getWeatherRequestQueue(getContext());
         loadingLayoutAnimation.start();
 
+        scheduleRefreshCache(url);
         // Parse WeatherApi JSONObjects
         Response.Listener<JSONObject> currentListener = response -> {
             try {
@@ -118,7 +138,33 @@ public class WeatherTodayFragment extends Fragment {
 
                 // Callbacks to load the objects into the UI components
                 BackgroundTaskUtil.Callback<WeatherToday> consumeWeatherToday =
-                        weatherDay -> viewUp.loadData(weatherDay, degreesType);
+                        weatherDay -> {
+                            viewUp.loadData(weatherDay, degreesType);
+                            // When the view is clicked open the WeatherDetailActivity
+                            viewUp.setOnClickListener(l -> {
+                                if (weatherDay != null) {
+                                    String imageTransitionName =
+                                            getResources().getString(R.string.weather_detail_image_transition);
+                                    String tempTransitionName =
+                                            getResources().getString(R.string.temp_text_transition);
+                                    String timeTransitionName =
+                                            getResources().getString(R.string.time_text_transition);
+                                    String time = getResources().getString(R.string.weather_now);
+                                    Intent intent = new Intent(getContext(), WeatherDetailActivity.class);
+                                    intent.setAction(WeatherToday.INTENT_ACTION);
+                                    intent.putExtra(WeatherJsonUtil.INTENT_EXTRA, weatherDay);
+                                    intent.putExtra(WeatherTimeUtil.INTENT_EXTRA, time);
+                                    ActivityOptionsCompat options =
+                                            ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                                    getActivity(),
+                                                    Pair.create(viewUp.getWeatherImageView(), imageTransitionName),
+                                                    Pair.create(viewUp.getNowTempTextView(), tempTransitionName),
+                                                    Pair.create(viewUp.getNowTextView(), timeTransitionName)
+                                                    );
+                                    ActivityCompat.startActivity(getContext(), intent, options.toBundle());
+                                }
+                            });
+                        };
 
                 BackgroundTaskUtil.Callback<AstroElement> consumeAstroElement =
                         astroElement -> astroView.loadData(astroElement);

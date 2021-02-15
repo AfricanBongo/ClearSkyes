@@ -5,6 +5,6 @@ com.africanbongo.clearskyes.controller.animations
 com.africanbongo.clearskyes.controller.customviews
 com.africanbongo.clearskyes.controller.fragments
 com.africanbongo.clearskyes.controller.notification
-com.africanbongo.clearskyes.model.weather
-com.africanbongo.clearskyes.model.weatherapi
+com.africanbongo.clearskyes.weather
+com.africanbongo.clearskyes.weatherapi
 com.africanbongo.clearskyes.util

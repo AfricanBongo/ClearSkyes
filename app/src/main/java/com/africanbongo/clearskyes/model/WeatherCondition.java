@@ -1,35 +1,24 @@
-package com.africanbongo.clearskyes.model.weather;
+package com.africanbongo.clearskyes.model;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.util.WeatherAVDS;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.CustomTarget;
-import com.bumptech.glide.request.transition.Transition;
-
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
 Base class for holding base conditions and loading the weather icon into a ImageView
  */
 public class WeatherCondition implements Parcelable {
 
-    private String protocol = "https:";
+    private final String protocol = "https:";
     private final String conditionText;
     private final String conditionIcon;
     private final int conditionCode;
@@ -135,17 +124,6 @@ public class WeatherCondition implements Parcelable {
         }
 
         return 0;
-    }
-
-    public Bitmap getWeatherIcon() {
-        try {
-            URL url = new URL(conditionIcon);
-            return BitmapFactory.decodeStream(url.openConnection().getInputStream());
-        } catch (IOException e) {
-            Log.e(getClass().getSimpleName(), "Error fetching bitmap from web", e);
-        }
-
-        return null;
     }
 
     public String getConditionText() {

@@ -1,4 +1,4 @@
-package com.africanbongo.clearskyes.model.weather;
+package com.africanbongo.clearskyes.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -15,6 +15,7 @@ public class WeatherTemp implements Parcelable {
         F("Fahrenheit","°F"),
         C("Celsius", "°C");
 
+        public static final String DEGREE_SIGN = "°";
         private final String degreesType;
         private final String symbol;
         Degree(String degreesType, String symbol) {

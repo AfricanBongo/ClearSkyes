@@ -120,4 +120,9 @@
         <item name="android:layout_height">?actionBarSize</item>
         <item name="android:layout_width">match_parent</item>
     </style>
+
+    <style name="WeatherDetailTextView" parent="CustomTextView">
+        <item name="android:textSize">@dimen/weather_detail_font_size</item>
+        <item name="android:textColor">?attr/colorOnSecondary</item>
+    </style>
 </resources>

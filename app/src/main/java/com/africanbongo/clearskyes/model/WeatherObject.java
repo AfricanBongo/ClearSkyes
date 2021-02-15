@@ -1,4 +1,4 @@
-package com.africanbongo.clearskyes.model.weather;
+package com.africanbongo.clearskyes.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -90,8 +90,8 @@ public class WeatherObject implements WeatherMappable, Parcelable {
     @Override
     public LinkedHashMap<String, String> getMapping(WeatherTemp.Degree degree, WeatherMisc.Measurement measurement) {
         LinkedHashMap<String, String> classMembersMap = new LinkedHashMap<>();
-        classMembersMap.put(ACTUAL_TEMP_KEY, actualTemp.getTemp(degree) + degree.getSymbol());
-        classMembersMap.put(FEELS_LIKE_KEY, feelsLikeTemp.getTemp(degree) + degree.getSymbol());
+        classMembersMap.put(ACTUAL_TEMP_KEY, actualTemp.getTemp(degree) + WeatherTemp.Degree.DEGREE_SIGN);
+        classMembersMap.put(FEELS_LIKE_KEY, feelsLikeTemp.getTemp(degree) + WeatherTemp.Degree.DEGREE_SIGN);
         classMembersMap.put(CONDITION_KEY, conditions.getConditionText());
         classMembersMap.put(PRECIPITATION_KEY, miscellaneous.getPrecip(measurement) + measurement.precipNotation);
         classMembersMap.put(HUMIDITY_KEY, miscellaneous.getHumidity() + "%");

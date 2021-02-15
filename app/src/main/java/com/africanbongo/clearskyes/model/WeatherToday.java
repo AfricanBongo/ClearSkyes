@@ -1,4 +1,4 @@
-package com.africanbongo.clearskyes.model.weather;
+package com.africanbongo.clearskyes.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -20,7 +20,7 @@ public class WeatherToday implements Parcelable, WeatherMappable {
      * Used for {@link android.content.Intent} action, signifying intent carries a
      * {@link WeatherToday} object as its parcel
      */
-    public static final String WEATHER_TODAY_ACTION = "weather_today";
+    public static final String INTENT_ACTION = "open_weather_today";
 
     // The weather at the current moment
     private final WeatherObject nowWeather;

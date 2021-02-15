@@ -1,4 +1,4 @@
-package com.africanbongo.clearskyes.model.weather;
+package com.africanbongo.clearskyes.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -11,11 +11,22 @@ import static com.africanbongo.clearskyes.util.MiscMethodsUtil.getUVLevel;
 Contains generalized information about the weather on a certain day
  **/
 public class WeatherDay implements WeatherMappable, Parcelable {
+
+    // Mapping keys
+    public static final String AVG_TEMP_KEY = "Average temperature";
+    public static final String MAX_TEMP_KEY = "Maximum Temperature";
+    public static final String MIN_TEMP_KEY = "Minimum Temperature";
+    public static final String CONDITION_KEY = "Condition description";
+    public static final String PRECIPITATION_KEY = "Total precipitation";
+    public static final String UV_KEY = "UV Level";
+    public static final String HUMIDITY_KEY = "Average humidity";
+    public static final String WIND_SPEED_KEY = "Maximum wind speed";
+
     /**
      * Used for {@link android.content.Intent} action, signifying intent carries a
      * {@link WeatherDay} object as its parcel
      */
-    public static final String WEATHER_DAY_ACTION = "weather_day";
+    public static final String INTENT_ACTION = "open_weather_day";
 
     private final WeatherTemp maxTemp;
     private final WeatherTemp minTemp;
@@ -114,24 +125,15 @@ public class WeatherDay implements WeatherMappable, Parcelable {
 
     @Override
     public LinkedHashMap<String, String> getMapping(WeatherTemp.Degree degree, WeatherMisc.Measurement measurement) {
-        String avgTempKey = "Average temperature";
-        String maxTempKey = "Maximum Temperature";
-        String minTempKey = "Minimum Temperature";
-        String conditionKey = "Condition description";
-        String precipitationKey = "Total precipitation";
-        String uvKey = "UV Level";
-        String humidityKey = "Average humidity";
-        String maxWindSpeedKey = "Maximum wind speed";
-
         LinkedHashMap<String, String> classMembersMap = new LinkedHashMap<>();
-        classMembersMap.put(avgTempKey, avgTemp.getTemp(degree) + degree.getSymbol());
-        classMembersMap.put(maxTempKey, maxTemp.getTemp(degree) + degree.getSymbol());
-        classMembersMap.put(minTempKey, minTemp.getTemp(degree) + degree.getSymbol());
-        classMembersMap.put(conditionKey, conditions.getConditionText());
-        classMembersMap.put(precipitationKey, miscellaneous.getPrecip(measurement) + measurement.precipNotation);
-        classMembersMap.put(uvKey, uvLevel);
-        classMembersMap.put(humidityKey, miscellaneous.getHumidity() + "%");
-        classMembersMap.put(maxWindSpeedKey, getMaxWind(measurement) + measurement.speedNotation);
+        classMembersMap.put(AVG_TEMP_KEY, avgTemp.getTemp(degree) + WeatherTemp.Degree.DEGREE_SIGN);
+        classMembersMap.put(MAX_TEMP_KEY, maxTemp.getTemp(degree) + WeatherTemp.Degree.DEGREE_SIGN);
+        classMembersMap.put(MIN_TEMP_KEY, minTemp.getTemp(degree) + WeatherTemp.Degree.DEGREE_SIGN);
+        classMembersMap.put(CONDITION_KEY, conditions.getConditionText());
+        classMembersMap.put(PRECIPITATION_KEY, miscellaneous.getPrecip(measurement) + measurement.precipNotation);
+        classMembersMap.put(UV_KEY, uvLevel);
+        classMembersMap.put(HUMIDITY_KEY, miscellaneous.getHumidity() + "%");
+        classMembersMap.put(WIND_SPEED_KEY, getMaxWind(measurement) + measurement.speedNotation);
 
         return classMembersMap;
     }

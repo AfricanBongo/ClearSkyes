@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -13,7 +14,7 @@ import androidx.preference.PreferenceManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.africanbongo.clearskyes.R;
-import com.africanbongo.clearskyes.model.weather.WeatherLocation;
+import com.africanbongo.clearskyes.model.WeatherLocation;
 import com.africanbongo.clearskyes.util.WeatherLocationUtil;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
@@ -27,9 +28,9 @@ import java.util.Set;
  */
 public class LocationsRecyclerViewAdapter extends RecyclerView.Adapter<LocationsRecyclerViewAdapter.LocationViewHolder> {
 
-    private List<LocationViewHolder> viewHolders;
-    private List<WeatherLocation> weatherLocations;
-    private RecyclerView attachedRecyclerView;
+    private final List<LocationViewHolder> viewHolders;
+    private final List<WeatherLocation> weatherLocations;
+    private final RecyclerView attachedRecyclerView;
 
     public LocationsRecyclerViewAdapter(List<WeatherLocation> locations, RecyclerView recyclerView) {
         viewHolders = new ArrayList<>();
@@ -136,6 +137,9 @@ public class LocationsRecyclerViewAdapter extends RecyclerView.Adapter<Locations
 
                 colorHolder(holder1, true);
             }
+
+            String toastText = "\"" + location.getLongStringLocation() + "\" has been set as favourite location";
+            Toast.makeText(holder.rootLayout.getContext(), toastText, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -180,7 +184,7 @@ public class LocationsRecyclerViewAdapter extends RecyclerView.Adapter<Locations
     }
 
     public class LocationViewHolder extends RecyclerView.ViewHolder {
-        private ConstraintLayout rootLayout;
+        private final ConstraintLayout rootLayout;
         private final TextView cityText;
         private final TextView restText;
         private final ImageButton deleteButton;

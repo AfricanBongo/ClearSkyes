@@ -7,7 +7,6 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
-import androidx.fragment.app.FragmentActivity;
 
 import com.africanbongo.clearskyes.R;
 

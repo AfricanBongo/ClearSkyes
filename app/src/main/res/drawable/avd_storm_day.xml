@@ -98,12 +98,7 @@
                 <path
                     android:name="path_5"
                     android:pathData="M 340 390 L 90 390 C 40.374 390 0 349.626 0 300 C 0 255.244 32.833 218.015 75.681 211.138 C 82.665 140.426 142.482 85 215 85 C 287.518 85 347.335 140.426 354.319 211.138 C 397.167 218.015 430 255.244 430 300 C 430 349.626 389.626 390 340 390 Z"
-                    android:fillColor="#453d81"
-                    android:strokeWidth="1"/>
-                <path
-                    android:name="path_6"
-                    android:pathData="M 354.319 211.138 C 347.335 140.426 287.518 85 215 85 L 215 390 L 340 390 C 389.626 390 430 349.626 430 300 C 430 255.244 397.167 218.015 354.319 211.138 Z"
-                    android:fillColor="#453d81"
+                    android:fillColor="#e2dff4"
                     android:strokeWidth="1"/>
             </group>
         </vector>

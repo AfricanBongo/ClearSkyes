@@ -15,43 +15,19 @@
         android:layout_marginTop="-24dp"
         android:paddingTop="-24dp"
         android:background="@drawable/weather_detail_background"
+        android:clipChildren="false"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
         <LinearLayout
+            android:id="@+id/detail_nested_scroll_child"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:clipToPadding="false"
+            android:paddingTop="@dimen/large_gap"
+            android:paddingBottom="@dimen/small_gap"
+            android:paddingHorizontal="@dimen/small_gap">
 
-            <include
-                layout="@layout/weather_hour_view" />
-            <include
-                layout="@layout/weather_hour_view" />
-            <include
-                layout="@layout/weather_hour_view" />
-            <include
-                layout="@layout/weather_hour_view" />
-            <include
-                layout="@layout/weather_hour_view" />
-            <include
-                layout="@layout/weather_hour_view" />
-            <include
-                layout="@layout/weather_hour_view" />
-            <include
-                layout="@layout/weather_hour_view" />
-            <include
-                layout="@layout/weather_hour_view" />
-            <include
-                layout="@layout/weather_hour_view" />
-            <include
-                layout="@layout/weather_hour_view" />
-            <include
-                layout="@layout/weather_hour_view" />
-            <include
-                layout="@layout/weather_hour_view" />
-            <include
-                layout="@layout/weather_hour_view" />
-            <include
-                layout="@layout/weather_hour_view" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
@@ -81,54 +57,61 @@
 
                 <ImageView
                     android:id="@+id/detail_weather_icon"
+                    android:transitionName="@string/weather_detail_image_transition"
                     android:layout_width="@dimen/weather_icon"
                     android:layout_height="@dimen/weather_icon"
                     android:layout_marginTop="@dimen/large_gap"
-                    android:layout_centerHorizontal="true"
-                    app:srcCompat="@drawable/avd_sunny"/>
+                    android:layout_centerHorizontal="true" />
+
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentStart="true"
+                    android:orientation="vertical"
                     android:layout_alignTop="@id/detail_weather_icon"
+                    android:layout_alignParentStart="true"
                     android:layout_marginHorizontal="@dimen/large_gap"
-                    android:layout_toStartOf="@+id/detail_weather_icon"
-                    android:orientation="vertical">
-
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="27dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_toStartOf="@+id/detail_weather_icon">
                     <TextView
                         android:id="@+id/detail_weather_time"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Now"
-                        style="@style/SecondaryColorText.MediumMedium"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/detail_weather_location"
+                        android:transitionName="@string/time_text_transition"
+                        style="@style/SecondaryColorText.Medium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxLines="2"
-                        android:text="In Maputo"
-                        style="@style/SecondaryColorText.Medium"/>
+                        android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/detail_weather_condition_text"
+                        style="@style/SecondaryColorText.Small"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="2"
+                        android:textStyle="bold" />
                 </LinearLayout>
 
                 <TextView
+                    android:id="@+id/detail_temp"
+                    android:transitionName="@string/temp_text_transition"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/large_font_size"
-                    android:text="24*"
-                    android:textColor="?android:attr/textColorPrimary"
+                    android:layout_alignTop="@id/detail_weather_icon"
+                    android:layout_alignParentEnd="true"
                     android:layout_marginHorizontal="@dimen/large_gap"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="14dp"
+                    android:layout_marginEnd="22dp"
                     android:layout_toEndOf="@id/detail_weather_icon"
                     android:gravity="center"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignTop="@id/detail_weather_icon"/>
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="@dimen/large_font_size" />
             </RelativeLayout>
             <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/detail_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:title="Sunny weather"
                 app:titleTextColor="?attr/colorOnSecondary"
                 android:gravity="start"
                 app:layout_collapseMode="pin"/>

@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.africanbongo.clearskyes.R;
-import com.africanbongo.clearskyes.model.weather.WeatherLocation;
+import com.africanbongo.clearskyes.model.WeatherLocation;
 import com.google.android.material.button.MaterialButton;
 
 /**

@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.controller.adapters.LocationsRecyclerViewAdapter;
-import com.africanbongo.clearskyes.model.weather.WeatherLocation;
+import com.africanbongo.clearskyes.model.WeatherLocation;
 import com.africanbongo.clearskyes.util.WeatherLocationUtil;
 import com.google.android.material.appbar.MaterialToolbar;
 

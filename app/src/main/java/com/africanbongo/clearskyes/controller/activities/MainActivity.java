@@ -6,9 +6,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,8 +28,8 @@ import com.africanbongo.clearskyes.controller.animations.ZoomOutPageTransformer;
 import com.africanbongo.clearskyes.controller.customviews.CustomNavigationView;
 import com.africanbongo.clearskyes.controller.customviews.LocationButton;
 import com.africanbongo.clearskyes.controller.notification.NotificationReceiver;
-import com.africanbongo.clearskyes.model.weather.WeatherLocation;
-import com.africanbongo.clearskyes.model.weather.WeatherTemp;
+import com.africanbongo.clearskyes.model.WeatherLocation;
+import com.africanbongo.clearskyes.model.WeatherTemp;
 import com.africanbongo.clearskyes.util.BackgroundTaskUtil;
 import com.africanbongo.clearskyes.util.NotificationUtil;
 import com.africanbongo.clearskyes.util.WeatherLocationUtil;
@@ -48,6 +52,7 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout drawerLayout;
     private CustomNavigationView navigationView;
     private ViewPager2 mainViewPager;
+    private TextView lastUpdateTimeTextView;
     private View errorPage;
 
     // Values fetched from Settings Page
@@ -78,6 +83,7 @@ public class MainActivity extends AppCompatActivity
 
         navigationView = findViewById(R.id.nav_view);
         mainViewPager = findViewById(R.id.main_viewpager);
+        lastUpdateTimeTextView = findViewById(R.id.last_update_text_view);
 
         getSettings();
         // Load location buttons and last location open onto the navigation drawer
@@ -155,7 +161,23 @@ public class MainActivity extends AppCompatActivity
         BackgroundTaskUtil.runTask(
                 () -> createNotification(notificationsOn, time, degree, favouriteLocation)
         );
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.reload_menu_item:
+                reloadAdapter();
+                break;
+        }
+
+        return true;
     }
 
     // Attach the tab layout to the view pager
@@ -188,20 +210,36 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void reload() {
         if (mainViewPager != null || !this.isDestroyed()) {
-            // Refresh the view pager
-            WeatherDayStateAdapter presentAdapter = (WeatherDayStateAdapter) mainViewPager.getAdapter();
-
-            if (presentAdapter != null) {
-                String location = presentAdapter.getLocation();
-                mainViewPager.setAdapter(new WeatherDayStateAdapter(this, location, degree, forecastDays));
-                attachTabAndPager();
-            }
+            reloadAdapter();
 
             // Only switch the views if there's an internet connection
             // Otherwise the recurrence of the showError() method animation will overlap this one
             SwitchFadeAnimation animation = new SwitchFadeAnimation();
             animation.switchViews(errorPage, tabAndViewPagerParent, SwitchFadeAnimation.NORMAL_DURATION);
         }
+    }
+
+    public void reloadAdapter() {
+        if (mainViewPager != null || !this.isDestroyed()) {
+            WeatherDayStateAdapter presentAdapter = (WeatherDayStateAdapter) mainViewPager.getAdapter();
+
+            if (presentAdapter != null) {
+                // Reload the view pager
+                updateTimeTextView();
+                String location = presentAdapter.getLocation();
+                mainViewPager.setAdapter(new WeatherDayStateAdapter(this, location, degree, forecastDays));
+                attachTabAndPager();
+            }
+        }
+    }
+
+    // Update text view to show time of fetched data
+    public void updateTimeTextView() {
+        DateTimeFormatter dateTimeFormatter =
+                DateTimeFormatter.ofPattern(WeatherTimeUtil.TIME_FORMAT);
+        LocalTime now = LocalTime.now();
+        String lastUpdateTime = "Last updated: " + now.format(dateTimeFormatter);
+        lastUpdateTimeTextView.setText(lastUpdateTime);
     }
 
     @Override
@@ -239,6 +277,7 @@ public class MainActivity extends AppCompatActivity
         else {
             mainViewPager.setAdapter(new WeatherDayStateAdapter(this, location.getUrlLocation(), degree, forecastDays));
             actionBarTitle = WeatherLocationUtil.getLocationEmoticon() + location.getShortStringLocation();
+            updateTimeTextView();
             attachTabAndPager();
         }
 
@@ -284,6 +323,8 @@ public class MainActivity extends AppCompatActivity
                         .edit()
                         .putString(WeatherLocationUtil.SP_ACTIVE_LOCATION, WeatherLocationUtil.serialize(activeLocation))
                         .apply();
+
+                updateTimeTextView();
                 if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
                     drawerLayout.closeDrawer(GravityCompat.START);
                 }

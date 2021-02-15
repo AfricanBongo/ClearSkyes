@@ -2,8 +2,8 @@ package com.africanbongo.clearskyes.util;
 
 import androidx.annotation.NonNull;
 
-import com.africanbongo.clearskyes.model.weather.WeatherLocation;
-import com.africanbongo.clearskyes.model.weatherapi.WeatherRequestQueue;
+import com.africanbongo.clearskyes.model.WeatherLocation;
+import com.africanbongo.clearskyes.weatherapi.WeatherRequestQueue;
 import com.neovisionaries.i18n.CountryCode;
 
 import org.json.JSONArray;

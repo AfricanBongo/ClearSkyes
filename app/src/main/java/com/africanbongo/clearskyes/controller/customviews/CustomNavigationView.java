@@ -24,7 +24,7 @@ import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.controller.activities.FeedbackActivity;
 import com.africanbongo.clearskyes.controller.activities.LocationsActivity;
 import com.africanbongo.clearskyes.controller.activities.SettingsActivity;
-import com.africanbongo.clearskyes.model.weather.WeatherLocation;
+import com.africanbongo.clearskyes.model.WeatherLocation;
 import com.africanbongo.clearskyes.util.WeatherLocationUtil;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;

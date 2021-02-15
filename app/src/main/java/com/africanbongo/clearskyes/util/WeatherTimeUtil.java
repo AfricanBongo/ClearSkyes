@@ -25,7 +25,8 @@ public final class WeatherTimeUtil {
     public static final String DATE_TIME_FORMAT = DATE_FORMAT + " " + TIME_FORMAT;
 
     // Intent variables
-    public static final String TIME_EXTRA = "weather_time";
+    public static final String INTENT_EXTRA = "weather_time";
+    public static final String REFRESH_EXTRA = "refresh_cache_time";
 
     private WeatherTimeUtil() {
 

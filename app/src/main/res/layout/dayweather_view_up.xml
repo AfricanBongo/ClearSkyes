@@ -4,10 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     style="@style/RaisedElevation"
-    android:background="@drawable/on_secondary_color_curved_background"
+    android:background="@drawable/to_weather_detail_ripple"
     android:padding="@dimen/small_gap">
     <TextView
         android:id="@+id/day_text"
+        android:transitionName="@string/time_text_transition"
         style="@style/CustomTextView.MediumSecondaryColorText"
         android:text="@string/summary"
         android:textStyle="bold"
@@ -16,6 +17,7 @@
 
     <ImageView
         android:id="@+id/weather_day_image"
+        android:transitionName="@string/weather_detail_image_transition"
         android:layout_width="83dp"
         android:layout_height="85dp"
         android:layout_marginTop="@dimen/medium_gap"
@@ -26,6 +28,7 @@
 
     <TextView
         android:id="@+id/day_avg_temp"
+        android:transitionName="@string/temp_text_transition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

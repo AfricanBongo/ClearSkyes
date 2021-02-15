@@ -1,4 +1,4 @@
-package com.africanbongo.clearskyes.model.weatherapi;
+package com.africanbongo.clearskyes.weatherapi;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -42,6 +42,10 @@ public class WeatherRequestQueue {
             weatherRequestQueue = new WeatherRequestQueue(context);
         }
         return weatherRequestQueue;
+    }
+
+    public RequestQueue getRequestQueue() {
+        return requestQueue;
     }
 
     /**

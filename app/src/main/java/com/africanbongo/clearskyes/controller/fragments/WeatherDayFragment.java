@@ -1,5 +1,7 @@
 package com.africanbongo.clearskyes.controller.fragments;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,23 +9,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.util.Pair;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.PreferenceManager;
 
 import com.africanbongo.clearskyes.R;
 import com.africanbongo.clearskyes.controller.activities.MainActivity;
+import com.africanbongo.clearskyes.controller.activities.WeatherDetailActivity;
 import com.africanbongo.clearskyes.controller.animations.LoadingLayoutAnimation;
 import com.africanbongo.clearskyes.controller.customviews.AstroView;
 import com.africanbongo.clearskyes.controller.customviews.DayWeatherViewUp;
-import com.africanbongo.clearskyes.model.weather.AstroElement;
-import com.africanbongo.clearskyes.model.weather.WeatherDay;
-import com.africanbongo.clearskyes.model.weather.WeatherHour;
-import com.africanbongo.clearskyes.model.weather.WeatherTemp;
-import com.africanbongo.clearskyes.model.weatherapi.ErrorPageListener;
-import com.africanbongo.clearskyes.model.weatherapi.WeatherRequestQueue;
+import com.africanbongo.clearskyes.model.AstroElement;
+import com.africanbongo.clearskyes.model.WeatherDay;
+import com.africanbongo.clearskyes.model.WeatherHour;
+import com.africanbongo.clearskyes.model.WeatherTemp;
+import com.africanbongo.clearskyes.weatherapi.ErrorPageListener;
+import com.africanbongo.clearskyes.weatherapi.RefreshDataBroadcastReceiver;
+import com.africanbongo.clearskyes.weatherapi.WeatherRequestQueue;
 import com.africanbongo.clearskyes.util.BackgroundTaskUtil;
-import com.africanbongo.clearskyes.util.WeatherLocationUtil;
 import com.africanbongo.clearskyes.util.WeatherJsonUtil;
+import com.africanbongo.clearskyes.util.WeatherLocationUtil;
 import com.africanbongo.clearskyes.util.WeatherTimeUtil;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -103,6 +111,18 @@ public class WeatherDayFragment extends Fragment {
     }
 
 
+    public void scheduleRefreshCache(String url) {
+        SharedPreferences preferences
+                = PreferenceManager.getDefaultSharedPreferences(getContext());
+
+        // Set auto-refresh data cache process
+        String refreshDataCacheKey = getString(R.string.update_data_key);
+        String refreshDataDefaultTime = getString(R.string.update_data_default_value);
+        int refreshTime = Integer.parseInt(preferences.getString(refreshDataCacheKey, refreshDataDefaultTime));
+
+        RefreshDataBroadcastReceiver.scheduleCacheRefresh(getContext(), url, refreshTime);
+    }
+
     public String generateURL(String location, String date) {
         return "https://api.weatherapi.com/v1/forecast.json?key=" +
                 WeatherRequestQueue.API_KEY + "&q=" + location +"&dt=" + date;
@@ -113,6 +133,8 @@ public class WeatherDayFragment extends Fragment {
         WeatherRequestQueue requestQueue = WeatherRequestQueue
                 .getWeatherRequestQueue(getContext());
         loadingLayoutAnimation.start();
+
+        scheduleRefreshCache(requestURL);
 
         // Listener for JSON Data
         Response.Listener<JSONObject> dayListener = response -> {
@@ -129,7 +151,33 @@ public class WeatherDayFragment extends Fragment {
 
                 // Callbacks to load the objects into the UI components
                 BackgroundTaskUtil.Callback<WeatherDay> consumeWeatherDay =
-                        weatherDay -> viewUp.loadData(weatherDay, degree);
+                        weatherDay -> {
+                    viewUp.loadData(weatherDay, degree);
+                    // When the view is clicked open the WeatherDetailActivity
+                    viewUp.setOnClickListener(l -> {
+                        if (weatherDay != null) {
+                            String imageTransitionName =
+                                    getResources().getString(R.string.weather_detail_image_transition);
+                            String tempTransitionName =
+                                    getResources().getString(R.string.temp_text_transition);
+                            String timeTransitionName =
+                                    getResources().getString(R.string.time_text_transition);
+                            String time = getResources().getString(R.string.summary);
+                            Intent intent = new Intent(getContext(), WeatherDetailActivity.class);
+                            intent.setAction(WeatherDay.INTENT_ACTION);
+                            intent.putExtra(WeatherJsonUtil.INTENT_EXTRA, weatherDay);
+                            intent.putExtra(WeatherTimeUtil.INTENT_EXTRA, time);
+                            ActivityOptionsCompat optionsCompat =
+                                    ActivityOptionsCompat.makeSceneTransitionAnimation(
+                                            getActivity(),
+                                            Pair.create(viewUp.getWeatherImageView(), imageTransitionName),
+                                            Pair.create(viewUp.getDayAvgTempView(), tempTransitionName),
+                                            Pair.create(viewUp.getDayTextView(), timeTransitionName)
+                                    );
+                            ActivityCompat.startActivity(getContext(), intent, optionsCompat.toBundle());
+                        }
+                    });
+                };
                 BackgroundTaskUtil.Callback<AstroElement> consumeAstroElement =
                         astroElement -> astroView.loadData(astroElement);
                 BackgroundTaskUtil.Callback<WeatherHour[]> consumeWeatherHours =

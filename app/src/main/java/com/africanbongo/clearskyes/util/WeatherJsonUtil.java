@@ -1,15 +1,15 @@
 package com.africanbongo.clearskyes.util;
 
-import com.africanbongo.clearskyes.model.weather.AstroElement;
-import com.africanbongo.clearskyes.model.weather.WeatherCondition;
-import com.africanbongo.clearskyes.model.weather.WeatherDay;
-import com.africanbongo.clearskyes.model.weather.WeatherHour;
-import com.africanbongo.clearskyes.model.weather.WeatherMisc;
-import com.africanbongo.clearskyes.model.weather.WeatherObject;
-import com.africanbongo.clearskyes.model.weather.WeatherTemp;
-import com.africanbongo.clearskyes.model.weather.WeatherToday;
-import com.africanbongo.clearskyes.model.weather.WeatherWind;
-import com.africanbongo.clearskyes.model.weatherapi.WeatherRequestQueue;
+import com.africanbongo.clearskyes.model.AstroElement;
+import com.africanbongo.clearskyes.model.WeatherCondition;
+import com.africanbongo.clearskyes.model.WeatherDay;
+import com.africanbongo.clearskyes.model.WeatherHour;
+import com.africanbongo.clearskyes.model.WeatherMisc;
+import com.africanbongo.clearskyes.model.WeatherObject;
+import com.africanbongo.clearskyes.model.WeatherTemp;
+import com.africanbongo.clearskyes.model.WeatherToday;
+import com.africanbongo.clearskyes.model.WeatherWind;
+import com.africanbongo.clearskyes.weatherapi.WeatherRequestQueue;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,14 +18,17 @@ import org.json.JSONObject;
 /**
  * Utility class used to parse host server Weather {@link JSONObject}(s) into:
  * <ul>
- *     <li> {@link com.africanbongo.clearskyes.model.weather.WeatherToday} object</li>
- *     <li> {@link com.africanbongo.clearskyes.model.weather.WeatherObject} object</li>
- *     <li> {@link com.africanbongo.clearskyes.model.weather.WeatherDay} object</li>
- *     <li> {@link com.africanbongo.clearskyes.model.weather.WeatherHour} object</li>
- *     <li> {@link com.africanbongo.clearskyes.model.weather.AstroElement} object</li>
+ *     <li> {@link com.africanbongo.clearskyes.model.WeatherToday} object</li>
+ *     <li> {@link com.africanbongo.clearskyes.model.WeatherObject} object</li>
+ *     <li> {@link com.africanbongo.clearskyes.model.WeatherDay} object</li>
+ *     <li> {@link com.africanbongo.clearskyes.model.WeatherHour} object</li>
+ *     <li> {@link com.africanbongo.clearskyes.model.AstroElement} object</li>
  * </ul>
  */
 public final class WeatherJsonUtil {
+
+    // Intent variable
+    public static final String INTENT_EXTRA = "weather_object";
 
     private static final String ASTRO_ELEMENT_ERROR = "Error parsing JSON into AstroElement object";
     private static final String WEATHER_DAY_ERROR = "Error parsing JSON into WeatherDay object";

@@ -8,15 +8,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.africanbongo.clearskyes.controller.activities.MainActivity;
 import com.africanbongo.clearskyes.controller.fragments.WeatherDayFragment;
 import com.africanbongo.clearskyes.controller.fragments.WeatherTodayFragment;
-import com.africanbongo.clearskyes.model.weather.WeatherTemp;
+import com.africanbongo.clearskyes.model.WeatherTemp;
 
 public class WeatherDayStateAdapter extends FragmentStateAdapter {
     private final String location;
-    private WeatherTemp.Degree degree;
-    private int forecastDays;
+    private final WeatherTemp.Degree degree;
+    private final int forecastDays;
 
     public WeatherDayStateAdapter(@NonNull FragmentActivity fragmentActivity, String location, WeatherTemp.Degree degree, int forecastDays) {
         super(fragmentActivity);

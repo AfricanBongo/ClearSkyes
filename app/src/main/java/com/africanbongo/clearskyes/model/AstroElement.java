@@ -1,4 +1,4 @@
-package com.africanbongo.clearskyes.model.weather;
+package com.africanbongo.clearskyes.model;
 
 import android.os.Build;
 

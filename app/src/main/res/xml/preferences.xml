@@ -23,7 +23,7 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        app:key="@string/prefences_key"
+        app:key="@string/preferences_key"
         app:title="@string/preferences"
         app:iconSpaceReserved="false">
         <ListPreference
@@ -53,5 +53,14 @@
             app:min="@integer/forecast_min_days"
             android:max="@integer/forecast_max_days" />
 
+        <ListPreference
+            app:key="@string/update_data_key"
+            app:title="@string/update_data"
+            app:icon="@drawable/ic_refresh_data_cache"
+            app:entries="@array/update_data_entry_list"
+            android:entryValues="@array/update_data_values_list"
+            app:defaultValue="@string/update_data_default_value"
+            app:useSimpleSummaryProvider="true"
+            app:dialogMessage="@string/update_data_summary"/>
     </PreferenceCategory>
 </PreferenceScreen>

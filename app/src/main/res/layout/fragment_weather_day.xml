@@ -18,7 +18,8 @@
             android:layout_marginEnd="@dimen/smaller_gap"
             android:layout_marginTop="@dimen/small_gap"
             android:layout_alignParentTop="true"
-            android:elevation="@dimen/large_gap" />
+            android:elevation="@dimen/large_gap"
+            />
 
         <FrameLayout
             android:id="@+id/day_weather_hours"

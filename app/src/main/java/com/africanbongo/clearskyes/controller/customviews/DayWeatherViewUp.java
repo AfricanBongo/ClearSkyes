@@ -11,14 +11,15 @@ import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.africanbongo.clearskyes.R;
-import com.africanbongo.clearskyes.model.weather.WeatherDay;
-import com.africanbongo.clearskyes.model.weather.WeatherTemp;
+import com.africanbongo.clearskyes.model.WeatherDay;
+import com.africanbongo.clearskyes.model.WeatherTemp;
 
 /**
- * Custom view for holding minimal {@link com.africanbongo.clearskyes.model.weather.WeatherDay} data
+ * Custom view for holding minimal {@link com.africanbongo.clearskyes.model.WeatherDay} data
  */
 public class DayWeatherViewUp extends ConstraintLayout {
 
+    private TextView dayTextView;
     private TextView dayAvgTempView;
     private TextView dayMaxMinTemp;
     private TextView dayConditionText;
@@ -50,7 +51,7 @@ public class DayWeatherViewUp extends ConstraintLayout {
         ConstraintLayout layout = (ConstraintLayout) LayoutInflater
                 .from(getContext())
                 .inflate(R.layout.dayweather_view_up, this, true);
-
+        dayTextView = layout.findViewById(R.id.day_text);
         dayAvgTempView = layout.findViewById(R.id.day_avg_temp);
         dayConditionText = layout.findViewById(R.id.day_condition_text);
         dayMaxMinTemp = layout.findViewById(R.id.day_max_min_temp);
@@ -90,5 +91,17 @@ public class DayWeatherViewUp extends ConstraintLayout {
 
     private void setDayUVIndex(String uvIndex) {
         dayUVIndex.setText(uvIndex);
+    }
+
+    public ImageView getWeatherImageView() {
+        return dayWeatherIcon;
+    }
+
+    public TextView getDayTextView() {
+        return dayTextView;
+    }
+
+    public TextView getDayAvgTempView() {
+        return dayAvgTempView;
     }
 }

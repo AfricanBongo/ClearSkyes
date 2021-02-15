@@ -9,14 +9,14 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
-import com.africanbongo.clearskyes.model.weather.WeatherDay;
-import com.africanbongo.clearskyes.model.weather.WeatherLocation;
-import com.africanbongo.clearskyes.model.weather.WeatherTemp;
-import com.africanbongo.clearskyes.model.weatherapi.WeatherRequestQueue;
+import com.africanbongo.clearskyes.model.WeatherDay;
+import com.africanbongo.clearskyes.model.WeatherLocation;
+import com.africanbongo.clearskyes.model.WeatherTemp;
+import com.africanbongo.clearskyes.weatherapi.WeatherRequestQueue;
 import com.africanbongo.clearskyes.util.BackgroundTaskUtil;
-import com.africanbongo.clearskyes.util.WeatherLocationUtil;
 import com.africanbongo.clearskyes.util.NotificationUtil;
 import com.africanbongo.clearskyes.util.WeatherJsonUtil;
+import com.africanbongo.clearskyes.util.WeatherLocationUtil;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;

@@ -9,8 +9,6 @@ https://developer.android.com/training/animation/screen-slide-2
  */
 
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
 
 import androidx.viewpager2.widget.ViewPager2;
 

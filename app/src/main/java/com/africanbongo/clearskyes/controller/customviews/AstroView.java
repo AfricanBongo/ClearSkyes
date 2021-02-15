@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.africanbongo.clearskyes.R;
-import com.africanbongo.clearskyes.model.weather.AstroElement;
+import com.africanbongo.clearskyes.model.AstroElement;
 
 /**
 Custom view shown on current today page at the bottom of the screen

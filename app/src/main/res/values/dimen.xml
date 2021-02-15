@@ -19,6 +19,7 @@
     <dimen name="medium_font_size">22sp</dimen>
     <dimen name="medium_medium_font_size">32sp</dimen>
     <dimen name="small_font_size">15sp</dimen>
+    <dimen name="weather_detail_font_size">18sp</dimen>
 
     <!--    Common points on a vector asset-->
     <dimen name="common_zero_point">0dp</dimen>

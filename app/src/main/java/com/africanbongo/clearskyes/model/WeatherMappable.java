@@ -1,4 +1,4 @@
-package com.africanbongo.clearskyes.model.weather;
+package com.africanbongo.clearskyes.model;
 
 import java.util.LinkedHashMap;
 
@@ -9,9 +9,9 @@ import java.util.LinkedHashMap;
 public interface WeatherMappable {
     /**
      * Returns the members of a class as ordered key-value pairs
-     * @param degree {@link com.africanbongo.clearskyes.model.weather.WeatherTemp.Degree}
+     * @param degree {@link com.africanbongo.clearskyes.model.WeatherTemp.Degree}
      *                symbol to use for temperature measurements
-     * @param measurement {@link com.africanbongo.clearskyes.model.weather.WeatherMisc.Measurement}
+     * @param measurement {@link com.africanbongo.clearskyes.model.WeatherMisc.Measurement}
      *                    to be metric or imperial measurement that is used
      * @return {@link LinkedHashMap}<{@link String}, {@link String}> of key-value pairs of class members
      */

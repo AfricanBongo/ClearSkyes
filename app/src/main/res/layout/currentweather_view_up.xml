@@ -3,11 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/on_secondary_color_curved_background"
+    android:background="@drawable/to_weather_detail_ripple"
     style="@style/RaisedElevation"
     android:padding="@dimen/small_gap">
     <TextView
         android:id="@+id/now_text"
+        android:transitionName="@string/time_text_transition"
         style="@style/CustomTextView.MediumSecondaryColorText"
         android:text="@string/weather_now"
         android:textStyle="bold"
@@ -16,6 +17,7 @@
 
     <ImageView
         android:id="@+id/weather_now_image"
+        android:transitionName="@string/weather_detail_image_transition"
         android:layout_width="@dimen/weather_large_icon"
         android:layout_height="@dimen/weather_large_icon"
         android:layout_marginTop="@dimen/medium_gap"
@@ -26,6 +28,7 @@
 
     <TextView
         android:id="@+id/now_temp"
+        android:transitionName="@string/temp_text_transition"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
