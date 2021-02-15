@@ -27,7 +27,7 @@ import okhttp3.Response;
  */
 public final class FeedbackUtil {
     private static final String DEVELOPER_EMAIL = "\"dmtabvuri@gmail.com\"";
-    private static final String API_KEY = "****************************************";
+    private static final String API_KEY = "9444a4cc4emsh93f5287277cd663p12da72jsn8ba223c740db";
     private static final String SUBJECT_BASE = "Clearskyes Feedback: ";
     private static final String FROM_DEFAULT = "\"tadiwamtabvuri@gmail.com\"";
     private static final String FEEDBACK_FAILURE = "Couldn't send feedback";

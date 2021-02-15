@@ -17,7 +17,7 @@ public class WeatherRequestQueue {
 
     // Used for making API requests
     // Register for your own API Key from https://www.weatherapi.com/
-    public static final String API_KEY = "*****************************";
+    public static final String API_KEY = "1092f3e10c9a4146890112852202212";
 
 
     private WeatherRequestQueue(Context context) {
