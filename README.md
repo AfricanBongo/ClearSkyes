@@ -12,8 +12,8 @@
 ## Feature Overview 
 - Intuitive and neatly stacked UI, implementing some ```Material Design``` guidelines
 - [View current weather conditions](#viewing-current-weather),
-- Weather forecasts up to ```10``` days,
-- ```Search```, ```add``` and ```delete``` a location to view its weather details, and also cast it as the favourite location,
+-  [Weather forecasts](#weather-forecasts) up to ```10``` days,
+- [```Search```, ```add``` and ```delete```](#search-add-delete-favourite-a-location) a location to view its weather details, and also cast it as the favourite location,
 - Receive daily weather notifications (for the favourite location),
 - Apply preferences through settings,
 - Send feedback
