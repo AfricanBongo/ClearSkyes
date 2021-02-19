@@ -116,6 +116,7 @@ If the request to the server returns an error code, the error screen is shown an
 <br/>
 
 ## New things learnt
+- Material Design Principles
 - Animations
 - Creating custom asynchoronous classes
 - DialogFragments
