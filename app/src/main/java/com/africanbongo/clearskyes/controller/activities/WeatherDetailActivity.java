@@ -68,10 +68,10 @@ public class WeatherDetailActivity extends AppCompatActivity {
         WeatherLocation weatherLocation = WeatherLocationUtil.deserialize(activeLocation);
         String location = weatherLocation.getShortStringLocation();
         String measurementKey = getString(R.string.measurements_key);
-        String meausurementDefault = getString(R.string.measurements_default);
+        String measurementDefault = getString(R.string.measurements_default);
         String degreesKey = getString(R.string.degrees_key);
         String degreesDefault = getString(R.string.degrees_default);
-        String measurementType = preferences.getString(measurementKey, meausurementDefault);
+        String measurementType = preferences.getString(measurementKey, measurementDefault);
         String degreesType = preferences.getString(degreesKey, degreesDefault);
         WeatherMisc.Measurement measurement = WeatherMisc.Measurement.getMeasurement(measurementType);
         WeatherTemp.Degree degree = WeatherTemp.Degree.getDegree(degreesType);
